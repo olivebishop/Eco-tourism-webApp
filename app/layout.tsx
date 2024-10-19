@@ -22,20 +22,24 @@ export const metadata: Metadata = {
     template: `%s | EcoTourism`
   },
   description: 'Tour agency that connects tourist with magical destinations',
+  keywords: ['African Safaris', 'Tours in Nairobi', 'Kenya Safaris', 'Best African Tour Company', 'Big Five Safaris', 'Nairobi Tours and Safaris', 'Top Safari Company in Africa', 'Wildlife Tours in Kenya', 'Luxury Safaris', 
+    'Adventure Tours Africa', 'Sol of African Tours'],
   openGraph: {
-    description: 'Tour agency that connects tourist with magical destinations .',
-    images: ['/images/footer_image.jpg'],
-    url: 'https://olivebishop.me'
+    images: '/og-image.png'
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'EcoTourism`',
-    description: 'Tour agency that connects tourist with magical destinations',
-    siteId: "",
-    creator: "olive bishop",
-    creatorId: "",
-    images: ['/images/footer_image.jpg'],
+    site: '@ecotourism',
+    creator: '@ecotourism',
+   
   },
+  alternates: {
+    canonical: '/',
+    languages: {
+      'en-US': '/en-US',
+      'de-DE': '/de-DE'
+    }
+  },
+ 
 }
 
 export default function RootLayout({
