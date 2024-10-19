@@ -92,9 +92,8 @@ const Navbar = () => {
                             className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-green-400 to-green-700 p-6 no-underline outline-none focus:shadow-md"
                             href="/destinations/africa"
                           >
-                         
                             <p className="text-sm leading-tight text-white/90">
-                             Destinations
+                            Destinations
                             </p>
                           </a>
                         </NavigationMenuLink>
