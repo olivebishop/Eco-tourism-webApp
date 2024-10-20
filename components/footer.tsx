@@ -12,7 +12,7 @@ const EcoTourismFooter: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <section className="py-20 bg-green-100">
+    <section className="py-20 bg-green-50">
       <div className="container px-4 mx-auto">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-wrap -mx-4 pb-28">
