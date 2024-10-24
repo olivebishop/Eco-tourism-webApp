@@ -4,6 +4,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 export async function POST(req: NextRequest) {
+    const token = req.cookies.get('token')?.value 
+    if (!token) {
+        return NextResponse.json({ error: "User is not Authenticated"}, { status: 401 })
+    }
+
     const body = await req.json()
     const { title, author, content, tags, imageUrl } = body 
     if (!title || !author || !content || !tags || !imageUrl) {
@@ -22,6 +27,13 @@ export async function POST(req: NextRequest) {
 
 
 export async function GET(req: NextRequest) {
+     const token = req.cookies.get("token")?.value;
+     if (!token) {
+       return NextResponse.json(
+         { error: "User is not Authenticated" },
+         { status: 401 }
+       );
+     }
     try {
         await connectToDB()
         const blogs = await Blog.find()
@@ -36,6 +48,14 @@ export async function GET(req: NextRequest) {
 
 
 export async function PUT(req: NextRequest) {
+     const token = req.cookies.get("token")?.value;
+     if (!token) {
+       return NextResponse.json(
+         { error: "User is not Authenticated" },
+         { status: 401 }
+       );
+     }
+    
     const id = req.nextUrl.searchParams.get('id')
     if (!id) {
         return NextResponse.json({ error: "BLOG ID IS REQUIRED" }, { status: 400 });
@@ -79,6 +99,13 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+     const token = req.cookies.get("token")?.value;
+     if (!token) {
+       return NextResponse.json(
+         { error: "User is not Authenticated" },
+         { status: 401 }
+       );
+     }
     const id = req.nextUrl.searchParams.get('id')
     if (!id) {
         return NextResponse.json({ error: "BLOG ID IS REQUIRED" }, { status: 400 });
