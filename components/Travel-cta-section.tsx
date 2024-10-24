@@ -3,7 +3,7 @@ import React from 'react';
 
 const TravelCTASection: React.FC = () => {
   return (
-    <section className="relative overflow-hidden py-16 lg:py-24">
+    <section className="relative overflow-hidden py-16 lg:py-24 ">
       <div className="w-full bg-gradient-to-l from-green-200 rounded-lg relative overflow-hidden">
         <div className="absolute top-0 right-0 w-full h-full">
          

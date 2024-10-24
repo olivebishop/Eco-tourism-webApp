@@ -9,7 +9,7 @@ function page() {
     <div className='bg-green-50'>
       <ToursHeroCarousel />
       <EcoTourismFeatures />
-      < DestinationGrid/>
+      <DestinationGrid/>
       <TravelCTASection />
 
     </div>
