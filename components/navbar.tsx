@@ -108,7 +108,7 @@ const Navbar = () => {
                   </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/blog" legacyBehavior passHref>
+                  <Link href="/blogs" legacyBehavior passHref>
                     <NavigationMenuLink className="text-green-800 hover:text-green-600 transition-colors">
                       Blog
                     </NavigationMenuLink>
@@ -203,7 +203,7 @@ const MobileNav = () => {
           <li><Link href="/destinations/middle-east" className="text-sm">Middle East</Link></li>
         </ul>
       </div>
-      <Link href="/blog" className="text-lg font-semibold">
+      <Link href="/blogs" className="text-lg font-semibold">
         Blog
       </Link>
       <Link href="/contact" className="text-lg font-semibold">
