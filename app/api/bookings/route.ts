@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
         await connectToDB()
         const newBooking = await Booking.create({ firstname: firstname, lastname: lastname, email: email, phone: phone, country: country || '' })
         const mail = await sendBookingEmailNotification({fullname:`${firstname} ${lastname}`, email: email, phone: phone})
-        return NextResponse.json({ newBooking }, { status: 200 })
+        return NextResponse.json({ newBooking, mailStatus: mail.response }, { status: 200 })
     } catch (error) {
         console.error(error);
         return NextResponse.json({ error: error }.error, { status: 500 })

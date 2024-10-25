@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 }
 
 
-export async function GET(req: NextRequest) {
+export async function GET() {
     //  const token = req.cookies.get("token")?.value;
     //  if (!token) {
     //    return NextResponse.json(

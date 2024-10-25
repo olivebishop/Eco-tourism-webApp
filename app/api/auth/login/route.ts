@@ -2,7 +2,6 @@ import { connectToDB } from "@/lib/config/db";
 import User from "@/lib/models/User";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from 'bcryptjs'
-import JWT from 'jsonwebtoken';
 import { sendLoginVerificationCode } from "@/functions/Mail";
 
 function generateVerificationCode() {
