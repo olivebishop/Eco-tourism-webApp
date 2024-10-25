@@ -27,13 +27,13 @@ export async function POST(req: NextRequest) {
 
 
 export async function GET(req: NextRequest) {
-     const token = req.cookies.get("token")?.value;
-     if (!token) {
-       return NextResponse.json(
-         { error: "User is not Authenticated" },
-         { status: 401 }
-       );
-     }
+    //  const token = req.cookies.get("token")?.value;
+    //  if (!token) {
+    //    return NextResponse.json(
+    //      { error: "User is not Authenticated" },
+    //      { status: 401 }
+    //    );
+    //  }
     try {
         await connectToDB()
         const blogs = await Blog.find()
