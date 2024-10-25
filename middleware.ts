@@ -4,7 +4,7 @@ export function middleware(req: NextRequest) {
   const currentPath = req.nextUrl.pathname;
 
   //defining what routes are public
-  const isPublic = currentPath === "/login" || currentPath === "/signup";
+  const isPublic = currentPath !== '/dashboard'; // add all the paths you want protected
 
   //retrieving the token to see if the user's logged in
   const token = req.cookies.get("token")?.value || "";
@@ -19,5 +19,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/login", "/signup"], //we want our middleware to affect these routes
+  matcher: ["/", "/login", "/signup", '/dashboard'], 
 };
