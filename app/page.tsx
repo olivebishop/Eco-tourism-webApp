@@ -8,11 +8,11 @@ import KenyaParksScroll from '../components/ticker'
 function page() {
   return (
     <div className='bg-green-50'>
-      <ToursHeroCarousel />
-      <KenyaParksScroll />
-      <EcoTourismFeatures />
+      <ToursHeroCarousel/>
+      <KenyaParksScroll/>
+      <EcoTourismFeatures/>
       <DestinationGrid/>
-      <TravelCTASection />
+      <TravelCTASection/>
 
     </div>
   )
