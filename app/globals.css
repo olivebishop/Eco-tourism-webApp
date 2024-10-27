@@ -26,8 +26,10 @@
     --input: 240 5.9% 90%; /* Light green for input backgrounds */
     --ring: 240 10% 3.9%; /* Green ring color for focus states */
     --radius: 0.5rem; /* Default border radius */
-    --chart-1: 12 76% 61%; /* Green for charts */
-    --chart-2: 173 58% 39%; /* Light forest green */
+    --chart-1: 215 100% 50%;  /* For new bookings */
+    --chart-2: 197 37% 24%;  /* For repeat bookings */
+    --color-new-bookings: hsl(var(--chart-1));
+    --color-repeat-bookings: hsl(var(--chart-2));
     --chart-3: 197 37% 24%; /* Soft muted green */
     --chart-4: 43 74% 66%; /* Vibrant yellow-green */
     --chart-5: 27 87% 67%; /* Warm yellow-orange */ --sidebar-background: 0 0% 98%; --sidebar-foreground: 240 5.3% 26.1%; --sidebar-primary: 240 5.9% 10%; --sidebar-primary-foreground: 0 0% 98%; --sidebar-accent: 240 4.8% 95.9%; --sidebar-accent-foreground: 240 5.9% 10%; --sidebar-border: 220 13% 91%; --sidebar-ring: 217.2 91.2% 59.8%;
@@ -75,4 +77,17 @@ body {
   body {
     @apply text-foreground;
   }
+}
+
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: hsl(var(--border));
+  stroke-opacity: 0.2;
+}
+
+.recharts-tooltip {
+  border-radius: var(--radius);
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  box-shadow: var(--shadow);
 }
