@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import Footer from '@/components/footer'
-import Navbar from '@/components/navbar'
 import "./globals.css";
 
 const geistSans = localFont({
@@ -9,6 +7,7 @@ const geistSans = localFont({
   variable: "--font-geist-sans",
   weight: "100 900",
 });
+
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
@@ -18,7 +17,7 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.olivebishop.me"),
   title: {
-    default: 'EcoTourism`',
+    default: 'EcoTourism',
     template: `%s | EcoTourism`
   },
   description: 'Tour agency that connects tourist with magical destinations',
@@ -30,7 +29,6 @@ export const metadata: Metadata = {
   twitter: {
     site: '@ecotourism',
     creator: '@ecotourism',
-   
   },
   alternates: {
     canonical: '/',
@@ -39,7 +37,6 @@ export const metadata: Metadata = {
       'de-DE': '/de-DE'
     }
   },
- 
 }
 
 export default function RootLayout({
@@ -49,12 +46,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Navbar />
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
-        <Footer />
       </body>
     </html>
   );
