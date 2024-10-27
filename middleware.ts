@@ -4,7 +4,8 @@ export function middleware(req: NextRequest) {
   const currentPath = req.nextUrl.pathname;
 
   // Define admin routes that need protection
-  const isAdminRoute = currentPath.startsWith('/management-portal');
+  // const isAdminRoute = currentPath.startsWith('/management-portal');
+  const isAdminRoute = currentPath.startsWith('/admin-portal');
 
   // Define public routes (add all your public routes here)
   const isPublicRoute = [
@@ -15,16 +16,17 @@ export function middleware(req: NextRequest) {
     '/blog',
     '/auth/management-portal/sign-up',
     '/auth/management-portal/sign-in',
+
   ].includes(currentPath);
 
   // Retrieve the token to check if the user is logged in
   const token = req.cookies.get("adminToken")?.value || "";
 
-  // Handle admin routes
+  // Handle admin routesa
   if (isAdminRoute) {
     // If no token is present, redirect to admin login
     if (!token) {
-      return NextResponse.redirect(new URL("/management-portal/access", req.nextUrl));
+      return NextResponse.redirect(new URL("/", req.nextUrl));
     }
     // If token is present, allow access (you may want to add token verification here)
     return NextResponse.next();
