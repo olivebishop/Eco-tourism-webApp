@@ -89,7 +89,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                 <Link key={item.href} href={item.href} onClick={() => setIsOpen(false)}>
                   <Button
                     variant={isActive ? "secondary" : "ghost"}
-                    className="w-full justify-start"
+                    className="w-full justify-start mb-2"
                   >
                     <item.icon className="mr-2 h-4 w-4" />
                     {item.label}
