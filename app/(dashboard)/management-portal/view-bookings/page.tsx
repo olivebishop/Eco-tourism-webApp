@@ -1,8 +1,11 @@
 import React from 'react'
+import BookingsForm from '@/components/eco-tourism/BookingForm';
 
 function page() {
   return (
-    <div>Bookings</div>
+    <div> 
+    < BookingsForm />
+    </div>
   )
 }
 
