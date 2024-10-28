@@ -1,8 +1,11 @@
 import React from 'react'
+import CreateBlog from '@/components/eco-tourism/CreateBlog';
 
 function page() {
   return (
-    <div> Create Blogs</div>
+    <div> 
+    < CreateBlog />
+    </div>
   )
 }
 
