@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, useRef } from 'react';
+import Image from 'next/image';
 
 // Define types
 type FormData = {
@@ -24,7 +25,7 @@ const CreateBlog: React.FC = () => {
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  
+
   const [formData, setFormData] = useState<FormData>({
     title: '',
     author: '',
@@ -47,7 +48,7 @@ const CreateBlog: React.FC = () => {
         setError('Image size should be less than 5MB');
         return;
       }
-      
+
       if (!file.type.startsWith('image/')) {
         setError('Please upload an image file');
         return;
@@ -68,12 +69,12 @@ const CreateBlog: React.FC = () => {
 
   const handleTextFormat = (format: string) => {
     if (!textareaRef.current) return;
-    
+
     const textarea = textareaRef.current;
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const selectedText = textarea.value.substring(start, end);
-    
+
     let formattedText = '';
     switch (format) {
       case 'bold':
@@ -143,14 +144,14 @@ const CreateBlog: React.FC = () => {
       <div className="bg-white rounded-lg shadow p-6">
         <h1 className="text-2xl font-bold mb-4">Create New Blog Post</h1>
         <p className="text-gray-600 mb-6">Fill in the details for your new blog post</p>
-        
+
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
             <div className="bg-red-50 text-red-500 p-4 rounded-lg">
               {error}
             </div>
           )}
-          
+
           <div className="space-y-2">
             <label className="block text-sm font-medium">Title</label>
             <input
@@ -243,7 +244,7 @@ const CreateBlog: React.FC = () => {
             <label className="block text-sm font-medium">Blog Image</label>
             <div className="flex flex-col space-y-4">
               <div className="flex items-center justify-center w-full">
-                <label 
+                <label
                   className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
                 >
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -264,10 +265,13 @@ const CreateBlog: React.FC = () => {
               </div>
               {previewUrl && (
                 <div className="relative w-full h-48">
-                  <img
+                  <Image
                     src={previewUrl}
                     alt="Preview"
+                    width={500}
+                    height={300}
                     className="w-full h-full object-cover rounded-lg"
+                    priority
                   />
                   <button
                     type="button"
@@ -281,8 +285,8 @@ const CreateBlog: React.FC = () => {
             </div>
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="w-full bg-green-500 text-white p-3 rounded-lg hover:bg-green-600 disabled:bg-green-300 transition-colors"
             disabled={isLoading}
           >

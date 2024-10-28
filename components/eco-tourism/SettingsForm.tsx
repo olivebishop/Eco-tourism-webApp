@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import Image from 'next/image';
 
 interface FormData {
     name: string;
@@ -118,10 +119,13 @@ const AdminSettingsForm = () => {
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="flex items-center space-x-4 mb-6">
                                     <div className="relative">
-                                        <img
+                                        <Image
                                             src={imagePreview}
                                             alt="Admin"
-                                            className="w-20 h-20 rounded-full object-cover border-2 border-gray-200"
+                                            width={80}
+                                            height={80}
+                                            className="rounded-full object-cover border-2 border-gray-200"
+                                            priority
                                         />
                                         <label htmlFor="imageUpload">
                                             <Button
