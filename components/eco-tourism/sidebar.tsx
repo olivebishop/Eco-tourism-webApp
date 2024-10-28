@@ -32,7 +32,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   const pathname = usePathname();
 
   const navItems = [
-    { href: "/dashboard", icon: Home, label: "Dashboard" },
+    { href: "/management-portal/dashboard", icon: Home, label: "Dashboard" },
     { href: "/management-portal/view-bookings", icon: BookCheck, label: "Bookings" },
     { href: "/management-portal/create-blogs", icon: BookText, label: " Blogs" },
   ];
