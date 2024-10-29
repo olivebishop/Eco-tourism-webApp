@@ -4,8 +4,8 @@ export function middleware(req: NextRequest) {
   const currentPath = req.nextUrl.pathname;
 
   // Define admin routes that need protection
-  // const isAdminRoute = currentPath.startsWith('/management-portal');
-  const isAdminRoute = currentPath.startsWith('/admin-portal');
+ const isAdminRoute = currentPath.startsWith('/management-portal');
+
 
   // Define public routes (add all your public routes here)
   const isPublicRoute = [
