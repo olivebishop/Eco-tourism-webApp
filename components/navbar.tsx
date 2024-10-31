@@ -54,7 +54,7 @@ const Navbar = () => {
                     Packages
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                       <li className="row-span-3">
                         <NavigationMenuLink asChild>
                           <a
@@ -68,10 +68,10 @@ const Navbar = () => {
                           </a>
                         </NavigationMenuLink>
                       </li>
-                      <ListItem href="/packages/local/beach" title="Beach">
+                      <ListItem href="/packages/local/beach" title="Beach Packages">
                         Diani, Mombasa, Malindi, Watamu
                       </ListItem>
-                      <ListItem href="/packages/local/bush" title="Bush">
+                      <ListItem href="/packages/local/bush" title="Bush Packages">
                         Tsavo, Samburu, Amboseli, Maasai Mara
                       </ListItem>
                       <ListItem href="/packages/local/weekend-getaways" title="Weekend Getaways">
@@ -93,13 +93,13 @@ const Navbar = () => {
                             href="/destinations/africa"
                           >
                             <p className="text-sm leading-tight text-white/90">
-                            Destinations
+                              Destinations
                             </p>
                           </a>
                         </NavigationMenuLink>
                       </li>
                       <ListItem href="/destinations/africa" title="Africa">
-                      Kenya, Tanzania, Mauritius, South Africa
+                        Kenya, Tanzania, Mauritius, South Africa
                       </ListItem>
                       <ListItem href="/destinations/middle-east" title="Middle East">
                         China, Dubai, Pakistan, Singapore
