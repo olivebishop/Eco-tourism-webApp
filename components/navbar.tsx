@@ -29,7 +29,7 @@ const Navbar = () => {
           <Link href="/" className="flex items-center space-x-2">
             <Leaf className="h-8 w-8 text-green-600" />
             <span className="hidden text-2xl font-bold text-green-800 sm:inline-block">
-              Eco Tours
+              Mazingira Tours & Travel
             </span>
           </Link>
           <div className="hidden sm:block">
