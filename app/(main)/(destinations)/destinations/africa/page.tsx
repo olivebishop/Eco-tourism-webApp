@@ -1,28 +1,30 @@
-import React from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import { MapPin } from 'lucide-react'
-import { Button } from '@/components/bookingBtn'
-import Link from 'next/link'
-import { destinations, featuredAdventures } from '@/utils/destinationData'
+import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { MapPin } from 'lucide-react';
+import { Button } from '@/components/bookingBtn';
+import Link from 'next/link';
+import { destinations, featuredAdventures } from '@/utils/destinationData';
+import DestinationsGrid from '@/components/destinationComponent'; 
 
 export default function AfricaDestinations() {
     return (
         <div className="w-full min-h-screen bg-green-50">
+            {/* Existing Header Section */}
             <div className="max-w-7xl mx-auto px-4 py-6">
                 <h1 className="text-3xl font-bold mb-6 font-mono">
                     Discover Africa&apos;s Finest <br/>
                     <span className="font-serif italic text-green-600 text-2xl"> Destinations</span>
-                   
                 </h1>
             </div>
            
+            {/* Existing Adventures Section */}
             <div className="max-w-7xl mx-auto px-4 py-8">
                 <h2 className="text-2xl font-bold mb-8">
                     Let&apos;s pack Adventure<span className="border-b-2 border-black">_</span>
                     <br />Activities
                 </h2>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-16">
                     {/* Left Column - Destination List */}
                     <div className="space-y-4">
                         {destinations.map((destination) => (
@@ -47,13 +49,10 @@ export default function AfricaDestinations() {
                                                 </div>
                                                 <Link href={`/destinations/africa/${destination.id}`} passHref>
                                                     <Button variant="gooeyLeft"
-                                                    className="text-sm 
-                                                    hover:text-green-600">
-
+                                                    className="text-sm hover:text-green-600">
                                                         Book Now →
                                                     </Button>
                                                 </Link>
-
                                             </div>
                                         </div>
                                     </div>
@@ -67,8 +66,9 @@ export default function AfricaDestinations() {
                         {featuredAdventures.map((feature, index) => (
                             <div
                                 key={feature.id}
-                                className={`relative rounded-lg overflow-hidden ${index === 0 ? 'md:col-span-2 aspect-[16/9]' : 'aspect-square'
-                                    }`}
+                                className={`relative rounded-lg overflow-hidden ${
+                                    index === 0 ? 'md:col-span-2 aspect-[16/9]' : 'aspect-square'
+                                }`}
                             >
                                 <img
                                     src={feature.imageUrl}
@@ -88,7 +88,20 @@ export default function AfricaDestinations() {
                         ))}
                     </div>
                 </div>
+
+                {/* Divider */}
+                <div className="relative my-16">
+                    <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div className="relative flex justify-center">
+                        <span className="bg-green-50 px-4 text-sm text-gray-500">More Destinations</span>
+                    </div>
+                </div>
+
+                {/* Destinations Grid Component */}
+                <DestinationsGrid />
             </div>
         </div>
-    )
+    );
 }
