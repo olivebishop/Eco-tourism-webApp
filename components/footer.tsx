@@ -19,7 +19,7 @@ const EcoTourismFooter: React.FC = () => {
             <div className="w-full lg:w-1/2 px-4 mb-12 lg:mb-0">
               <div className="max-w-md mx-auto lg:mx-0">
                 <div className="mb-8">
-                  <h2 className="text-3xl font-bold text-green-600">EcoVentures</h2>
+                  <h2 className="text-2xl font-bold text-green-600">Mazingira Tours & Travel</h2>
                   <p className="text-sm text-gray-500">Sustainable Travel Experiences</p>
                 </div>
                 <h3 className="max-w-sm font-heading text-5xl md:text-6xl font-bold text-gray-900 mb-6">
