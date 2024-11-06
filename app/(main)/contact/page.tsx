@@ -1,10 +1,9 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, FormEvent } from 'react'
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import { Alert, AlertDescription } from "@/components/ui/alert"
 import { 
   Leaf, 
   Phone, 
@@ -13,28 +12,71 @@ import {
   Clock, 
   Facebook, 
   Instagram, 
-  Twitter, 
-  Check 
+  Twitter
 } from 'lucide-react'
+import { toast } from 'sonner'
+
+interface FormState {
+  fullName: string
+  email: string
+  phone: string
+  message: string
+}
+
+interface ApiResponse {
+  error?: string
+  message?: string
+}
 
 export default function ContactSection() {
-  const [formState, setFormState] = useState({
+  const [formState, setFormState] = useState<FormState>({
     fullName: '',
     email: '',
     phone: '',
     message: ''
   })
-  const [submitted, setSubmitted] = useState(false)
-  
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const resetForm = () => {
+    setFormState({
+      fullName: '',
+      email: '',
+      phone: '',
+      message: ''
+    })
+  }
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 5000)
+    setIsSubmitting(true)
+    
+    try {
+      const response = await fetch('/api/contact-us', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formState),
+      })
+
+      const data = await response.json() as ApiResponse
+
+      if (response.ok) {
+        toast.success(data.message || 'Message sent successfully!')
+        resetForm()
+      } else {
+        throw new Error(data.error || 'Failed to send message')
+      }
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to send message')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
     <section className="relative py-12 xs:py-16 sm:py-20 lg:py-32 overflow-hidden bg-green-50">
-      {/* Decorative elements - Hidden on smaller screens */}
+      {/* Decorative elements */}
       <div className="hidden md:block absolute top-0 right-0 -mt-24">
         <Leaf className="w-32 md:w-48 lg:w-64 h-32 md:h-48 lg:h-64 text-green-200" />
       </div>
@@ -61,7 +103,6 @@ export default function ContactSection() {
           <div className="flex flex-wrap -mx-4 items-start">
             {/* Contact Information Section */}
             <div className="w-full lg:w-1/2 px-4 mb-12 lg:mb-0">
-              {/* Contact Cards */}
               <div className="space-y-4 sm:space-y-6 lg:space-y-8">
                 {/* Contact Card - Email */}
                 <div className="flex flex-col xs:flex-row items-start xs:items-center p-4 sm:p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
@@ -128,19 +169,12 @@ export default function ContactSection() {
             {/* Contact Form Section */}
             <div className="w-full lg:w-1/2 px-4">
               <div className="max-w-lg lg:max-w-xl lg:ml-auto p-4 xs:p-6 sm:p-8 bg-white rounded-2xl shadow-lg">
-                <h4 className="text-xl sm:text-2xl font-bold text-emerald-900 mb-6 sm:mb-8">Plan your eco-adventure</h4>
-                
-                {submitted && (
-                  <Alert className="mb-6 bg-emerald-50 border-emerald-200">
-                    <Check className="w-4 h-4 text-emerald-600" />
-                    <AlertDescription className="text-emerald-700">
-                      Thank you for your message! We&apos;ll get back to you soon.
-                    </AlertDescription>
-                  </Alert>
-                )}
+                <h4 className="text-xl sm:text-2xl font-bold text-emerald-900 mb-6 sm:mb-8">
+                  Plan your eco-adventure
+                </h4>
 
-                <form onSubmit={handleSubmit}>
-                  <div className="flex flex-wrap -mx-2 sm:-mx-4 mb-4 sm:mb-6">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="flex flex-wrap -mx-2 sm:-mx-4">
                     <div className="w-full sm:w-1/2 px-2 sm:px-4 mb-4 sm:mb-0">
                       <div>
                         <Label htmlFor="fullName" className="block mb-1.5 text-sm font-semibold">
@@ -167,7 +201,7 @@ export default function ContactSection() {
                           id="email"
                           type="email"
                           className="w-full"
-                          placeholder="you@example.com"
+                          placeholder="johndoe@example.com"
                           value={formState.email}
                           onChange={(e) => setFormState({...formState, email: e.target.value})}
                           required
@@ -176,7 +210,7 @@ export default function ContactSection() {
                     </div>
                   </div>
 
-                  <div className="mb-4 sm:mb-6">
+                  <div>
                     <Label htmlFor="phone" className="block mb-1.5 text-sm font-semibold">
                       Phone Number
                     </Label>
@@ -184,13 +218,13 @@ export default function ContactSection() {
                       id="phone"
                       type="tel"
                       className="w-full"
-                      placeholder="+1 (555) 000-0000"
+                      placeholder="+254791482626"
                       value={formState.phone}
                       onChange={(e) => setFormState({...formState, phone: e.target.value})}
                     />
                   </div>
 
-                  <div className="mb-6 sm:mb-9">
+                  <div>
                     <Label htmlFor="message" className="block mb-1.5 text-sm font-semibold">
                       Message
                       <span className="text-red-600">*</span>
@@ -208,8 +242,9 @@ export default function ContactSection() {
                   <Button 
                     type="submit"
                     className="w-full sm:w-auto px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white text-sm sm:text-base"
+                    disabled={isSubmitting}
                   >
-                    Start Your Journey
+                    {isSubmitting ? 'Sending...' : 'Start Your Journey'}
                   </Button>
                 </form>
               </div>

@@ -1,5 +1,6 @@
-import React from 'react';
-import { Facebook, Instagram,  Twitter , Linkedin } from 'lucide-react';
+'use client'
+import React, { useState } from 'react';
+import { Facebook, Instagram, Twitter, Linkedin, Send } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -7,11 +8,27 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import ScrollToTopButton from '@/components/ScrollToTopButton';
 
 const EcoTourismFooter: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState('');
+  const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      // Here you would typically make an API call to your newsletter service
+      setSubscribeStatus('success');
+      setEmail('');
+      setTimeout(() => setSubscribeStatus('idle'), 3000);
+    } else {
+      setSubscribeStatus('error');
+    }
+  };
 
   return (
+    <>
     <section className="py-20 bg-green-50">
       <div className="container px-4 mx-auto">
         <div className="max-w-7xl mx-auto">
@@ -27,13 +44,50 @@ const EcoTourismFooter: React.FC = () => {
                   <span className="font-serif italic">eco-adventure</span>
                   <span>?</span>
                 </h3>
-                <p className="max-w-sm text-gray-500 mb-16">Discover sustainable travel experiences that protect our planet while creating unforgettable memories.</p>
-                <div className="sm:flex mb-2 items-center">
-                  <input className="w-full mb-3 sm:mb-0 sm:mr-4 pb-4 bg-transparent border-b border-gray-200 text-sm text-gray-900 placeholder-gray-400 outline-none" type="email" placeholder="Enter your email" />
-                  <Button className="bg-green-600 hover:bg-green-700 text-white">
-                    Subscribe
-                  </Button>
-                </div>
+                <p className="max-w-sm text-gray-500 mb-8">
+                  Subscribe to our newsletter for exclusive eco-friendly travel tips, 
+                  special offers, and updates on sustainable destinations.
+                </p>
+                
+                {/* Enhanced Newsletter Form */}
+                <form onSubmit={handleSubscribe} className="relative mb-6">
+                  <div className="relative">
+                    <input 
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className={`w-full px-4 py-3 bg-white rounded-lg border 
+                        transition-all duration-200 ease-in-out
+                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent
+                        ${subscribeStatus === 'error' ? 'border-red-300' : 'border-gray-200'}
+                        ${subscribeStatus === 'success' ? 'border-green-300' : ''}
+                      `}
+                      placeholder="Enter your email address"
+                    />
+                    <Button 
+                      type="submit"
+                      className={`absolute right-1 top-1 bg-green-600 hover:bg-green-700 text-white
+                        transition-all duration-200 ease-in-out flex items-center gap-2
+                        ${subscribeStatus === 'success' ? 'bg-green-500' : ''}
+                      `}
+                    >
+                      <span className="hidden sm:inline">Subscribe</span>
+                      <Send size={16} className="inline-block" />
+                    </Button>
+                  </div>
+                  
+                  {/* Status Messages */}
+                  {subscribeStatus === 'success' && (
+                    <p className="text-green-600 text-sm mt-2 absolute">
+                      Thanks for subscribing! 🌿
+                    </p>
+                  )}
+                  {subscribeStatus === 'error' && (
+                    <p className="text-red-500 text-sm mt-2 absolute">
+                      Please enter a valid email address
+                    </p>
+                  )}
+                </form>
               </div>
             </div>
             <div className="w-full lg:w-1/2 px-4">
@@ -72,7 +126,7 @@ const EcoTourismFooter: React.FC = () => {
                   <Instagram size={24} className="text-green-600" />
                 </a>
                 <a className="inline-block mr-5 hover:bg-green-100 rounded-md p-1" href="#">
-                  <Twitter  size={24} className="text-green-600" />
+                  <Twitter size={24} className="text-green-600" />
                 </a>
                 <a className="inline-block hover:bg-green-100 rounded-md p-1" href="#">
                   <Linkedin size={24} className="text-green-600" />
@@ -85,10 +139,10 @@ const EcoTourismFooter: React.FC = () => {
               </div>
               <div className="flex-grow mb-6 lg:mb-0"></div>
               <div className="w-full lg:w-auto flex flex-col lg:flex-row items-center justify-center lg:justify-end">
-                <span className="inline-block mb-2 lg:mb-0 lg:mr-4 text-sm text-gray-500">© {currentYear} All Rights Reserved .</span>
+                <span className="inline-block mb-2 lg:mb-0 lg:mr-4 text-sm text-gray-500">© {currentYear} All Rights Reserved.</span>
                 <span className="inline-flex items-center text-sm text-gray-500">
                   Designed with 💕 {' '}
-                  <a href="https://olivebishop.vercel.app" target="_blank" rel="noopener noreferrer" className="ml-1 text-green-600 hover:text-green-700 ">
+                  <a href="https://olivebishop.vercel.app" target="_blank" rel="noopener noreferrer" className="ml-1 text-green-600 hover:text-green-700">
                     Olive Bishop
                   </a>
                 </span>
@@ -98,6 +152,8 @@ const EcoTourismFooter: React.FC = () => {
         </div>
       </div>
     </section>
+     <ScrollToTopButton />
+     </>
   );
 };
 

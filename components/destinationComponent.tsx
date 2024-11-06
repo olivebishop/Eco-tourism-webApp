@@ -1,8 +1,9 @@
 'use client'
+
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight,  MapPin, Calendar, Users } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MapPin, Calendar, Users } from 'lucide-react';
 
 interface Destination {
   id: number;
@@ -75,11 +76,71 @@ const destinations: Destination[] = [
     imageUrl: "https://images.unsplash.com/photo-1586861635167-e5223aadc9fe?w=800&auto=format&fit=crop",
     rating: 4.9,
     group: "Luxury Package"
+  },
+  {
+    id: 7,
+    name: "Nile River Cruise",
+    location: "Egypt",
+    price: 3800,
+    duration: "8 Days Trip",
+    imageUrl: "https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=800&auto=format&fit=crop",
+    rating: 4.7,
+    group: "Luxury Cruise"
+  },
+  {
+    id: 8,
+    name: "Gorilla Trekking",
+    location: "Uganda",
+    price: 4500,
+    duration: "6 Days Trip",
+    imageUrl: "https://images.unsplash.com/photo-1521651201144-634f700b36ef?w=800&auto=format&fit=crop",
+    rating: 4.9,
+    group: "Small Group"
+  },
+  {
+    id: 9,
+    name: "Atlas Mountains Hike",
+    location: "Morocco",
+    price: 2200,
+    duration: "5 Days Trip",
+    imageUrl: "https://images.unsplash.com/photo-1489493585363-d69421e0edd3?w=800&auto=format&fit=crop",
+    rating: 4.6,
+    group: "Adventure Group"
+  },
+  {
+    id: 10,
+    name: "Okavango Delta Safari",
+    location: "Botswana",
+    price: 5200,
+    duration: "9 Days Trip",
+    imageUrl: "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800&auto=format&fit=crop",
+    rating: 4.9,
+    group: "Luxury Safari"
+  },
+  {
+    id: 11,
+    name: "Marrakech City Tour",
+    location: "Morocco",
+    price: 1800,
+    duration: "4 Days Trip",
+    imageUrl: "https://images.unsplash.com/photo-1597212720158-e21f7e5c52fa?w=800&auto=format&fit=crop",
+    rating: 4.7,
+    group: "Cultural Tour"
+  },
+  {
+    id: 12,
+    name: "Seychelles Island Hopping",
+    location: "Seychelles",
+    price: 4800,
+    duration: "10 Days Trip",
+    imageUrl: "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=800&auto=format&fit=crop",
+    rating: 4.8,
+    group: "Luxury Package"
   }
 ];
 
-const DestinationsGrid = () => {
-  const itemsPerPage = 3;
+export default function Component() {
+  const itemsPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
 
   const totalPages = Math.ceil(destinations.length / itemsPerPage);
@@ -220,6 +281,4 @@ const DestinationsGrid = () => {
       </div>
     </div>
   );
-};
-
-export default DestinationsGrid;
+}

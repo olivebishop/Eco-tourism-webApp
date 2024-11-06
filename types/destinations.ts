@@ -18,3 +18,5 @@ export interface Included {
     totalReviews?: number;
     rating?: number;
   }
+
+  

@@ -92,7 +92,46 @@ export interface Included {
       duration: "6 days / 5 nights",
       bestTime: "April to October",
       difficulty: "Challenging"
+    },
+    {
+      id: 5,
+      name: "Atlas Mountains",
+      location: "Morocco",
+      price: "2,999",
+      imageUrl: "https://images.unsplash.com/photo-1489493887464-892be6d1daae?w=800",
+      description: "Embark on a thrilling expedition through Morocco's Atlas Mountains. Trek through stunning landscapes, visit traditional Berber villages, and challenge yourself with a climb to the summit of Mount Toubkal, North Africa's highest peak. Experience the raw beauty and rich culture of this mountainous region.",
+      included: [
+        { id: "1", item: "Professional mountain guide" },
+        { id: "2", item: "Mule support for baggage" },
+        { id: "3", item: "Mountain accommodation" },
+        { id: "4", item: "All meals during trek" },
+        { id: "5", item: "Camping equipment" },
+        { id: "6", item: "First aid kit" }
+      ],
+      duration: "6 days / 5 nights",
+      bestTime: "April to October",
+      difficulty: "Challenging"
+    },
+    {
+      id: 6,
+      name: "Atlas Mountains",
+      location: "Morocco",
+      price: "2,999",
+      imageUrl: "https://images.unsplash.com/photo-1489493887464-892be6d1daae?w=800",
+      description: "Embark on a thrilling expedition through Morocco's Atlas Mountains. Trek through stunning landscapes, visit traditional Berber villages, and challenge yourself with a climb to the summit of Mount Toubkal, North Africa's highest peak. Experience the raw beauty and rich culture of this mountainous region.",
+      included: [
+        { id: "1", item: "Professional mountain guide" },
+        { id: "2", item: "Mule support for baggage" },
+        { id: "3", item: "Mountain accommodation" },
+        { id: "4", item: "All meals during trek" },
+        { id: "5", item: "Camping equipment" },
+        { id: "6", item: "First aid kit" }
+      ],
+      duration: "6 days / 5 nights",
+      bestTime: "April to October",
+      difficulty: "Challenging"
     }
+    
  
   ];
   
@@ -127,3 +166,5 @@ export interface Included {
       tag: "PREMIUM TRIP"
     }
   ];
+
+  
