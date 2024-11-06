@@ -6,11 +6,11 @@ import { Leaf, Menu } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
+  NavigationMenuContent,
 } from "@/components/ui/navigation-menu"
 import { Button } from "@/components/ui/button"
 import {
@@ -50,35 +50,11 @@ const Navbar = () => {
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="group text-green-800 hover:text-green-600 transition-colors bg-transparent">
-                    Packages
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                      <li className="row-span-3">
-                        <NavigationMenuLink asChild>
-                          <a
-                            className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-green-500 to-green-700 p-6 no-underline outline-none focus:shadow-md"
-                            href="/packages/safari"
-                          >
-                            <div className="mt-4 text-lg font-medium text-white">Safari Packages</div>
-                            <p className="text-sm leading-tight text-white/90">
-                              Budget, Mid-range, Luxury safari options
-                            </p>
-                          </a>
-                        </NavigationMenuLink>
-                      </li>
-                      <ListItem href="/packages/local/beach" title="Beach Packages">
-                        Diani, Mombasa, Malindi, Watamu
-                      </ListItem>
-                      <ListItem href="/packages/local/bush" title="Bush Packages">
-                        Tsavo, Samburu, Amboseli, Maasai Mara
-                      </ListItem>
-                      <ListItem href="/packages/local/weekend-getaways" title="Weekend Getaways">
-                        Nakuru, Naivasha, Mt. Kenya
-                      </ListItem>
-                    </ul>
-                  </NavigationMenuContent>
+                  <Link href="/packages" legacyBehavior passHref>
+                    <NavigationMenuLink className="text-green-800 hover:text-green-600 transition-colors">
+                      Packages
+                    </NavigationMenuLink>
+                  </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="group text-green-800 hover:text-green-600 transition-colors bg-transparent">
@@ -180,22 +156,9 @@ const MobileNav = () => {
       <Link href="/about" className="text-lg font-semibold">
         About
       </Link>
-      <div className="space-y-2">
-        <h2 className="text-lg font-semibold">Packages</h2>
-        <ul className="ml-4 space-y-2">
-          <li>
-            <Link href="/packages/safari" className="text-sm">Safari Packages</Link>
-          </li>
-          <li>
-            <span className="text-sm font-medium">Local Packages</span>
-            <ul className="ml-4 mt-1 space-y-1">
-              <li><Link href="/packages/local/beach" className="text-xs">Beach</Link></li>
-              <li><Link href="/packages/local/bush" className="text-xs">Bush</Link></li>
-              <li><Link href="/packages/local/weekend-getaways" className="text-xs">Weekend Getaways</Link></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+      <Link href="/packages" className="text-lg font-semibold">
+        Packages
+      </Link>
       <div className="space-y-2">
         <h2 className="text-lg font-semibold">Destinations</h2>
         <ul className="ml-4 space-y-2">
