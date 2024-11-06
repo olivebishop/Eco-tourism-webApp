@@ -69,7 +69,7 @@ export async function POST(request: Request) {
                   </tr>
                 </table>
                 <div style="text-align: center; margin-top: 30px; color: #6b7280; font-size: 14px;">
-                  <p>This message was sent from the contact form on your Mazingira Tours an Travel website.</p>
+                  <p>This message was sent from the contact form on your Mazingira Tours and Travel website.</p>
                 </div>
               </td>
             </tr>
