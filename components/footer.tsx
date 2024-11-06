@@ -9,21 +9,52 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import ScrollToTopButton from '@/components/ScrollToTopButton';
+import { z } from 'zod';
+
+// Define the schema for the email
+const emailSchema = z.string().email({ message: "Invalid email address" });
 
 const EcoTourismFooter: React.FC = () => {
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState('');
-  const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      // Here you would typically make an API call to your newsletter service
-      setSubscribeStatus('success');
-      setEmail('');
-      setTimeout(() => setSubscribeStatus('idle'), 3000);
-    } else {
+    setSubscribeStatus('loading');
+
+    try {
+      // Validate email on client-side
+      emailSchema.parse(email);
+
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubscribeStatus('success');
+        setEmail('');
+        setTimeout(() => setSubscribeStatus('idle'), 3000);
+      } else {
+        throw new Error(data.error || 'Failed to subscribe');
+      }
+    } catch (error) {
       setSubscribeStatus('error');
+      if (error instanceof z.ZodError) {
+        setErrorMessage(error.errors[0].message);
+      } else if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage('An unexpected error occurred');
+      }
+      setTimeout(() => setSubscribeStatus('idle'), 3000);
     }
   };
 
@@ -49,7 +80,7 @@ const EcoTourismFooter: React.FC = () => {
                   special offers, and updates on sustainable destinations.
                 </p>
                 
-                {/* Enhanced Newsletter Form */}
+                {/* Enhanced Newsletter Form with Zod Validation */}
                 <form onSubmit={handleSubscribe} className="relative mb-6">
                   <div className="relative">
                     <input 
@@ -63,6 +94,7 @@ const EcoTourismFooter: React.FC = () => {
                         ${subscribeStatus === 'success' ? 'border-green-300' : ''}
                       `}
                       placeholder="Enter your email address"
+                      disabled={subscribeStatus === 'loading'}
                     />
                     <Button 
                       type="submit"
@@ -70,8 +102,11 @@ const EcoTourismFooter: React.FC = () => {
                         transition-all duration-200 ease-in-out flex items-center gap-2
                         ${subscribeStatus === 'success' ? 'bg-green-500' : ''}
                       `}
+                      disabled={subscribeStatus === 'loading'}
                     >
-                      <span className="hidden sm:inline">Subscribe</span>
+                      <span className="hidden sm:inline">
+                        {subscribeStatus === 'loading' ? 'Subscribing...' : 'Subscribe'}
+                      </span>
                       <Send size={16} className="inline-block" />
                     </Button>
                   </div>
@@ -84,7 +119,7 @@ const EcoTourismFooter: React.FC = () => {
                   )}
                   {subscribeStatus === 'error' && (
                     <p className="text-red-500 text-sm mt-2 absolute">
-                      Please enter a valid email address
+                      {errorMessage}
                     </p>
                   )}
                 </form>
