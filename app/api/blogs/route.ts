@@ -1,45 +1,37 @@
-
-import { sendBookingEmailNotification } from "@/functions/Mail";
 import { connectToDB } from "@/lib/config/db";
-import Booking from "@/lib/models/Booking";
+import Blog from "@/lib/models/Blog";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-    const token = req.cookies.get("token")?.value;
+    const token = req.cookies.get('token')?.value;
     if (!token) {
         return NextResponse.json({ error: "User is not Authenticated" }, { status: 401 });
     }
-    
+
     const body = await req.json();
-    const { firstname, lastname, email, phone, country } = body;
-    if (!firstname || !lastname || !email || !phone) {
-        return NextResponse.json({ error: "firstname, lastname, email, phone fields are required" }, { status: 400 });
+    const { title, author, content, tags, imageUrl } = body;
+    if (!title || !author || !content || !tags || !imageUrl) {
+        return NextResponse.json({ error: "title, author, content, tags, imageUrl fields are required" }, { status: 400 });
     }
-    
+
     try {
         await connectToDB();
-        const newBooking = await Booking.create({ firstname, lastname, email, phone, country: country || '' });
-        const mail = await sendBookingEmailNotification({ fullname: `${firstname} ${lastname}`, email, phone });
-        return NextResponse.json({ newBooking, mailStatus: mail.response }, { status: 200 });
+        const newBlog = await Blog.create({ title, author, content, tags, imageUrl });
+        return NextResponse.json({ success: true, newBlog }, { status: 201 });
     } catch (error) {
-        console.error(error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        console.error('Error creating blog:', error);
+        return NextResponse.json({ error: 'Failed to create blog' }, { status: 500 });
     }
 }
 
-export async function GET(req: NextRequest) {
-    const token = req.cookies.get("token")?.value;
-    if (!token) {
-        return NextResponse.json({ error: "User is not Authenticated" }, { status: 401 });
-    }
-    
+export async function GET() {
     try {
         await connectToDB();
-        const bookings = await Booking.find();
-        return NextResponse.json({ bookings }, { status: 200 });
+        const blogs = await Blog.find();
+        return NextResponse.json({ blogs }, { status: 200 });
     } catch (error) {
-        console.error(error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        console.error('Error fetching blogs:', error);
+        return NextResponse.json({ error: 'Failed to fetch blogs' }, { status: 500 });
     }
 }
 
@@ -51,22 +43,23 @@ export async function PUT(req: NextRequest) {
     
     const id = req.nextUrl.searchParams.get('id');
     if (!id) {
-        return NextResponse.json({ error: "BOOKING ID IS REQUIRED" }, { status: 400 });
+        return NextResponse.json({ error: "BLOG ID IS REQUIRED" }, { status: 400 });
     }
 
     const body = await req.json();
     const { updatedData } = body;
 
     if (!updatedData) {
-        return NextResponse.json({ error: "MISSING BOOKING UPDATED DATA" }, { status: 400 });
+        return NextResponse.json({ error: "MISSING BLOG UPDATED DATA" }, { status: 400 });
     }
 
-    const allowedUpdates = ['firstname', 'lastname', 'email', 'phone', 'country', 'status'];
-    const filteredData: Record<string, unknown> = {};
+    const allowedUpdates = ['title', 'author', 'tags', 'content', 'imageUrl'] as const;
+    type AllowedUpdateKeys = typeof allowedUpdates[number];
     
+    const filteredData: Partial<Record<AllowedUpdateKeys, unknown>> = {};
     Object.keys(updatedData).forEach(key => {
-        if (allowedUpdates.includes(key)) {
-            filteredData[key] = updatedData[key];
+        if (allowedUpdates.includes(key as AllowedUpdateKeys)) {
+            filteredData[key as AllowedUpdateKeys] = updatedData[key];
         }
     });
 
@@ -76,17 +69,16 @@ export async function PUT(req: NextRequest) {
 
     try {
         await connectToDB();
-        const booking = await Booking.findById(id);
-        
-        if (!booking) {
-            return NextResponse.json({ success: false, message: "Booking not found" }, { status: 404 });
+        const blog = await Blog.findById(id);
+        if (!blog) {
+            return NextResponse.json({ success: false, message: "Blog not found" }, { status: 404 });
         }
 
-        const updatedBooking = await Booking.findByIdAndUpdate(id, filteredData, { new: true });
-        return NextResponse.json({ updatedBooking }, { status: 200 });
+        const updatedBlog = await Blog.findByIdAndUpdate(id, filteredData, { new: true });
+        return NextResponse.json({ updatedBlog }, { status: 200 });
     } catch (error) {
-        console.error(error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        console.error('Error updating blog:', error);
+        return NextResponse.json({ error: 'Failed to update blog' }, { status: 500 });
     }
 }
 
@@ -95,96 +87,26 @@ export async function DELETE(req: NextRequest) {
     if (!token) {
         return NextResponse.json({ error: "User is not Authenticated" }, { status: 401 });
     }
-    
+
     const id = req.nextUrl.searchParams.get('id');
     if (!id) {
-        return NextResponse.json({ error: "BOOKING ID IS REQUIRED" }, { status: 400 });
+        return NextResponse.json({ error: "BLOG ID IS REQUIRED" }, { status: 400 });
     }
-    
+
     try {
         await connectToDB();
-        const booking = await Booking.findById(id);
-        
-        if (!booking) {
-            return NextResponse.json({ success: false, message: "Booking not found" }, { status: 404 });
+        const blog = await Blog.findById(id);
+        if (!blog) {
+            return NextResponse.json({ success: false, message: "Blog not found" }, { status: 404 });
         }
 
-        await Booking.deleteOne({ _id: id });
-        return NextResponse.json({ success: true, message: "Booking deleted" }, { status: 200 });
+        await Blog.deleteOne({ _id: id });
+        return NextResponse.json({ success: true, message: "Blog deleted" }, { status: 200 });
     } catch (error) {
-        console.error(error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        console.error('Error deleting blog:', error);
+        return NextResponse.json({ error: 'Failed to delete blog' }, { status: 500 });
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
