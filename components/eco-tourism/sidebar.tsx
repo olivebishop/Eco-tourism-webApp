@@ -1,6 +1,9 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useUser, useClerk } from "@clerk/nextjs";
 import { 
   BookCheck, 
   ChevronDown, 
@@ -10,10 +13,11 @@ import {
   Settings, 
   X,
   BookText,
-  Leaf
+  Leaf,
+  UserCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -40,6 +44,9 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user } = useUser();
+  const { signOut } = useClerk();
   const [showLogoutDialog, setShowLogoutDialog] = React.useState(false);
 
   const navItems = [
@@ -49,13 +56,16 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   ];
 
   const handleLogout = () => {
-    // Close the dropdown menu
     setShowLogoutDialog(true);
   };
 
-  const confirmLogout = () => {
-    // Perform logout actions here
-    window.location.href = '/logout';
+  const confirmLogout = async () => {
+    try {
+      await signOut();
+      router.push('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   return (
@@ -108,7 +118,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
           <div className="flex items-center justify-between p-6 border-b">
             <div className="flex items-center space-x-2">
               <Leaf className="h-6 w-6 text-primary" />
-              <h2 className="text-xl font-bold">EcoTourism</h2>
+              <h2 className="text-md font-bold">Mazingira Tours</h2>
             </div>
             <Button
               variant="ghost"
@@ -145,11 +155,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                 <Button variant="ghost" className="w-full justify-between">
                   <div className="flex items-center">
                     <Avatar className="mr-2 h-8 w-8">
-                      <AvatarImage src="/images/avatar.svg" alt="@admin" />
+                      <AvatarImage src={user?.imageUrl} alt={user?.fullName || 'User'} />
+                      <AvatarFallback>{user?.firstName?.charAt(0) || 'U'}</AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col items-start">
-                      <span className="font-medium text-sm">Admin User</span>
-                      <span className="text-xs text-muted-foreground">admin@eco.com</span>
+                      <span className="font-medium text-sm">{user?.fullName || 'User'}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {user?.primaryEmailAddress?.emailAddress || ''}
+                      </span>
                     </div>
                   </div>
                   <ChevronDown className="h-4 w-4 opacity-50" />
@@ -158,6 +171,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                <Link href="/management-portal/user-profile">
+                  <DropdownMenuItem>
+                    <UserCircle className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                </Link>
                 <Link href="/management-portal/settings">
                   <DropdownMenuItem>
                     <Settings className="mr-2 h-4 w-4" />
