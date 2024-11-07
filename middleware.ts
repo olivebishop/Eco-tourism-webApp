@@ -8,7 +8,7 @@ export default clerkMiddleware()
 const routes = {
   auth: ['/sign-in', '/sign-up'],
   public: ['/', '/about', '/contact', '/tours', '/blog'],
-  admin: ['/management-portals'],
+  admin: ['/management-portal'],
 };
 
 export function middleware(req: NextRequest) {
