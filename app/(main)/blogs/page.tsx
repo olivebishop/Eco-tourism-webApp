@@ -18,6 +18,8 @@ export default function BlogPage() {
         const response = await fetch('/api/blogs');
         if (!response.ok) throw new Error('Failed to fetch blogs');
         const data = await response.json();
+        console.log(data.blogs);
+        
         setBlogs(data.blogs);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');

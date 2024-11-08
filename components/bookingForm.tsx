@@ -25,14 +25,32 @@ export const BookingForm: React.FC<BookingFormProps> = ({ destination }) => {
     name: '',
     email: '',
     people: 1,
-    date: undefined,
+    date: undefined, // must be a string ,
     specialRequirements: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission
     console.log(formData);
+    
+    try {
+        
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error);
+      }
+
+      const data = await response.json();
+      console.log(data);
+      
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,14 +67,13 @@ export const BookingForm: React.FC<BookingFormProps> = ({ destination }) => {
         <CardTitle>Book Your Adventure</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="name">Full Name</Label>
             <Input
               id="name"
               name="name"
               placeholder="Enter your name"
-              value={formData.name}
               onChange={handleInputChange}
               required
             />
@@ -69,7 +86,6 @@ export const BookingForm: React.FC<BookingFormProps> = ({ destination }) => {
               name="email"
               type="email"
               placeholder="Enter your email"
-              value={formData.email}
               onChange={handleInputChange}
               required
             />
@@ -87,7 +103,6 @@ export const BookingForm: React.FC<BookingFormProps> = ({ destination }) => {
               name="people"
               type="number"
               min="1"
-              value={formData.people}
               onChange={handleInputChange}
               required
             />
@@ -119,14 +134,14 @@ export const BookingForm: React.FC<BookingFormProps> = ({ destination }) => {
               id="specialRequirements"
               name="specialRequirements"
               placeholder="Any special requirements?"
-              value={formData.specialRequirements}
               onChange={handleInputChange}
             />
           </div>
 
-          <Button type="submit" className="w-full">
+          {/* <Button type="submit" className="w-full">
             Book Now
-          </Button>
+          </Button> */}
+          <button onClick={() => handleSubmit}>Submit</button>
         </form>
       </CardContent>
     </Card>

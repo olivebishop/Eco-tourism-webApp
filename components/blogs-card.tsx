@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Calendar, Tag, ArrowUpRight } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 import type { BlogPost } from '@/types/blogs';
+import ProfilePicture from './ui/Picture';
 
 interface BlogCardProps {
   blog: BlogPost;
@@ -24,11 +25,12 @@ export default function BlogCard({ blog }: BlogCardProps) {
         <div className="flex flex-wrap lg:flex-nowrap items-center">
           <div className="w-full lg:w-auto p-4">
             <div className="relative w-full lg:w-44 h-32 overflow-hidden rounded-lg">
-              <Image
-                src={blog.imageUrl || '/api/placeholder/400/320'}
-                alt={blog.title}
-                fill
-                className="object-cover transform group-hover:scale-110 transition-transform duration-300"
+              <ProfilePicture
+                imageData={blog.imageUrl.data}
+                width={"w-28"}
+                height={
+                  "h-28 object-cover transform group-hover:scale-110 transition-transform duration-300"
+                }
               />
             </div>
           </div>

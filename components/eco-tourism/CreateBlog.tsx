@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 // Define types
 type FormData = {
@@ -29,6 +30,8 @@ const CreateBlog: React.FC = () => {
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [blogId, setBlogId] = useState('')
+  const router = useRouter()
 
   const [formData, setFormData] = useState<FormData>({
     title: '',
@@ -109,21 +112,23 @@ const CreateBlog: React.FC = () => {
     setIsLoading(true);
     setError('');
 
+    console.log( formData );
     try {
-      if (currentStep === 1) {
-        setCurrentStep(2);
-      } else {
-        if (!selectedImage) {
-          throw new Error('Please upload an image');
-        }
+     
+      const response = await fetch('/api/blogs', {
+        method: "POST",
+        body: JSON.stringify(formData)
+      })
 
-        const blogPost: BlogPost = {
-          ...formData,
-          tags: formData.tags.split(',').map(tag => tag.trim()),
-          imageUrl: previewUrl
-        };
-
-        console.log('Blog post data:', blogPost);
+       if (!response.ok) {
+         const error = await response.json();
+         setError(error.error);
+         throw new Error(error.error);
+       }
+      
+      const data = await response.json()
+      setBlogId(data.blogId)
+        
 
         setFormData({
           title: '',
@@ -131,12 +136,9 @@ const CreateBlog: React.FC = () => {
           content: '',
           tags: '',
         });
-        setSelectedImage(null);
-        setPreviewUrl('');
-        if (fileInputRef.current) {
-          fileInputRef.current.value = '';
-        }
-      }
+      
+      router.push('/dashboard')
+      setCurrentStep(2)
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -147,6 +149,30 @@ const CreateBlog: React.FC = () => {
       setIsLoading(false);
     }
   };
+
+  const handleImageSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    try {
+      const formData = new FormData()
+      formData.append('file', selectedImage as File)
+      const response = await fetch(`/api/blogs/images?blogId=${blogId}`, {
+        method: "POST",
+        body: formData
+      })
+      
+      if (!response.ok) {
+        const error = await response.json()
+        setError(error.error)
+        throw new Error(error.error)
+      }
+
+      alert('Blog created')
+    } catch (error) {
+      setIsLoading(false)
+      console.error();
+       setError("An unexpected error occurred");
+    }
+  }
 
   return (
     <div className="container mx-auto p-4 max-w-4xl">
@@ -191,7 +217,7 @@ const CreateBlog: React.FC = () => {
                 <Input
                   type="text"
                   name="title"
-                  value={formData.title}
+                  // value={formData.title}
                   onChange={handleChange}
                   placeholder="Enter blog title"
                   required
@@ -203,7 +229,7 @@ const CreateBlog: React.FC = () => {
                 <Input
                   type="text"
                   name="author"
-                  value={formData.author}
+                  // value={formData.author}
                   onChange={handleChange}
                   placeholder="Enter author name"
                   required
@@ -260,7 +286,7 @@ const CreateBlog: React.FC = () => {
                 <Input
                   type="text"
                   name="tags"
-                  value={formData.tags}
+                  // value={formData.tags}
                   onChange={handleChange}
                   placeholder="Enter tags separated by commas"
                   required
@@ -268,10 +294,9 @@ const CreateBlog: React.FC = () => {
               </div>
 
               <Button
-                type="button"
+                type="submit"
                 className="w-full"
                 disabled={isLoading}
-                onClick={() => setCurrentStep(2)}
               >
                 Next
               </Button>
@@ -279,7 +304,7 @@ const CreateBlog: React.FC = () => {
           )}
 
           {currentStep === 2 && (
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleImageSubmit} className="space-y-6">
               {error && (
                 <div className="bg-red-50 text-red-500 p-4 rounded-lg">
                   {error}

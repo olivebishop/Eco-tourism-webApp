@@ -29,9 +29,8 @@ export async function POST(req: NextRequest) {
             firstname: firstname, lastname: lastname, email: email, password: hash, emailVerificationCode: code
         })
         
-        
         const sendEmail = await sendEmailVerificationCode(newUser.email, code)
-        return NextResponse.json({ newUser, mailsent: sendEmail.response})
+        return NextResponse.json({ success: true, mailsent: sendEmail.response})
     } catch (error) {
         console.error(error);
         return NextResponse.json({ error: error}.error, { status: 500})

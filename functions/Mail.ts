@@ -551,7 +551,7 @@ function HTMLPassword(link: string) {
             </p>
 
             <div class="verification-code">
-                <a href={link}>click here</a>
+                <a href="${link}">click here</a>
             </div>
 
             <p>

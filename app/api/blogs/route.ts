@@ -1,23 +1,20 @@
 import { connectToDB } from "@/lib/config/db";
 import Blog from "@/lib/models/Blog";
+import BlogImage from "@/lib/models/BlogImages";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-    const token = req.cookies.get('token')?.value;
-    if (!token) {
-        return NextResponse.json({ error: "User is not Authenticated" }, { status: 401 });
-    }
-
+   
     const body = await req.json();
-    const { title, author, content, tags, imageUrl } = body;
-    if (!title || !author || !content || !tags || !imageUrl) {
-        return NextResponse.json({ error: "title, author, content, tags, imageUrl fields are required" }, { status: 400 });
+    const { title, author, content, tags } = body;
+    if (!title || !author || !content || !tags) {
+        return NextResponse.json({ error: "title, author, content, tags fields are required" }, { status: 400 });
     }
 
     try {
         await connectToDB();
-        const newBlog = await Blog.create({ title, author, content, tags, imageUrl });
-        return NextResponse.json({ success: true, newBlog }, { status: 201 });
+        const newBlog = await Blog.create({ title, author, content, tags });
+        return NextResponse.json({ success: true, blogId: newBlog.id }, { status: 201 });
     } catch (error) {
         console.error('Error creating blog:', error);
         return NextResponse.json({ error: 'Failed to create blog' }, { status: 500 });
@@ -27,8 +24,23 @@ export async function POST(req: NextRequest) {
 export async function GET() {
     try {
         await connectToDB();
-        const blogs = await Blog.find();
-        return NextResponse.json({ blogs }, { status: 200 });
+       const blogContents = await Blog.find();
+
+       const blogs = await Promise.all(
+         blogContents.map(async (blog) => {
+           const image = await BlogImage.findOne({ blogId: blog.id});
+
+           return {
+               title: blog.title,
+               content: blog.content,
+               author: blog.author,
+               tags: blog.tags,
+               imageUrl: image?.image,
+           };
+         })
+       );
+
+        return NextResponse.json({ blogs: blogs }, { status: 200 });
     } catch (error) {
         console.error('Error fetching blogs:', error);
         return NextResponse.json({ error: 'Failed to fetch blogs' }, { status: 500 });

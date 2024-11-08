@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const BlogSchema = new mongoose.Schema({
     title: {
@@ -26,8 +26,9 @@ const BlogSchema = new mongoose.Schema({
     tags: {
         type: [String], // Array of tags
     },
-    imageUrl: {
-        type: String, // URL for a featured image
+    imageId: {
+        type: Schema.Types.ObjectId, // URL for a featured image
+        ref: "BlogImage"
     },
     meta: {
         views: {

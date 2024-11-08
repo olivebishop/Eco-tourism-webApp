@@ -22,7 +22,6 @@ export const DestinationDetail: React.FC<DestinationDetailProps> = ({ destinatio
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     // Handle form submission here
-    console.log('Booking submitted')
   }
 
   return (
