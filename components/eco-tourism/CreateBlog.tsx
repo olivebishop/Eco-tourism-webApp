@@ -1,6 +1,10 @@
 'use client'
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
 
 // Define types
 type FormData = {
@@ -32,6 +36,8 @@ const CreateBlog: React.FC = () => {
     content: '',
     tags: '',
   });
+
+  const [currentStep, setCurrentStep] = useState(1);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -104,30 +110,33 @@ const CreateBlog: React.FC = () => {
     setError('');
 
     try {
-      if (!selectedImage) {
-        throw new Error('Please upload an image');
+      if (currentStep === 1) {
+        setCurrentStep(2);
+      } else {
+        if (!selectedImage) {
+          throw new Error('Please upload an image');
+        }
+
+        const blogPost: BlogPost = {
+          ...formData,
+          tags: formData.tags.split(',').map(tag => tag.trim()),
+          imageUrl: previewUrl
+        };
+
+        console.log('Blog post data:', blogPost);
+
+        setFormData({
+          title: '',
+          author: '',
+          content: '',
+          tags: '',
+        });
+        setSelectedImage(null);
+        setPreviewUrl('');
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
       }
-
-      const blogPost: BlogPost = {
-        ...formData,
-        tags: formData.tags.split(',').map(tag => tag.trim()),
-        imageUrl: previewUrl
-      };
-
-      console.log('Blog post data:', blogPost);
-
-      setFormData({
-        title: '',
-        author: '',
-        content: '',
-        tags: '',
-      });
-      setSelectedImage(null);
-      setPreviewUrl('');
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
-
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -141,159 +150,208 @@ const CreateBlog: React.FC = () => {
 
   return (
     <div className="container mx-auto p-4 max-w-4xl">
-      <div className="bg-white rounded-lg shadow p-6">
-        <h1 className="text-2xl font-bold mb-4">Create New Blog Post</h1>
-        <p className="text-gray-600 mb-6">Fill in the details for your new blog post</p>
+      <Card className="bg-white rounded-lg shadow p-6">
+        <CardHeader>
+          <CardTitle>Create New Blog Post</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-gray-600 mb-6">Fill in the details for your new blog post</p>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {error && (
-            <div className="bg-red-50 text-red-500 p-4 rounded-lg">
-              {error}
+          <div className="flex items-center justify-between mb-8">
+            <div
+              className={`px-4 py-2 rounded-full transition-colors duration-300 ${
+                currentStep === 1
+                  ? 'bg-green-500 text-white'
+                  : 'bg-gray-200 text-gray-500'
+              }`}
+            >
+              Step 1
             </div>
-          )}
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">Title</label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="Enter blog title"
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">Author</label>
-            <input
-              type="text"
-              name="author"
-              value={formData.author}
-              onChange={handleChange}
-              placeholder="Enter author name"
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">Content</label>
-            <div className="border rounded-lg overflow-hidden">
-              <div className="bg-gray-100 p-2 flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => handleTextFormat('bold')}
-                  className="px-3 py-1 rounded bg-white hover:bg-gray-50"
-                  title="Bold"
-                >
-                  B
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleTextFormat('italic')}
-                  className="px-3 py-1 rounded bg-white hover:bg-gray-50"
-                  title="Italic"
-                >
-                  I
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleTextFormat('heading')}
-                  className="px-3 py-1 rounded bg-white hover:bg-gray-50"
-                  title="Heading"
-                >
-                  H
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleTextFormat('list')}
-                  className="px-3 py-1 rounded bg-white hover:bg-gray-50"
-                  title="List"
-                >
-                  •
-                </button>
-              </div>
-              <textarea
-                ref={textareaRef}
-                name="content"
-                value={formData.content}
-                onChange={handleChange}
-                placeholder="Write your blog content here... (Supports Markdown formatting)"
-                className="w-full p-4 min-h-[18rem] outline-none resize-y"
-                required
-              />
+            <div
+              className={`px-4 py-2 rounded-full transition-colors duration-300 ${
+                currentStep === 2
+                  ? 'bg-green-500 text-white'
+                  : 'bg-gray-200 text-gray-500'
+              }`}
+            >
+              Step 2
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">Tags</label>
-            <input
-              type="text"
-              name="tags"
-              value={formData.tags}
-              onChange={handleChange}
-              placeholder="Enter tags separated by commas"
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">Blog Image</label>
-            <div className="flex flex-col space-y-4">
-              <div className="flex items-center justify-center w-full">
-                <label
-                  className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-                >
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                    <p className="mb-2 text-sm text-gray-500">
-                      <span className="font-semibold">Click to upload</span> or drag and drop
-                    </p>
-                    <p className="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
-                  </div>
-                  <input
-                    type="file"
-                    ref={fileInputRef}
-                    className="hidden"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    required
-                  />
-                </label>
-              </div>
-              {previewUrl && (
-                <div className="relative w-full h-48">
-                  <Image
-                    src={previewUrl}
-                    alt="Preview"
-                    width={500}
-                    height={300}
-                    className="w-full h-full object-cover rounded-lg"
-                    priority
-                  />
-                  <button
-                    type="button"
-                    className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors"
-                    onClick={removeImage}
-                  >
-                    ✕
-                  </button>
+          {currentStep === 1 && (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <div className="bg-red-50 text-red-500 p-4 rounded-lg">
+                  {error}
                 </div>
               )}
-            </div>
-          </div>
 
-          <button
-            type="submit"
-            className="w-full bg-green-500 text-white p-3 rounded-lg hover:bg-green-600 disabled:bg-green-300 transition-colors"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Creating...' : 'Create Blog Post'}
-          </button>
-        </form>
-      </div>
+              <div className="space-y-2">
+                <label className="block text-sm font-medium">Title</label>
+                <Input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  placeholder="Enter blog title"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-sm font-medium">Author</label>
+                <Input
+                  type="text"
+                  name="author"
+                  value={formData.author}
+                  onChange={handleChange}
+                  placeholder="Enter author name"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-sm font-medium">Content</label>
+                <div className="border rounded-lg overflow-hidden">
+                  <div className="bg-gray-100 p-2 flex gap-2">
+                    <Button
+                      type="button"
+                      onClick={() => handleTextFormat('bold')}
+                      title="Bold"
+                    >
+                      B
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={() => handleTextFormat('italic')}
+                      title="Italic"
+                    >
+                      I
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={() => handleTextFormat('heading')}
+                      title="Heading"
+                    >
+                      H
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={() => handleTextFormat('list')}
+                      title="List"
+                    >
+                      •
+                    </Button>
+                  </div>
+                  <Textarea
+                    ref={textareaRef}
+                    name="content"
+                    value={formData.content}
+                    onChange={handleChange}
+                    placeholder="Write your blog content here... (Supports Markdown formatting)"
+                    className="w-full p-4 min-h-[18rem] outline-none resize-y"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-sm font-medium">Tags</label>
+                <Input
+                  type="text"
+                  name="tags"
+                  value={formData.tags}
+                  onChange={handleChange}
+                  placeholder="Enter tags separated by commas"
+                  required
+                />
+              </div>
+
+              <Button
+                type="button"
+                className="w-full"
+                disabled={isLoading}
+                onClick={() => setCurrentStep(2)}
+              >
+                Next
+              </Button>
+            </form>
+          )}
+
+          {currentStep === 2 && (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <div className="bg-red-50 text-red-500 p-4 rounded-lg">
+                  {error}
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <label className="block text-sm font-medium">Blog Image</label>
+                <div className="flex flex-col space-y-4">
+                  <div className="flex items-center justify-center w-full">
+                    <label
+                      className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                    >
+                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                        <p className="mb-2 text-sm text-gray-500">
+                          <span className="font-semibold">Click to upload</span> or drag and drop
+                        </p>
+                        <p className="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
+                      </div>
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        className="hidden"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        required
+                      />
+                    </label>
+                  </div>
+                  {previewUrl && (
+                    <div className="relative w-full h-48">
+                      <Image
+                        src={previewUrl}
+                        alt="Preview"
+                        width={500}
+                        height={300}
+                        className="w-full h-full object-cover rounded-lg"
+                        priority
+                      />
+                      <Button
+                        type="button"
+                        className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors"
+                        onClick={removeImage}
+                      >
+                        ✕
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex justify-between">
+                <Button
+                  type="button"
+                  className="bg-gray-200 text-gray-500 hover:bg-gray-300"
+                  disabled={isLoading}
+                  onClick={() => setCurrentStep(1)}
+                >
+                  Previous
+                </Button>
+                <Button
+                  type="submit"
+                  className="bg-black text-white hover:bg-gray-600"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Creating...' : 'Create Blog Post'}
+                </Button>
+              </div>
+            </form>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };
