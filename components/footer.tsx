@@ -242,9 +242,9 @@ const EcoTourismFooter: React.FC = () => {
                 </div>
                 <div className="flex-grow mb-6 lg:mb-0"></div>
                 <div className="w-full lg:w-auto flex flex-col lg:flex-row items-center justify-center lg:justify-end">
-                  <span className="inline-block mb-2 lg:mb-0 lg:mr-4 text-sm text-gray-500">© {currentYear} All Rights Reserved.</span>
+                  <span className="inline-block mb-2 lg:mb-0 lg:mr-4 text-sm text-gray-500">© {currentYear} All Rights Reserved</span>
                   <span className="inline-flex items-center text-sm text-gray-500">
-                    Designed with 💕 {' '}
+                     .{' '}
                     <a href="https://olivebishop.vercel.app" target="_blank" rel="noopener noreferrer" className="ml-1 text-green-600 hover:text-green-700">
                       Mazingira Tours and Travel
                     </a>
