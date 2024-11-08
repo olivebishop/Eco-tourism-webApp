@@ -5,8 +5,22 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import {type BlogPost, type FormData} from '@/types/blogs'
 
+// Define types
+type FormData = {
+  title: string;
+  author: string;
+  content: string;
+  tags: string;
+}
+
+type BlogPost = {
+  title: string;
+  author: string;
+  content: string;
+  tags: string[];
+  imageUrl: string;
+}
 
 const CreateBlog: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
