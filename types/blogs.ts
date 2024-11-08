@@ -1,25 +1,9 @@
-export interface BlogPost{
-  title: string;
-  author: string;
-  content: string;
-  tags: string[];
-  imageUrl: string;
-}
-
-export interface FormData{
+export interface BlogPost {
+    _id: string;
     title: string;
     author: string;
     content: string;
-    tags: string;
+    tags: string[];
+    imageUrl: string;
+    createdAt: string;
   }
-
-
-// export interface BlogPost {
-//     _id: string;
-//     title: string;
-//     author: string;
-//     content: string;
-//     tags: string[];
-//     imageUrl: string;
-//     createdAt: string;
-//   }
