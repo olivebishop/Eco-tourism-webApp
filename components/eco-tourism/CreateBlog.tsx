@@ -294,7 +294,8 @@ export default function CreateBlog() {
             >
               {isLoading ? 'Creating...' : 'Create Blog Post'}
             </Button>
-          </form>
+          </form>  
+          
         </CardContent>
       </Card>
     </div>
