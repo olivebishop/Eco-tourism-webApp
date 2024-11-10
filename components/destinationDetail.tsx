@@ -10,6 +10,7 @@ import { ArrowLeft, MapPin, Calendar, Clock, BarChart2 } from 'lucide-react'
 import { format } from 'date-fns'
 import { Calendar as CalendarComponent } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { useToast } from "@/hooks/use-toast"
 
 interface DestinationDetailProps {
   destination: Destination
@@ -18,11 +19,61 @@ interface DestinationDetailProps {
 
 export const DestinationDetail: React.FC<DestinationDetailProps> = ({ destination, onClose }) => {
   const [bookingDate, setBookingDate] = useState<Date>()
+  const [isLoading, setIsLoading] = useState(false)
+  const { toast } = useToast()
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Handle form submission here
-    console.log('Booking submitted')
+    setIsLoading(true)
+    
+    // Get form data
+    const formData = new FormData(e.currentTarget)
+    const fullName = formData.get('name')?.toString() || ''
+    const nameParts = fullName.split(' ')
+    
+    const bookingData = {
+      firstname: nameParts[0],
+      lastname: nameParts.slice(1).join(' ') || '',
+      email: formData.get('email')?.toString() || '',
+      phone: formData.get('phone')?.toString() || '',
+      bookingDate: bookingDate?.toISOString(),
+      numberOfGuests: parseInt(formData.get('guests')?.toString() || '0'),
+      specialRequests: formData.get('special-requests')?.toString(),
+      destinationName: destination.name,
+      price: destination.price
+    }
+
+    try {
+      const response = await fetch('/api/bookings/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookingData),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create booking')
+      }
+
+      toast({
+        title: "Success!",
+        description: "Your booking has been submitted successfully.",
+      })
+      onClose()
+      
+    } catch (error) {
+      console.error('Error submitting booking:', error)
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to submit booking. Please try again.",
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -97,15 +148,15 @@ export const DestinationDetail: React.FC<DestinationDetailProps> = ({ destinatio
                   <h3 className="text-2xl font-bold mb-4">Book Your Adventure</h3>
                   <div>
                     <Label htmlFor="name">Full Name</Label>
-                    <Input id="name" placeholder="Enter your full name" required />
+                    <Input id="name" name="name" placeholder="Enter your full name" required />
                   </div>
                   <div>
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" placeholder="Enter your email" required />
+                    <Input id="email" name="email" type="email" placeholder="Enter your email" required />
                   </div>
                   <div>
                     <Label htmlFor="phone">Phone Number</Label>
-                    <Input id="phone" type="tel" placeholder="Enter your phone number" required />
+                    <Input id="phone" name="phone" type="tel" placeholder="Enter your phone number" required />
                   </div>
                   <div>
                     <Label>Preferred Date</Label>
@@ -128,14 +179,31 @@ export const DestinationDetail: React.FC<DestinationDetailProps> = ({ destinatio
                   </div>
                   <div>
                     <Label htmlFor="guests">Number of Guests</Label>
-                    <Input id="guests" type="number" min="1" placeholder="Enter number of guests" required />
+                    <Input 
+                      id="guests" 
+                      name="guests" 
+                      type="number" 
+                      min="1" 
+                      placeholder="Enter number of guests" 
+                      required 
+                    />
                   </div>
                   <div>
                     <Label htmlFor="special-requests">Special Requests</Label>
-                    <Textarea id="special-requests" placeholder="Any special requests or requirements?" />
+                    <Textarea 
+                      id="special-requests" 
+                      name="special-requests" 
+                      placeholder="Any special requests or requirements?" 
+                    />
                   </div>
-                  <Button variant="gooeyLeft"
-                  type="submit" className="w-full bg-green-600 hover:bg-green-800 hover:text-white">Book Now</Button>
+                  <Button 
+                    variant="gooeyLeft"
+                    type="submit" 
+                    className="w-full bg-green-600 hover:bg-green-800 hover:text-white"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Processing...' : 'Book Now'}
+                  </Button>
                 </form>
               </div>
             </div>
