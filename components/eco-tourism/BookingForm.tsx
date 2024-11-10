@@ -1,5 +1,4 @@
 'use client'
-
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -41,20 +40,26 @@ import {
   SlidersHorizontal,
   X,
   AlertCircle,
-  Mail
+  Calendar,
+  Users
 } from 'lucide-react'
+import { format } from 'date-fns'
 
 interface Booking {
-  _id: string
+  id: string
   firstname: string
   lastname: string
   email: string
   phone: string
-  country?: string
-  status: 'pending' | 'approved' | 'rejected' | 'completed'
+  status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'COMPLETED'
+  bookingDate: string | null
+  numberOfGuests: number
+  specialRequests: string | null
+  destinationName: string | null
+  price: number | null
 }
 
-const BookingsForm = () => {
+const AdminBookingsTable = () => {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -83,79 +88,88 @@ const BookingsForm = () => {
 
   const columns: ColumnDef<Booking>[] = [
     {
-      id: 'name',
-      accessorFn: (row) => `${row.firstname} ${row.lastname}`,
-      header: ({ column }) => {
-        return (
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            className="p-0 hover:bg-transparent"
-          >
-            Name
-            <SlidersHorizontal className="ml-2 h-4 w-4" />
-          </Button>
-        )
-      },
-      cell: (props) => (
-        <div className="font-medium">{props.getValue() as string}</div>
+      id: 'guest',
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="p-0 hover:bg-transparent"
+        >
+          Guest Details
+          <SlidersHorizontal className="ml-2 h-4 w-4" />
+        </Button>
       ),
-    },
-    {
-      id: 'email',
-      accessorKey: 'email',
-      header: 'Email',
       cell: (props) => {
-        const email = props.getValue() as string
+        const booking = props.row.original
         return (
-          <div className="flex items-center gap-2">
-            <span>{email}</span>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => window.location.href = `mailto:${email}`}
-            >
-              <Mail className="h-4 w-4" />
-            </Button>
+          <div className="space-y-1">
+            <div className="font-medium">{`${booking.firstname} ${booking.lastname}`}</div>
+            <div className="text-sm text-gray-500">{booking.email}</div>
+            <div className="text-sm text-gray-500">{booking.phone}</div>
           </div>
         )
       },
     },
     {
-      id: 'phone',
-      accessorKey: 'phone',
-      header: 'Phone',
+      id: 'bookingDetails',
+      header: 'Booking Details',
+      cell: (props) => {
+        const booking = props.row.original
+        return (
+          <div className="space-y-1">
+            <div className="flex items-center gap-1">
+              <Calendar className="h-4 w-4 text-gray-500" />
+              {booking.bookingDate 
+                ? format(new Date(booking.bookingDate), 'PPP')
+                : 'Date not specified'
+              }
+            </div>
+            <div className="flex items-center gap-1">
+              <Users className="h-4 w-4 text-gray-500" />
+              {`${booking.numberOfGuests} guest${booking.numberOfGuests > 1 ? 's' : ''}`}
+            </div>
+            {booking.destinationName && (
+              <div className="font-medium text-green-600">
+                {booking.destinationName}
+              </div>
+            )}
+          </div>
+        )
+      },
     },
     {
-      id: 'country',
-      accessorKey: 'country',
-      header: 'Country',
-      cell: (props) => props.getValue() as string || '-',
+      id: 'price',
+      header: 'Price',
+      cell: (props) => {
+        const price = props.row.original.price
+        return price 
+          ? `KES ${price.toLocaleString()}`
+          : '-'
+      },
     },
     {
       id: 'status',
       accessorKey: 'status',
       header: 'Status',
       cell: (props) => {
-        const status = (props.getValue() as string)?.toLowerCase() || 'pending'
+        const status = props.getValue() as string
         const statusStyles = {
-          pending: 'bg-yellow-100 text-yellow-800',
-          approved: 'bg-green-100 text-green-800',
-          rejected: 'bg-red-100 text-red-800',
-          completed: 'bg-blue-100 text-blue-800',
+          PENDING: 'bg-yellow-100 text-yellow-800',
+          APPROVED: 'bg-green-100 text-green-800',
+          REJECTED: 'bg-red-100 text-red-800',
+          COMPLETED: 'bg-blue-100 text-blue-800',
         } as const
         
         return (
           <Badge className={statusStyles[status as keyof typeof statusStyles]}>
-            {status.charAt(0).toUpperCase() + status.slice(1)}
+            {status.charAt(0) + status.slice(1).toLowerCase()}
           </Badge>
         )
       },
     },
     {
       id: 'actions',
-      header: 'Actions',
+      header: '',
       cell: (props) => {
         const booking = props.row.original
         return (
@@ -169,19 +183,19 @@ const BookingsForm = () => {
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={() => handleStatusChange(booking._id, 'approved')}
+                onClick={() => handleStatusChange(booking.id, 'APPROVED')}
                 className="text-green-600"
               >
                 <Check className="mr-2 h-4 w-4" /> Approve
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => handleStatusChange(booking._id, 'rejected')}
+                onClick={() => handleStatusChange(booking.id, 'REJECTED')}
                 className="text-red-600"
               >
                 <X className="mr-2 h-4 w-4" /> Reject
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => handleStatusChange(booking._id, 'completed')}
+                onClick={() => handleStatusChange(booking.id, 'COMPLETED')}
                 className="text-blue-600"
               >
                 <Check className="mr-2 h-4 w-4" /> Mark as Completed
@@ -226,21 +240,6 @@ const BookingsForm = () => {
   useEffect(() => {
     fetchBookings()
   }, [])
-
-  const TableSkeleton = () => (
-    <>
-      {[...Array(5)].map((_, index) => (
-        <TableRow key={index}>
-          <TableCell><Skeleton className="h-8 w-[250px]" /></TableCell>
-          <TableCell><Skeleton className="h-8 w-[200px]" /></TableCell>
-          <TableCell><Skeleton className="h-8 w-[150px]" /></TableCell>
-          <TableCell><Skeleton className="h-8 w-[100px]" /></TableCell>
-          <TableCell><Skeleton className="h-8 w-[100px]" /></TableCell>
-          <TableCell><Skeleton className="h-8 w-[50px]" /></TableCell>
-        </TableRow>
-      ))}
-    </>
-  )
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-6">
@@ -294,7 +293,15 @@ const BookingsForm = () => {
                 </TableHeader>
                 <TableBody>
                   {loading ? (
-                    <TableSkeleton />
+                    Array.from({ length: 5 }).map((_, index) => (
+                      <TableRow key={index}>
+                        <TableCell><Skeleton className="h-16 w-[250px]" /></TableCell>
+                        <TableCell><Skeleton className="h-16 w-[200px]" /></TableCell>
+                        <TableCell><Skeleton className="h-8 w-[100px]" /></TableCell>
+                        <TableCell><Skeleton className="h-8 w-[100px]" /></TableCell>
+                        <TableCell><Skeleton className="h-8 w-[50px]" /></TableCell>
+                      </TableRow>
+                    ))
                   ) : bookings.length === 0 ? (
                     <TableRow>
                       <TableCell
@@ -333,7 +340,7 @@ const BookingsForm = () => {
         </Card>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default BookingsForm
+export default AdminBookingsTable;
