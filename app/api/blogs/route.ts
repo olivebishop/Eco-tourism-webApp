@@ -1,259 +1,105 @@
-import { connectToDB } from "@/lib/config/db";
-import Blog from "@/lib/models/Blog";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+import { auth } from '@clerk/nextjs/server';
 
-export async function POST(req: NextRequest) {
-    const token = req.cookies.get('token')?.value;
-    if (!token) {
-        return NextResponse.json({ error: "User is not Authenticated" }, { status: 401 });
+const prisma = new PrismaClient();
+
+// Custom rate limiter implementation
+class RateLimiter {
+  private requests: Map<string, { count: number; timestamp: number }>;
+  private requestLimit: number;
+  private windowMs: number;
+
+  constructor(requestLimit: number, windowInSeconds: number) {
+    this.requests = new Map();
+    this.requestLimit = requestLimit;
+    this.windowMs = windowInSeconds * 1000; // Convert to milliseconds
+  }
+
+  async checkLimit(key: string): Promise<boolean> {
+    const now = Date.now();
+    const windowStart = now - this.windowMs;
+
+    if (this.requests.has(key)) {
+      const request = this.requests.get(key)!;
+      if (request.timestamp < windowStart) {
+        // Reset if the window has passed
+        request.count = 1;
+        request.timestamp = now;
+      } else if (request.count >= this.requestLimit) {
+        return false; // Rate limit exceeded
+      } else {
+        request.count++;
+      }
+    } else {
+      this.requests.set(key, { count: 1, timestamp: now });
     }
 
-    const body = await req.json();
-    const { title, author, content, tags, imageUrl } = body;
-    if (!title || !author || !content || !tags || !imageUrl) {
-        return NextResponse.json({ error: "title, author, content, tags, imageUrl fields are required" }, { status: 400 });
-    }
+    return true; // Request allowed
+  }
+}
 
-    try {
-        await connectToDB();
-        const newBlog = await Blog.create({ title, author, content, tags, imageUrl });
-        return NextResponse.json({ success: true, newBlog }, { status: 201 });
-    } catch (error) {
-        console.error('Error creating blog:', error);
-        return NextResponse.json({ error: 'Failed to create blog' }, { status: 500 });
-    }
+// Create a new rate limiter that allows 5 requests per 5 minutes
+const rateLimiter = new RateLimiter(5, 300);
+
+export async function POST(req: Request) {
+  const { userId } = await auth();
+  
+  if (!userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+  
+  if (!user || user.role !== 'ADMIN') {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
+  const success = await rateLimiter.checkLimit(userId);
+  if (!success) {
+    return NextResponse.json({ error: 'Rate limit exceeded' }, { status: 429 });
+  }
+
+  const { title, content, imageUrl, tags } = await req.json();
+
+  try {
+    const blog = await prisma.blog.create({
+      data: {
+        title,
+        content,
+        imageUrl,
+        tags,
+        authorId: userId,
+      },
+    });
+
+    return NextResponse.json(blog);
+  } catch (error) {
+    console.error('Error creating blog:', error);
+    return NextResponse.json({ error: 'Error creating blog' }, { status: 500 });
+  }
 }
 
 export async function GET() {
-    try {
-        await connectToDB();
-        const blogs = await Blog.find();
-        return NextResponse.json({ blogs }, { status: 200 });
-    } catch (error) {
-        console.error('Error fetching blogs:', error);
-        return NextResponse.json({ error: 'Failed to fetch blogs' }, { status: 500 });
-    }
-}
-
-export async function PUT(req: NextRequest) {
-    const token = req.cookies.get("token")?.value;
-    if (!token) {
-        return NextResponse.json({ error: "User is not Authenticated" }, { status: 401 });
-    }
-    
-    const id = req.nextUrl.searchParams.get('id');
-    if (!id) {
-        return NextResponse.json({ error: "BLOG ID IS REQUIRED" }, { status: 400 });
-    }
-
-    const body = await req.json();
-    const { updatedData } = body;
-
-    if (!updatedData) {
-        return NextResponse.json({ error: "MISSING BLOG UPDATED DATA" }, { status: 400 });
-    }
-
-    const allowedUpdates = ['title', 'author', 'tags', 'content', 'imageUrl'] as const;
-    type AllowedUpdateKeys = typeof allowedUpdates[number];
-    
-    const filteredData: Partial<Record<AllowedUpdateKeys, unknown>> = {};
-    Object.keys(updatedData).forEach(key => {
-        if (allowedUpdates.includes(key as AllowedUpdateKeys)) {
-            filteredData[key as AllowedUpdateKeys] = updatedData[key];
-        }
+  try {
+    const blogs = await prisma.blog.findMany({
+      include: {
+        author: {
+          select: {
+            name: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
-    if (Object.keys(filteredData).length === 0) {
-        return NextResponse.json({ error: "NO VALID FIELDS TO UPDATE" }, { status: 400 });
-    }
-
-    try {
-        await connectToDB();
-        const blog = await Blog.findById(id);
-        if (!blog) {
-            return NextResponse.json({ success: false, message: "Blog not found" }, { status: 404 });
-        }
-
-        const updatedBlog = await Blog.findByIdAndUpdate(id, filteredData, { new: true });
-        return NextResponse.json({ updatedBlog }, { status: 200 });
-    } catch (error) {
-        console.error('Error updating blog:', error);
-        return NextResponse.json({ error: 'Failed to update blog' }, { status: 500 });
-    }
+    return NextResponse.json({ blogs });
+  } catch (error) {
+    console.error('Error fetching blogs:', error);
+    return NextResponse.json({ error: 'Error fetching blogs' }, { status: 500 });
+  }
 }
-
-export async function DELETE(req: NextRequest) {
-    const token = req.cookies.get("token")?.value;
-    if (!token) {
-        return NextResponse.json({ error: "User is not Authenticated" }, { status: 401 });
-    }
-
-    const id = req.nextUrl.searchParams.get('id');
-    if (!id) {
-        return NextResponse.json({ error: "BLOG ID IS REQUIRED" }, { status: 400 });
-    }
-
-    try {
-        await connectToDB();
-        const blog = await Blog.findById(id);
-        if (!blog) {
-            return NextResponse.json({ success: false, message: "Blog not found" }, { status: 404 });
-        }
-
-        await Blog.deleteOne({ _id: id });
-        return NextResponse.json({ success: true, message: "Blog deleted" }, { status: 200 });
-    } catch (error) {
-        console.error('Error deleting blog:', error);
-        return NextResponse.json({ error: 'Failed to delete blog' }, { status: 500 });
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import { connectToDB } from "@/lib/config/db";
-// import Blog from "@/lib/models/Blog";
-// import { NextRequest, NextResponse } from "next/server";
-
-
-// export async function POST(req: NextRequest) {
-//     const token = req.cookies.get('token')?.value 
-//     if (!token) {
-//         return NextResponse.json({ error: "User is not Authenticated"}, { status: 401 })
-//     }
-
-//     const body = await req.json()
-//     const { title, author, content, tags, imageUrl } = body 
-//     if (!title || !author || !content || !tags || !imageUrl) {
-//         return NextResponse.json({ error: " title, author, content, tags, imageUrl fields are required" }, { status: 400 })
-//     }
-//     try {
-//         await connectToDB()
-//         const newBlog = await Blog.create({title: title, author: author, content: content, tags: tags, imageUrl: imageUrl})
-//         return NextResponse.json({ success: true, newBlog }, { status: 201 })
-//     } catch (error) {
-//         console.error(error);
-        
-//         return NextResponse.json({ error: error}.error, { status: 500})
-//     }
-// }
-
-
-// export async function GET() {
-//     //  const token = req.cookies.get("token")?.value;
-//     //  if (!token) {
-//     //    return NextResponse.json(
-//     //      { error: "User is not Authenticated" },
-//     //      { status: 401 }
-//     //    );
-//     //  }
-//     try {
-//         await connectToDB()
-//         const blogs = await Blog.find()
-
-//         return NextResponse.json({ blogs }, { status: 200})
-
-//     } catch (error) {
-//         console.error(error);
-//         return NextResponse.json({ error: error }.error, { status: 500 })
-//     }
-// }
-
-
-// export async function PUT(req: NextRequest) {
-//      const token = req.cookies.get("token")?.value;
-//      if (!token) {
-//        return NextResponse.json(
-//          { error: "User is not Authenticated" },
-//          { status: 401 }
-//        );
-//      }
-    
-//     const id = req.nextUrl.searchParams.get('id')
-//     if (!id) {
-//         return NextResponse.json({ error: "BLOG ID IS REQUIRED" }, { status: 400 });
-//     }
-
-//     const body = await req.json()
-//     const { updatedData }  = body
-
-//     if (!updatedData) {
-//         return NextResponse.json({ error: "MISSING BLOG UPDATED DATA" }, { status: 400 });
-//     }
-
-//     // Filter to only allow updates to firstname, lastname, and email
-//     const allowedUpdates = ['title', 'author', 'tags', 'content', 'imageUrl'];
-//     const filteredData = {};
-//     Object.keys(updatedData).forEach(key => {
-//         if (allowedUpdates.includes(key)) {
-//             // @ts-expect-error
-//             filteredData[key] = updatedData[key];
-//         }
-//     });
-
-//     if (Object.keys(filteredData).length === 0) {
-//         return NextResponse.json({ error: "NO VALID FIELDS TO UPDATE" }, { status: 400 });
-//     }
-
-//     try {
-//         await connectToDB()
-
-//         const blog = await Blog.findById(id);
-//         if (!blog) {
-//             return NextResponse.json({ success: false, message: "Blog not found" }, { status: 404 })
-//         }
-
-//         const updatedBlog = await Blog.findByIdAndUpdate(id, filteredData, { new: true });
-//         return NextResponse.json({ updatedBlog }, { status: 200});
-//     } catch (error) {
-//         console.error(error);
-//         return NextResponse.json({ error: error }.error, { status: 500 })
-//     }
-// }
-
-// export async function DELETE(req: NextRequest) {
-//      const token = req.cookies.get("token")?.value;
-//      if (!token) {
-//        return NextResponse.json(
-//          { error: "User is not Authenticated" },
-//          { status: 401 }
-//        );
-//      }
-//     const id = req.nextUrl.searchParams.get('id')
-//     if (!id) {
-//         return NextResponse.json({ error: "BLOG ID IS REQUIRED" }, { status: 400 });
-//     }
-//     try {
-//         await connectToDB()
-
-//         const blog = await Blog.findById(id);
-//         if (!blog) {
-//             return NextResponse.json({ success: false, message: "Blog not found" }, { status: 404 })
-//         }
-
-
-//         await blog.deleteOne({ _id: id })
-//         return NextResponse.json({ success: true, message: "Blog deleted" }, { status: 200})
-//     } catch (error) {
-//         console.error(error);
-//         return NextResponse.json({ error: error }.error, { status: 500 })
-//     }
-
-// }

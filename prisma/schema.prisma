@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      Role     @default( ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  blogs     Blog[]
+}
+
+model Blog {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  imageUrl  String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  tags      String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Booking {
+  id              String    @id @default(cuid())
+  firstname       String
+  lastname        String
+  email           String
+  phone           String
+  country         String?
+  status          Status    @default(PENDING)
+  bookingDate     DateTime?
+  numberOfGuests  Int       @default(1)
+  specialRequests String?
+  destinationName String?
+  price           Decimal?  @db.Decimal(10, 2)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+enum Role {
+  ADMIN
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  REJECTED
+  COMPLETED
+}
