@@ -52,7 +52,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   const navItems = [
     { href: "/management-portal/dashboard", icon: Home, label: "Dashboard" },
     { href: "/management-portal/view-bookings", icon: BookCheck, label: "Bookings" },
-    { href: "/management-portal/create-blogs", icon: BookText, label: " Blogs" },
+    { href: "/management-portal/create-blogs", icon: BookText, label: " Create Blogs" },
+    { href: "/management-portal/manage-blogs", icon: BookText, label: " Manage Blogs" },
   ];
 
   const handleLogout = () => {

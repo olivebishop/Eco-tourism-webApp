@@ -18,7 +18,7 @@ export default function BlogPage() {
         const response = await fetch('/api/blogs');
         if (!response.ok) throw new Error('Failed to fetch blogs');
         const data = await response.json();
-        setBlogs(data.blogs);
+        setBlogs(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An error occurred');
       } finally {
@@ -42,13 +42,16 @@ export default function BlogPage() {
             <span className="text-green-600"> Insights</span>
           </h1>
           <p className="text-lg text-gray-500">
-            Discover stories about conservation, eco-friendly adventures, and sustainable tourism practices
+            Discover stories about conservation, eco-friendly adventures, and
+            sustainable tourism practices
           </p>
         </div>
 
         <div className="max-w-5xl mx-auto space-y-8">
           {loading ? (
-            Array(3).fill(0).map((_, i) => <BlogListSkeleton key={i} />)
+            Array(3)
+              .fill(0)
+              .map((_, i) => <BlogListSkeleton key={i} />)
           ) : error ? (
             <div className="text-center p-8 bg-red-50 rounded-lg">
               <p className="text-red-500">Error: {error}</p>
@@ -56,7 +59,7 @@ export default function BlogPage() {
           ) : (
             <>
               {blogs.slice(0, visibleBlogs).map((blog) => (
-                <BlogCard key={blog._id} blog={blog} />
+                <BlogCard key={blog.id} blog={blog} />
               ))}
               {visibleBlogs < blogs.length && (
                 <div className="text-center mt-12">
