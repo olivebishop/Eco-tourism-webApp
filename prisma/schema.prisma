@@ -15,19 +15,20 @@ model User {
   role      Role     @default( ADMIN)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  blogs     Blog[]
+
 }
 
+
 model Blog {
-  id        String   @id @default(cuid())
-  title     String
-  content   String
-  imageUrl  String
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String
-  tags      String[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(cuid())
+  title      String
+  content    String
+  imageData  String?  @db.Text
+  authorId   String
+  authorName String
+  tags       String[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Booking {

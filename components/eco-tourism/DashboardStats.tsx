@@ -1,74 +1,73 @@
-"use client"
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Users, BookText, TrendingUp, TrendingDown } from "lucide-react"
+'use client'
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { BookText, Users } from 'lucide-react';
 
 interface Stats {
-  totalBookings: number
-  totalBlogs: number
-  bookingsTrend: number
-  blogsTrend: number
+  totalBlogs: number;
+  totalBookings: number;
+  blogsTrend: number;
+  bookingsTrend: number;
 }
 
 export default function DashboardStats() {
-  const stats: Stats = {
-    totalBookings: 128,
-    totalBlogs: 45,
-    bookingsTrend: 12.5,
-    blogsTrend: -2.4
-  }
+  const [stats, setStats] = useState<Stats>({
+    totalBlogs: 0,
+    totalBookings: 0,
+    blogsTrend: 0,
+    bookingsTrend: 0,
+  });
 
-  const items = [
-    {
-      title: "Total Bookings",
-      value: stats.totalBookings,
-      icon: Users,
-      trend: stats.bookingsTrend,
-      description: "vs. last month",
-      color: "text-blue-500",
-      background: "bg-blue-100 dark:bg-blue-900"
-    },
-    {
-      title: "Total Blogs",
-      value: stats.totalBlogs,
-      icon: BookText,
-      trend: stats.blogsTrend,
-      description: "vs. last month",
-      color: "text-purple-500",
-      background: "bg-purple-100 dark:bg-purple-900"
-    }
-  ]
+  useEffect(() => {
+    const fetchData = async () => {
+      const [blogsResponse, bookingsResponse] = await Promise.all([
+        fetch('/api/blogs'),
+        fetch('/api/bookings'),
+      ]);
+
+      const [blogsData, bookingsData] = await Promise.all([
+        blogsResponse.json(),
+        bookingsResponse.json(),
+      ]);
+
+      setStats({
+        totalBlogs: blogsData.total || 0,
+        totalBookings: bookingsData.total || 0,
+        blogsTrend: blogsData.trend || 0,
+        bookingsTrend: bookingsData.trend || 0,
+      });
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 px-2">
-      {items.map((item) => (
-        <Card key={item.title} className="w-full">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {item.title}
-            </CardTitle>
-            <div className={`${item.background} rounded-full p-2`}>
-              <item.icon className={`h-4 w-4 ${item.color}`} />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-xl sm:text-2xl font-bold">{item.value}</div>
-            <div className="flex items-center space-x-2">
-              <p className={`text-xs sm:text-sm ${item.trend > 0 ? 'text-green-500' : 'text-red-500'} flex items-center`}>
-                {item.trend > 0 ? (
-                  <TrendingUp className="mr-1 h-3 w-3" />
-                ) : (
-                  <TrendingDown className="mr-1 h-3 w-3" />
-                )}
-                {Math.abs(item.trend)}%
-              </p>
-              <p className="text-xs sm:text-sm text-muted-foreground">
-                {item.description}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+      <Card className="w-full">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Total Blogs</CardTitle>
+          <div className="bg-blue-100 dark:bg-blue-900 rounded-full p-2">
+            <BookText className="h-4 w-4 text-blue-500" />
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="text-xl sm:text-2xl font-bold">{stats.totalBlogs}</div>
+        </CardContent>
+      </Card>
+
+      <Card className="w-full">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Total Bookings</CardTitle>
+          <div className="bg-purple-100 dark:bg-purple-900 rounded-full p-2">
+            <Users className="h-4 w-4 text-purple-500" />
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="text-xl sm:text-2xl font-bold">
+            {stats.totalBookings}
+          </div>
+        </CardContent>
+      </Card>
     </div>
-  )
+  );
 }

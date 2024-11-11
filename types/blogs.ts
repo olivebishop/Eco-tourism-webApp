@@ -1,9 +1,11 @@
 export interface BlogPost {
-    _id: string;
-    title: string;
-    author: string;
-    content: string;
-    tags: string[];
-    imageUrl: string;
-    createdAt: string;
-  }
+  id: string;
+  title: string;
+  content: string;
+  imageData?: string;
+  tags: string[]; 
+  createdAt: string;
+  updatedAt: string;
+  authorName: string;
+  authorId?: string;
+}
