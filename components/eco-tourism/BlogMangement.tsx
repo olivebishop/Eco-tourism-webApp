@@ -65,7 +65,8 @@ export default function BlogManagement() {
   }
 
   const handleEdit = (blogId: string) => {
-    router.push(`/create-blog?id=${blogId}`)
+    // Updated route to match your file structure
+    router.push(`/management-portal/create-blogs/${blogId}`)
   }
 
   const handleDelete = async (blogId: string) => {
@@ -82,6 +83,7 @@ export default function BlogManagement() {
       })
 
       fetchBlogs() // Refresh the blog list
+      router.refresh() // Refresh the page to ensure all data is up to date
     } catch (error) {
       console.error('Error deleting blog:', error)
       toast({
@@ -105,7 +107,9 @@ export default function BlogManagement() {
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Manage Blogs</CardTitle>
-        <Button onClick={() => router.push('/management-portal/create-blogs')}>Create New Blog</Button>
+        <Button onClick={() => router.push('/management-portal/create-blogs')}>
+          Create New Blog
+        </Button>
       </CardHeader>
       <CardContent>
         {isLoading ? (
@@ -144,7 +148,7 @@ export default function BlogManagement() {
             <TableBody>
               {blogs.map((blog) => (
                 <TableRow key={blog.id}>
-                  <TableCell>{blog.title}</TableCell>
+                  <TableCell className="font-medium">{blog.title}</TableCell>
                   <TableCell>{new Date(blog.createdAt).toLocaleDateString()}</TableCell>
                   <TableCell>{blog.tags.join(', ')}</TableCell>
                   <TableCell>
@@ -155,11 +159,13 @@ export default function BlogManagement() {
                         onClick={() => handleEdit(blog.id)}
                       >
                         <Pencil className="h-4 w-4" />
+                        <span className="sr-only">Edit</span>
                       </Button>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button variant="outline" size="sm">
                             <Trash2 className="h-4 w-4" />
+                            <span className="sr-only">Delete</span>
                           </Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
