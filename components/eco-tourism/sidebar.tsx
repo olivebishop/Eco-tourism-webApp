@@ -1,23 +1,24 @@
-'use client';
+'use client'
 
-import React from 'react';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { useUser, useClerk } from "@clerk/nextjs";
+import * as React from 'react'
+import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
+import { useUser, useClerk } from "@clerk/nextjs"
 import { 
   BookCheck, 
   ChevronDown, 
+  ChevronRight,
   Home, 
   LogOut,
   Menu, 
   Settings, 
   X,
-  BookText,
+  PenTool,
   Leaf,
   UserCircle
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+} from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,7 +26,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,43 +36,50 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from "@/components/ui/alert-dialog"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 
 interface SidebarProps {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+  isOpen: boolean
+  setIsOpen: (isOpen: boolean) => void
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
-  const pathname = usePathname();
-  const router = useRouter();
-  const { user } = useUser();
-  const { signOut } = useClerk();
-  const [showLogoutDialog, setShowLogoutDialog] = React.useState(false);
+export default function Component({ isOpen, setIsOpen }: SidebarProps) {
+  const pathname = usePathname()
+  const router = useRouter()
+  const { user } = useUser()
+  const { signOut } = useClerk()
+  const [showLogoutDialog, setShowLogoutDialog] = React.useState(false)
+  const [openCollapsible, setOpenCollapsible] = React.useState(true)
 
   const navItems = [
     { href: "/management-portal/dashboard", icon: Home, label: "Dashboard" },
     { href: "/management-portal/view-bookings", icon: BookCheck, label: "Bookings" },
-    { href: "/management-portal/create-blogs", icon: BookText, label: " Create Blogs" },
-    { href: "/management-portal/manage-blogs", icon: BookText, label: " Manage Blogs" },
-  ];
+    { 
+      icon: PenTool, 
+      label: "Blogs",
+      children: [
+        { href: "/management-portal/create-blogs", label: "Create Blogs" },
+        { href: "/management-portal/manage-blogs", label: "Manage Blogs" },
+      ]
+    },
+  ]
 
   const handleLogout = () => {
-    setShowLogoutDialog(true);
-  };
+    setShowLogoutDialog(true)
+  }
 
   const confirmLogout = async () => {
     try {
-      await signOut();
-      router.push('/');
+      await signOut()
+      router.push('/')
     } catch (error) {
-      console.error('Error signing out:', error);
+      console.error('Error signing out:', error)
     }
-  };
+  }
 
   return (
     <>
-      {/* Overlay */}
       {isOpen && (
         <div 
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
@@ -79,7 +87,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
         />
       )}
 
-      {/* Logout Confirmation Modal */}
       <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -97,7 +104,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Hamburger Button */}
       <div className="fixed top-4 left-4 z-30 md:hidden">
         <Button
           variant="outline"
@@ -109,64 +115,93 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
         </Button>
       </div>
 
-      {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out bg-background border-r
+        className={`fixed inset-y-0 left-0 z-50 w-64 transform transition-all duration-300 ease-in-out bg-background border-r shadow-lg
           ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}
       >
         <div className="flex flex-col h-full">
-          {/* Header */}
-          <div className="flex items-center justify-between p-6 border-b">
+          <div className="flex items-center justify-between p-6 text-primary">
             <div className="flex items-center space-x-2">
-              <Leaf className="h-6 w-6 text-primary" />
-              <h2 className="text-md font-bold">Mazingira Tours</h2>
+              <Leaf className="h-6 w-6" />
+              <h2 className="text-lg font-bold">Mazingira Tours</h2>
             </div>
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden"
+              className="md:hidden text-primary-foreground"
               onClick={() => setIsOpen(false)}
             >
               <X className="h-4 w-4" />
             </Button>
           </div>
 
-          {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2">
-            {navItems.map((item) => {
-              const isActive = pathname === item.href;
+          <nav className="flex-1 p-4 space-y-2 mb-2 overflow-y-auto">
+            {navItems.map((item, index) => {
+              if (item.children) {
+                return (
+                  <Collapsible
+                    key={index}
+                    open={openCollapsible}
+                    onOpenChange={setOpenCollapsible}
+                  >
+                    <CollapsibleTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="w-full justify-between"
+                      >
+                        <div className="flex items-center">
+                          <item.icon className="mr-2 h-4 w-4" />
+                          {item.label}
+                        </div>
+                        <ChevronRight className={`h-4 w-4 transition-transform ${openCollapsible ? 'rotate-90' : ''}`} />
+                      </Button>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="pl-6 space-y-2">
+                      {item.children.map((child, childIndex) => (
+                        <Link key={childIndex} href={child.href} onClick={() => setIsOpen(false)}>
+                          <Button
+                            variant={pathname === child.href ? "secondary" : "ghost"}
+                            className="w-full justify-start"
+                          >
+                            {child.label}
+                          </Button>
+                        </Link>
+                      ))}
+                    </CollapsibleContent>
+                  </Collapsible>
+                )
+              }
+
+              const isActive = pathname === item.href
               return (
                 <Link key={item.href} href={item.href} onClick={() => setIsOpen(false)}>
                   <Button
                     variant={isActive ? "secondary" : "ghost"}
-                    className="w-full justify-start mb-2"
+                    className="w-full justify-start relative"
                   >
                     <item.icon className="mr-2 h-4 w-4" />
                     {item.label}
                   </Button>
                 </Link>
-              );
+              )
             })}
           </nav>
 
-          {/* User Menu */}
           <div className="p-4 border-t">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="w-full justify-between">
-                  <div className="flex items-center">
-                    <Avatar className="mr-2 h-8 w-8">
-                      <AvatarImage src={user?.imageUrl} alt={user?.fullName || 'User'} />
-                      <AvatarFallback>{user?.firstName?.charAt(0) || 'U'}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col items-start">
-                      <span className="font-medium text-sm">{user?.fullName || 'User'}</span>
-                      <span className="text-xs text-muted-foreground">
-                        {user?.primaryEmailAddress?.emailAddress || ''}
-                      </span>
-                    </div>
+                <Button variant="ghost" className="w-full justify-start">
+                  <Avatar className="mr-2 h-8 w-8">
+                    <AvatarImage src={user?.imageUrl} alt={user?.fullName || 'User'} />
+                    <AvatarFallback>{user?.firstName?.charAt(0) || 'U'}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col items-start">
+                    <span className="font-medium text-sm">{user?.fullName || 'User'}</span>
+                    <span className="text-xs text-muted-foreground truncate max-w-[120px]">
+                      {user?.primaryEmailAddress?.emailAddress || ''}
+                    </span>
                   </div>
-                  <ChevronDown className="h-4 w-4 opacity-50" />
+                  <ChevronDown className="ml-auto h-4 w-4 opacity-50" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
@@ -195,7 +230,5 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
         </div>
       </div>
     </>
-  );
-};
-
-export default Sidebar;
+  )
+}

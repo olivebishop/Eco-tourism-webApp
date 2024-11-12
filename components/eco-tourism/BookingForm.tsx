@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -59,7 +60,7 @@ interface Booking {
   price: number | null
 }
 
-const AdminBookingsTable = () => {
+export default function AdminBookingsTable() {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -242,7 +243,7 @@ const AdminBookingsTable = () => {
   }, [])
 
   return (
-    <div className="min-h-screen bg-background p-4 md:p-6">
+    <div className="min-h-screen bg-background p-4 md:p-6 lg:p-8">
       <div className="container mx-auto space-y-6">
         {error && (
           <Alert variant="destructive">
@@ -254,18 +255,18 @@ const AdminBookingsTable = () => {
         
         <Card>
           <CardHeader className="space-y-4">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <CardTitle className="text-2xl font-bold">
                 Booking Management
               </CardTitle>
-              <div className="flex items-center gap-2">
-                <div className="relative flex-1 md:w-64">
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <div className="relative flex-1 sm:w-64">
                   <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                   <Input
                     placeholder="Search bookings..."
                     value={globalFilter ?? ''}
                     onChange={(e) => setGlobalFilter(e.target.value)}
-                    className="pl-8"
+                    className="pl-8 w-full"
                   />
                 </div>
                 <Button variant="outline" size="icon">
@@ -275,7 +276,7 @@ const AdminBookingsTable = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="rounded-md border">
+            <div className="rounded-md border overflow-x-auto">
               <Table>
                 <TableHeader>
                   {table.getHeaderGroups().map((headerGroup) => (
@@ -302,7 +303,7 @@ const AdminBookingsTable = () => {
                         <TableCell><Skeleton className="h-8 w-[50px]" /></TableCell>
                       </TableRow>
                     ))
-                  ) : bookings.length === 0 ? (
+                  ) : table.getRowModel().rows.length === 0 ? (
                     <TableRow>
                       <TableCell
                         colSpan={columns.length}
@@ -336,11 +337,27 @@ const AdminBookingsTable = () => {
                 </TableBody>
               </Table>
             </div>
+            <div className="flex items-center justify-end space-x-2 py-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                Next
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
     </div>
-  );
-};
-
-export default AdminBookingsTable;
+  )
+}

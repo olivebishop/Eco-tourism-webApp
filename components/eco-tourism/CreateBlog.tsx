@@ -180,9 +180,9 @@ export default function CreateBlog() {
   }
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
+    <Card className="w-full max-w-4xl  mx-auto">
       <CardHeader>
-        <CardTitle>Create New Blog Post</CardTitle>
+        <CardTitle className='ml-8 lg:ml-0'>Create New Blog Post</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
