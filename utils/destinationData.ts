@@ -21,7 +21,7 @@ export interface Included {
       id: 1,
       name: "Masai Mara Safari",
       location: "Kenya",
-      price: "2,999",
+      price: "5000 kes",
       imageUrl: "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800",
       description: "Embark on an unforgettable wildlife adventure in the heart of Kenya's Masai Mara. Witness the great migration, spot the Big Five, and immerse yourself in the rich Maasai culture. Our expert guides will ensure you have a safe and thrilling experience in one of Africa's most iconic safari destinations.",
       included: [
@@ -40,7 +40,7 @@ export interface Included {
       id: 2,
       name: "Zanzibar Beaches",
       location: "Tanzania",
-      price: "2,499",
+      price: "10,000 kes",
       imageUrl: "https://images.unsplash.com/photo-1586861635167-e5223aadc9fe?w=800",
       description: "Discover the pristine beaches and crystal-clear waters of Zanzibar. Relax on white sandy shores, explore historic Stone Town, and indulge in water sports activities. Experience the perfect blend of relaxation and adventure in this tropical paradise off the coast of Tanzania.",
       included: [
