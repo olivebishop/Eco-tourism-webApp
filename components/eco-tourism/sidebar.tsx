@@ -15,7 +15,8 @@ import {
   X,
   PenTool,
   Leaf,
-  UserCircle
+  UserCircle,
+  Package
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
@@ -55,6 +56,14 @@ export default function Component({ isOpen, setIsOpen }: SidebarProps) {
   const navItems = [
     { href: "/management-portal/dashboard", icon: Home, label: "Dashboard" },
     { href: "/management-portal/view-bookings", icon: BookCheck, label: "Bookings" },
+    { 
+      icon:  Package, 
+      label: "Packages",
+      children: [
+        { href: "/management-portal/create-packages", label: "Create Packages" },
+        { href: "/management-portal/manage-packages", label: "Manage Packages" },
+      ]
+    },
     { 
       icon: PenTool, 
       label: "Blogs",

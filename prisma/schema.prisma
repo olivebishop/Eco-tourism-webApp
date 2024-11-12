@@ -48,6 +48,29 @@ model Booking {
   updatedAt       DateTime  @updatedAt
 }
 
+model Package {
+  id          String   @id @default(cuid())
+  name        String
+  location    String
+  imageData   String?  @db.Text
+  duration    String
+  groupSize   String
+  price       Decimal  @db.Decimal(10, 2)
+  description String
+  included    String[]
+  authorId    String
+  authorName  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Included {
+  id        String   @id @default(cuid())
+  item      String
+  packageId String
+  
+}
+
 enum Role {
   ADMIN
 }
