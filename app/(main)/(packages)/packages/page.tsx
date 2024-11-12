@@ -4,7 +4,7 @@
 import * as React from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { PackageCard } from "@/components/package-card"
+import { PackageCard } from "@/components/packages/package-card"
 import { packageTypes, simpleDestinations } from "@/utils/package"
 
 export default function PackagesPage() {

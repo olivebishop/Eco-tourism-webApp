@@ -4,7 +4,7 @@ import { MapPin } from 'lucide-react';
 import { Button } from '@/components/bookingBtn';
 import Link from 'next/link';
 import { destinations, featuredAdventures } from '@/utils/destinationData';
-import DestinationsGrid from '@/components/destinationComponent'; 
+import DestinationsGrid from '@/components/destinations/destinationAfricaComponent'; 
 
 export default function AfricaDestinations() {
     return (
