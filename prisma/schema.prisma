@@ -48,28 +48,48 @@ model Booking {
   updatedAt       DateTime  @updatedAt
 }
 
+model PackageBooking {
+  id              String    @id @default(cuid())
+  firstname       String
+  lastname        String
+  email           String
+  phone           String
+  country         String?
+  status          Status    @default(PENDING)
+  bookingDate     DateTime?
+  numberOfGuests  Int       @default(1)
+  specialRequests String?
+  package         Package   @relation(fields: [packageId], references: [id])
+  packageId       String
+  price           Decimal   @db.Decimal(10, 2)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
 model Package {
-  id          String   @id @default(cuid())
+  id          String          @id @default(cuid())
   name        String
   location    String
-  imageData   String?  @db.Text
+  imageData   String?         @db.Text
   duration    String
   groupSize   String
-  price       Decimal  @db.Decimal(10, 2)
+  price       Decimal         @db.Decimal(10, 2)
   description String
-  included    String[]
+  included    Included[]
   authorId    String
   authorName  String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  bookings    PackageBooking[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
 }
 
 model Included {
   id        String   @id @default(cuid())
   item      String
+  package   Package  @relation(fields: [packageId], references: [id])
   packageId String
-  
 }
+
 
 enum Role {
   ADMIN

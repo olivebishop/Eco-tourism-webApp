@@ -93,8 +93,8 @@ export default function PackageBookingsView() {
           <SlidersHorizontal className="ml-2 h-4 w-4" />
         </Button>
       ),
-      cell: (props) => {
-        const booking = props.row.original
+      cell: ({ row }) => {
+        const booking = row.original
         return (
           <div className="space-y-1">
             <div className="font-medium">{`${booking.firstname} ${booking.lastname}`}</div>
@@ -108,14 +108,14 @@ export default function PackageBookingsView() {
     {
       id: 'packageDetails',
       header: 'Package Details',
-      cell: (props) => {
-        const booking = props.row.original
+      cell: ({ row }) => {
+        const booking = row.original
         return (
           <div className="space-y-1">
             <div className="font-medium text-primary">{booking.destinationName || 'N/A'}</div>
             <div className="flex items-center gap-1">
               <MapPin className="h-4 w-4 text-muted-foreground" />
-              {booking.country || 'N/A'}
+              <span>{booking.country || 'N/A'}</span>
             </div>
           </div>
         )
@@ -124,20 +124,22 @@ export default function PackageBookingsView() {
     {
       id: 'bookingDetails',
       header: 'Booking Details',
-      cell: (props) => {
-        const booking = props.row.original
+      cell: ({ row }) => {
+        const booking = row.original
         return (
           <div className="space-y-1">
             <div className="flex items-center gap-1">
               <Calendar className="h-4 w-4 text-muted-foreground" />
-              {booking.bookingDate 
-                ? format(new Date(booking.bookingDate), 'PPP')
-                : 'Date not specified'
-              }
+              <span>
+                {booking.bookingDate 
+                  ? format(new Date(booking.bookingDate), 'PPP')
+                  : 'Date not specified'
+                }
+              </span>
             </div>
             <div className="flex items-center gap-1">
               <Users className="h-4 w-4 text-muted-foreground" />
-              {`${booking.numberOfGuests} guest${booking.numberOfGuests > 1 ? 's' : ''}`}
+              <span>{`${booking.numberOfGuests} guest${booking.numberOfGuests > 1 ? 's' : ''}`}</span>
             </div>
           </div>
         )
@@ -146,17 +148,17 @@ export default function PackageBookingsView() {
     {
       id: 'price',
       header: 'Price',
-      cell: (props) => {
-        const price = props.row.original.price
-        return price ? `KES ${price.toLocaleString()}` : 'N/A'
+      cell: ({ row }) => {
+        const price = row.original.price
+        return <span>{price ? `KES ${price.toLocaleString()}` : 'N/A'}</span>
       },
     },
     {
       id: 'status',
       accessorKey: 'status',
       header: 'Status',
-      cell: (props) => {
-        const status = props.getValue() as string
+      cell: ({ row }) => {
+        const status = row.original.status
         const statusStyles = {
           PENDING: 'bg-yellow-100 text-yellow-800',
           APPROVED: 'bg-green-100 text-green-800',
@@ -165,7 +167,7 @@ export default function PackageBookingsView() {
         } as const
         
         return (
-          <Badge className={statusStyles[status as keyof typeof statusStyles]}>
+          <Badge className={statusStyles[status]}>
             {status.charAt(0) + status.slice(1).toLowerCase()}
           </Badge>
         )
@@ -174,8 +176,8 @@ export default function PackageBookingsView() {
     {
       id: 'actions',
       header: '',
-      cell: (props) => {
-        const booking = props.row.original
+      cell: ({ row }) => {
+        const booking = row.original
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -286,10 +288,12 @@ export default function PackageBookingsView() {
                     <TableRow key={headerGroup.id}>
                       {headerGroup.headers.map((header) => (
                         <TableHead key={header.id}>
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
                         </TableHead>
                       ))}
                     </TableRow>
