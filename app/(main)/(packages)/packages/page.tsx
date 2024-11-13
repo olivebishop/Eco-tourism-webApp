@@ -148,7 +148,7 @@ export default function PackagesPage() {
         
         <div className="relative z-10 text-center space-y-6 max-w-3xl mx-auto px-4">
           <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">
-            Discover Kenya's Beauty
+            Discover Kenya&apos;s Beauty
           </h1>
           <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto">
             Experience unforgettable adventures through our carefully curated travel packages

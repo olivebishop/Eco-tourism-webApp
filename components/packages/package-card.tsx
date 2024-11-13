@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { MapPin, Clock, Users, ArrowRight, DollarSign } from "lucide-react"
+import { MapPin, Clock, Users, ArrowRight} from "lucide-react"
 import Link from "next/link"
 import { Package } from "@/types/packages"
 

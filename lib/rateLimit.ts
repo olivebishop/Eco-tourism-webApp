@@ -52,15 +52,6 @@ export const rateLimits = {
   }),
 }
 
-// Type for rate limit response
-interface RateLimitResponse {
-  error: string
-  rateLimitInfo: {
-    pending: number
-    limit: number
-    reset: number
-  }
-}
 
 // Helper function for middleware
 export async function rateLimit(
