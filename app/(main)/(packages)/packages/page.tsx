@@ -91,7 +91,6 @@ export default function PackagesPage() {
           />
           <div className="absolute inset-0 bg-black/50" />
         </div>
-        
         <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
           <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight">
             Discover Kenya&apos;s Beauty
