@@ -62,7 +62,7 @@ export default function PackageBookingsView() {
 
   const handleStatusChange = async (bookingId: string, newStatus: PackageBooking['status']) => {
     try {
-      const response = await fetch(`/api/bookings?id=${bookingId}`, {
+      const response = await fetch(`/api/packages/bookings?id=${bookingId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -230,7 +230,7 @@ export default function PackageBookingsView() {
 
   const fetchPackageBookings = async () => {
     try {
-      const response = await fetch('/api/bookings')
+      const response = await fetch('/api/packages/bookings')
       if (!response.ok) {
         throw new Error('Failed to fetch package bookings')
       }

@@ -6,11 +6,13 @@ const prisma = new PrismaClient();
 
 // GET endpoint - Protected with Clerk authentication
 export async function GET(req: NextRequest) {
+  console.log('GET request received'); // Debug log
   try {
     // Check authentication with Clerk
     const { userId } = getAuth(req);
 
     if (!userId) {
+      console.log('Unauthorized access attempt'); // Debug log
       return NextResponse.json(
         { error: 'Unauthorized - Please login to access bookings' },
         { status: 401 }
@@ -22,6 +24,8 @@ export async function GET(req: NextRequest) {
     const page = parseInt(url.searchParams.get('page') || '1', 10);
     const limit = parseInt(url.searchParams.get('limit') || '10', 10);
     const status = url.searchParams.get('status') as Status | null;
+
+    console.log('Query parameters:', { page, limit, status }); // Debug log
 
     // Calculate pagination
     const skip = (page - 1) * limit;
@@ -61,6 +65,8 @@ export async function GET(req: NextRequest) {
       prisma.booking.count({ where }),
     ]);
 
+    console.log(`Found ${bookings.length} bookings`); // Debug log
+
     // Return bookings and pagination metadata
     return NextResponse.json({
       bookings,
@@ -71,7 +77,7 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     console.error('Error fetching bookings:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch bookings' },
+      { error: 'Failed to fetch bookings', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }
@@ -79,13 +85,16 @@ export async function GET(req: NextRequest) {
 
 // POST endpoint - Create booking (no authentication required)
 export async function POST(req: NextRequest) {
+  console.log('POST request received'); // Debug log
   try {
     const bookingData = await req.json();
+    console.log('Received booking data:', bookingData); // Debug log
     
     // Validate required fields
     const requiredFields = ['firstname', 'lastname', 'email', 'phone', 'numberOfGuests', 'destinationName'];
     for (const field of requiredFields) {
       if (!bookingData[field]) {
+        console.log(`Missing required field: ${field}`); // Debug log
         return NextResponse.json(
           { error: `Missing required field: ${field}` },
           { status: 400 }
@@ -96,6 +105,7 @@ export async function POST(req: NextRequest) {
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(bookingData.email)) {
+      console.log('Invalid email format'); // Debug log
       return NextResponse.json(
         { error: 'Invalid email format' },
         { status: 400 }
@@ -105,6 +115,7 @@ export async function POST(req: NextRequest) {
     // Validate phone number (basic validation)
     const phoneRegex = /^\+?[\d\s-]{10,}$/;
     if (!phoneRegex.test(bookingData.phone)) {
+      console.log('Invalid phone number format'); // Debug log
       return NextResponse.json(
         { error: 'Invalid phone number format' },
         { status: 400 }
@@ -113,6 +124,7 @@ export async function POST(req: NextRequest) {
 
     // Validate number of guests
     if (bookingData.numberOfGuests < 1) {
+      console.log('Invalid number of guests'); // Debug log
       return NextResponse.json(
         { error: 'Number of guests must be at least 1' },
         { status: 400 }
@@ -136,6 +148,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    console.log('Booking created:', booking); // Debug log
+
     return NextResponse.json({ 
       message: 'Booking created successfully',
       booking 
@@ -144,7 +158,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('Error creating booking:', error);
     return NextResponse.json(
-      { error: 'Error creating booking' },
+      { error: 'Error creating booking', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }
@@ -152,11 +166,13 @@ export async function POST(req: NextRequest) {
 
 // PUT endpoint - Update booking status (authenticated)
 export async function PUT(req: NextRequest) {
+  console.log('PUT request received'); // Debug log
   try {
     // Check authentication with Clerk
     const { userId } = getAuth(req);
 
     if (!userId) {
+      console.log('Unauthorized access attempt'); // Debug log
       return NextResponse.json(
         { error: 'Unauthorized - Please login to update bookings' },
         { status: 401 }
@@ -166,18 +182,21 @@ export async function PUT(req: NextRequest) {
     // Parse booking ID and updated data from request
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
-    const { status } = await req.json() as { status: Status };
+    const body = await req.json();
+    console.log('Received PUT request:', { id, body }); // Debug log
 
     if (!id) {
+      console.log('Missing booking ID'); // Debug log
       return NextResponse.json(
         { error: 'Booking ID is required' },
         { status: 400 }
       );
     }
 
-    if (!Object.values(Status).includes(status)) {
+    if (!body.status || !Object.values(Status).includes(body.status)) {
+      console.log('Invalid status value:', body.status); // Debug log
       return NextResponse.json(
-        { error: 'Invalid status value' },
+        { error: 'Invalid or missing status value' },
         { status: 400 }
       );
     }
@@ -185,14 +204,16 @@ export async function PUT(req: NextRequest) {
     // Update the booking status
     const booking = await prisma.booking.update({
       where: { id },
-      data: { status },
+      data: { status: body.status as Status },
     });
+
+    console.log('Updated booking:', booking); // Debug log
 
     return NextResponse.json({ booking });
   } catch (error) {
     console.error('Error updating booking status:', error);
     return NextResponse.json(
-      { error: 'Failed to update booking status' },
+      { error: 'Failed to update booking status', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }
