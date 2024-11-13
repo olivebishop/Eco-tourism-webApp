@@ -53,7 +53,6 @@ export function CreatePackageForm() {
         throw new Error('Failed to create package')
       }
 
-      await response.json()
       toast.success('Package created successfully')
       router.push(`/packages`)
     } catch (error) {
