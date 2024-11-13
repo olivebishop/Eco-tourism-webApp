@@ -53,9 +53,8 @@ export function CreatePackageForm() {
         throw new Error('Failed to create package')
       }
 
-      const newPackage = await response.json()
       toast.success('Package created successfully')
-      router.push(`/packages/${newPackage.id}`)
+      router.push(`/packages`)
     } catch (error) {
       console.error('Error creating package:', error)
       toast.error('Failed to create package')
