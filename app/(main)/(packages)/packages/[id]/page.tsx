@@ -9,11 +9,11 @@ export default async function PackagePage({ params }: { params: { id: string } }
   if (!pkg) {
     notFound()
   }
-
   const transformedPackage: PackageDetailProps = {
     ...pkg,
     imageUrl: pkg.imageData || '',
   }
+  
 
   return <PackageDetail package={transformedPackage} />
 }
