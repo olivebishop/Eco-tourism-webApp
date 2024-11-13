@@ -41,7 +41,7 @@ export default function RecentBookings() {
       const response = await fetch('/api/bookings')
       if (response.status !== 200) {
         if (retryCount < maxRetries) {
-          await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1))) // Exponential backoff
+          await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)))
           return fetchBookings(retryCount + 1, maxRetries)
         } else {
           console.error(`Failed to fetch bookings after ${maxRetries} attempts`)
@@ -49,7 +49,15 @@ export default function RecentBookings() {
         }
       }
       const data: BookingsResponse = await response.json()
-      setBookings(data.bookings)
+      // Take only the 4 most recent bookings
+      const recentBookings = data.bookings
+        .sort((a, b) => {
+          const dateA = a.bookingDate ? new Date(a.bookingDate).getTime() : 0
+          const dateB = b.bookingDate ? new Date(b.bookingDate).getTime() : 0
+          return dateB - dateA
+        })
+        .slice(0, 4)
+      setBookings(recentBookings)
     } catch (err) {
       console.error('Error fetching bookings:', err)
     } finally {
@@ -72,7 +80,8 @@ export default function RecentBookings() {
 
   const renderTableContent = () => {
     if (isLoading) {
-      return Array(5).fill(0).map((_, index) => (
+      // Show only 4 skeleton rows while loading
+      return Array(4).fill(0).map((_, index) => (
         <TableRow key={index}>
           <TableCell><Skeleton className="h-6 w-full" /></TableCell>
           <TableCell><Skeleton className="h-6 w-full" /></TableCell>
@@ -127,8 +136,8 @@ export default function RecentBookings() {
     <Card className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
-          <CardTitle className="text-lg sm:text-xl md:text-2xl">Travel Bookings</CardTitle>
-          <CardDescription className="text-sm md:text-base">Recent tours and expeditions</CardDescription>
+          <CardTitle className="text-lg sm:text-xl md:text-2xl">Recent Bookings</CardTitle>
+          <CardDescription className="text-sm md:text-base">Latest 4 tours and expeditions</CardDescription>
         </div>
         <Button
           variant="outline"

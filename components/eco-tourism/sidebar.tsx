@@ -1,16 +1,16 @@
 'use client'
 
+
 import * as React from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useUser, useClerk } from "@clerk/nextjs"
 import { 
-  BookCheck, 
   ChevronDown, 
   ChevronRight,
   Home, 
   LogOut,
-  Menu, 
+  Menu,
   Settings, 
   X,
   PenTool,
@@ -55,7 +55,14 @@ export default function Component({ isOpen, setIsOpen }: SidebarProps) {
 
   const navItems = [
     { href: "/management-portal/dashboard", icon: Home, label: "Dashboard" },
-    { href: "/management-portal/view-bookings", icon: BookCheck, label: "Bookings" },
+    { 
+      icon:  Package, 
+      label: "Bookings",
+      children: [
+        { href: "/management-portal/view-bookings", label: "View Destination" },
+        { href: "/management-portal/view-packages", label: "View Packages" },
+      ]
+    },
     { 
       icon:  Package, 
       label: "Packages",

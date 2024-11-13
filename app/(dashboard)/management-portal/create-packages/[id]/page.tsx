@@ -15,18 +15,24 @@ import { Skeleton } from '@/components/ui/skeleton'
 interface PackageFormData {
     name: string
     location: string
+    duration: string | number
+    groupSize: string | number
     price: number
     description: string
-    imageUrl?: string
+    imageData?: string
+    included?: string[]
 }
 
 export default function EditPackagePage({ params }: { params: { id: string } }) {
     const [formData, setFormData] = useState<PackageFormData>({
         name: '',
         location: '',
+        duration: '',
+        groupSize: '',
         price: 0,
         description: '',
-        imageUrl: '',
+        imageData: '',
+        included: []
     })
     const [isLoading, setIsLoading] = useState(true)
     const [isSaving, setIsSaving] = useState(false)
@@ -47,9 +53,12 @@ export default function EditPackagePage({ params }: { params: { id: string } }) 
             setFormData({
                 name: data.name,
                 location: data.location,
+                duration: data.duration || '',
+                groupSize: data.groupSize || '',
                 price: data.price,
                 description: data.description,
-                imageUrl: data.imageUrl || '',
+                imageData: data.imageData || '',
+                included: data.included || []
             })
             toast({
                 title: 'Package Loaded',
@@ -72,6 +81,18 @@ export default function EditPackagePage({ params }: { params: { id: string } }) 
         e.preventDefault()
         setIsSaving(true)
 
+        // Validate required fields
+        if (!formData.name || !formData.location || !formData.duration || 
+            !formData.groupSize || !formData.price || !formData.description) {
+            toast({
+                title: 'Validation Error',
+                description: 'Please fill in all required fields.',
+                variant: 'destructive',
+            })
+            setIsSaving(false)
+            return
+        }
+
         try {
             const response = await fetch(`/api/packages/${params.id}`, {
                 method: 'PUT',
@@ -88,7 +109,7 @@ export default function EditPackagePage({ params }: { params: { id: string } }) 
 
             toast({
                 title: 'Package Updated Successfully',
-                description: `"${formData.name}" has been updated with a price of $${formData.price.toFixed(2)} and ${formData.description.length} characters of description.`,
+                description: `"${formData.name}" has been updated successfully.`,
                 duration: 5000,
             })
 
@@ -128,22 +149,18 @@ export default function EditPackagePage({ params }: { params: { id: string } }) 
                         <Skeleton className="h-4 w-16" />
                         <Skeleton className="h-10 w-full" />
                     </div>
-
                     <div className="space-y-2">
                         <Skeleton className="h-4 w-20" />
                         <Skeleton className="h-40 w-full" />
                     </div>
-
                     <div className="space-y-2">
                         <Skeleton className="h-4 w-32" />
                         <Skeleton className="h-10 w-full" />
                     </div>
-
                     <div className="space-y-2">
                         <Skeleton className="h-4 w-24" />
                         <Skeleton className="h-10 w-full" />
                     </div>
-
                     <div className="flex justify-end space-x-4">
                         <Skeleton className="h-10 w-24" />
                         <Skeleton className="h-10 w-32" />
@@ -194,6 +211,28 @@ export default function EditPackagePage({ params }: { params: { id: string } }) 
                     </div>
 
                     <div className="space-y-2">
+                        <Label htmlFor="duration">Duration (days)</Label>
+                        <Input
+                            id="duration"
+                            type="number"
+                            value={formData.duration}
+                            onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                            required
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <Label htmlFor="groupSize">Group Size</Label>
+                        <Input
+                            id="groupSize"
+                            type="number"
+                            value={formData.groupSize}
+                            onChange={(e) => setFormData({ ...formData, groupSize: e.target.value })}
+                            required
+                        />
+                    </div>
+
+                    <div className="space-y-2">
                         <Label htmlFor="price">Price</Label>
                         <Input
                             id="price"
@@ -216,11 +255,11 @@ export default function EditPackagePage({ params }: { params: { id: string } }) 
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="imageUrl">Image URL (optional)</Label>
+                        <Label htmlFor="imageData">Image Data (optional)</Label>
                         <Input
-                            id="imageUrl"
-                            value={formData.imageUrl || ''}
-                            onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                            id="imageData"
+                            value={formData.imageData || ''}
+                            onChange={(e) => setFormData({ ...formData, imageData: e.target.value })}
                         />
                     </div>
 

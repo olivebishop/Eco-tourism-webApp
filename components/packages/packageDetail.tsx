@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { ArrowLeft, MapPin, Calendar, Clock, Users } from "lucide-react"
+import { ArrowLeft, MapPin, Calendar, Clock, Users } from 'lucide-react'
 import { format } from "date-fns"
 import { Calendar as CalendarComponent } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -17,12 +17,12 @@ interface PackageDetailProps {
     id: string
     name: string
     location: string
-    imageUrl: string
+    imageData: string
     duration: string
     groupSize: string
     price: number
     description: string
-    included: { id: string; item: string }[]
+    included: string[]
   }
 }
 
@@ -44,7 +44,8 @@ export default function PackageDetail({ package: travelPackage }: PackageDetailP
       bookingDate: bookingDate?.toISOString(),
       specialRequests: formData.get('special-requests') as string,
       destinationName: travelPackage.name,
-      price: travelPackage.price
+      price: travelPackage.price,
+      country: formData.get('country') as string,
     }
 
     try {
@@ -76,7 +77,7 @@ export default function PackageDetail({ package: travelPackage }: PackageDetailP
   }
 
   return (
-    <div className="min-h-screen bg-green-50">
+    <div className="min-h-screen bg-background">
       <div className="max-w-6xl mx-auto px-4 py-8">
         <Link href="/packages" passHref>
           <Button variant="ghost" className="mb-6">
@@ -84,10 +85,10 @@ export default function PackageDetail({ package: travelPackage }: PackageDetailP
           </Button>
         </Link>
         
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="bg-card rounded-lg shadow-lg overflow-hidden">
           <div className="relative h-64 sm:h-96">
             <img 
-              src={travelPackage.imageUrl} 
+              src={travelPackage.imageData} 
               alt={travelPackage.name} 
               className="w-full h-full object-cover"
             />
@@ -102,24 +103,24 @@ export default function PackageDetail({ package: travelPackage }: PackageDetailP
           <div className="p-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8">
               <div className="flex items-center">
-                <Clock className="h-6 w-6 mr-2 text-blue-500" />
+                <Clock className="h-6 w-6 mr-2 text-primary" />
                 <div>
-                  <p className="text-sm text-gray-500">Duration</p>
+                  <p className="text-sm text-muted-foreground">Duration</p>
                   <p className="font-semibold">{travelPackage.duration}</p>
                 </div>
               </div>
               <div className="flex items-center">
-                <Users className="h-6 w-6 mr-2 text-green-500" />
+                <Users className="h-6 w-6 mr-2 text-primary" />
                 <div>
-                  <p className="text-sm text-gray-500">Group Size</p>
+                  <p className="text-sm text-muted-foreground">Group Size</p>
                   <p className="font-semibold">{travelPackage.groupSize}</p>
                 </div>
               </div>
               <div className="flex items-center">
-                <Calendar className="h-6 w-6 mr-2 text-yellow-500" />
+                <Calendar className="h-6 w-6 mr-2 text-primary" />
                 <div>
-                  <p className="text-sm text-gray-500">Price</p>
-                  <p className="font-semibold">KES {travelPackage.price}</p>
+                  <p className="text-sm text-muted-foreground">Price</p>
+                  <p className="font-semibold">KES {travelPackage.price.toLocaleString()}</p>
                 </div>
               </div>
             </div>
@@ -127,12 +128,12 @@ export default function PackageDetail({ package: travelPackage }: PackageDetailP
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div>
                 <h2 className="text-2xl font-bold mb-4">About this Package</h2>
-                <p className="text-gray-700 mb-8">{travelPackage.description}</p>
+                <p className="text-muted-foreground mb-8">{travelPackage.description}</p>
                 
                 <h3 className="text-xl font-bold mb-4">What&apos;s Included:</h3>
                 <ul className="list-disc pl-5 mb-8">
-                  {travelPackage.included.map((item) => (
-                    <li key={item.id} className="text-gray-700 mb-2">{item.item}</li>
+                  {travelPackage.included.map((item, index) => (
+                    <li key={index} className="text-muted-foreground mb-2">{item}</li>
                   ))}
                 </ul>
               </div>
@@ -159,6 +160,11 @@ export default function PackageDetail({ package: travelPackage }: PackageDetailP
                   <div>
                     <Label htmlFor="phone">Phone Number</Label>
                     <Input id="phone" name="phone" type="tel" placeholder="Enter your phone number" required />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="country">Country</Label>
+                    <Input id="country" name="country" placeholder="Enter your country" />
                   </div>
 
                   <div>
@@ -193,7 +199,7 @@ export default function PackageDetail({ package: travelPackage }: PackageDetailP
 
                   <Button 
                     type="submit" 
-                    className="w-full bg-green-600 hover:bg-green-700 text-white"
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                     disabled={isLoading}
                   >
                     {isLoading ? 'Processing...' : 'Book Now'}
