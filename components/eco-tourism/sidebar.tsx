@@ -4,20 +4,7 @@ import * as React from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useUser, useClerk } from "@clerk/nextjs"
-import { 
-  BookCheck, 
-  ChevronDown, 
-  ChevronRight,
-  Home, 
-  LogOut,
-  Menu, 
-  Settings, 
-  X,
-  PenTool,
-  Leaf,
-  UserCircle,
-  Package
-} from "lucide-react"
+import { ChevronDown, ChevronRight, Home, LogOut, Menu, Settings, X, PenTool, Leaf, UserCircle, Package, BookOpen, FileText } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import {
@@ -51,25 +38,32 @@ export default function Component({ isOpen, setIsOpen }: SidebarProps) {
   const { user } = useUser()
   const { signOut } = useClerk()
   const [showLogoutDialog, setShowLogoutDialog] = React.useState(false)
-  const [openCollapsible, setOpenCollapsible] = React.useState(true)
+  const [openCollapsibles, setOpenCollapsibles] = React.useState<Record<string, boolean>>({})
 
   const navItems = [
     { href: "/management-portal/dashboard", icon: Home, label: "Dashboard" },
-    { href: "/management-portal/view-bookings", icon: BookCheck, label: "Bookings" },
     { 
-      icon:  Package, 
+      icon: BookOpen, 
+      label: "Bookings",
+      children: [
+        { href: "/management-portal/view-bookings", label: "View Destination", icon: Package },
+        { href: "/management-portal/view-packages", label: "View Packages", icon: Package },
+      ]
+    },
+    { 
+      icon: Package, 
       label: "Packages",
       children: [
-        { href: "/management-portal/create-packages", label: "Create Packages" },
-        { href: "/management-portal/manage-packages", label: "Manage Packages" },
+        { href: "/management-portal/create-packages", label: "Create Packages", icon: FileText },
+        { href: "/management-portal/manage-packages", label: "Manage Packages", icon: Settings },
       ]
     },
     { 
       icon: PenTool, 
       label: "Blogs",
       children: [
-        { href: "/management-portal/create-blogs", label: "Create Blogs" },
-        { href: "/management-portal/manage-blogs", label: "Manage Blogs" },
+        { href: "/management-portal/create-blogs", label: "Create Blogs", icon: FileText },
+        { href: "/management-portal/manage-blogs", label: "Manage Blogs", icon: Settings },
       ]
     },
   ]
@@ -85,6 +79,10 @@ export default function Component({ isOpen, setIsOpen }: SidebarProps) {
     } catch (error) {
       console.error('Error signing out:', error)
     }
+  }
+
+  const toggleCollapsible = (label: string) => {
+    setOpenCollapsibles(prev => ({ ...prev, [label]: !prev[label] }))
   }
 
   return (
@@ -132,7 +130,7 @@ export default function Component({ isOpen, setIsOpen }: SidebarProps) {
           <div className="flex items-center justify-between p-6 text-primary">
             <div className="flex items-center space-x-2">
               <Leaf className="h-6 w-6" />
-              <h2 className="text-lg font-bold">Mazingira Tours</h2>
+              <h2 className="text-lg font-bold"> Forestline Tours</h2>
             </div>
             <Button
               variant="ghost"
@@ -144,34 +142,35 @@ export default function Component({ isOpen, setIsOpen }: SidebarProps) {
             </Button>
           </div>
 
-          <nav className="flex-1 p-4 space-y-2 mb-2 overflow-y-auto">
+          <nav className="flex-1 p-4 space-y-1 mb-2 overflow-y-auto">
             {navItems.map((item, index) => {
               if (item.children) {
                 return (
                   <Collapsible
                     key={index}
-                    open={openCollapsible}
-                    onOpenChange={setOpenCollapsible}
+                    open={openCollapsibles[item.label]}
+                    onOpenChange={() => toggleCollapsible(item.label)}
                   >
                     <CollapsibleTrigger asChild>
                       <Button
                         variant="ghost"
-                        className="w-full justify-between"
+                        className="w-full justify-between mb-1"
                       >
                         <div className="flex items-center">
                           <item.icon className="mr-2 h-4 w-4" />
                           {item.label}
                         </div>
-                        <ChevronRight className={`h-4 w-4 transition-transform ${openCollapsible ? 'rotate-90' : ''}`} />
+                        <ChevronRight className={`h-4 w-4 transition-transform ${openCollapsibles[item.label] ? 'rotate-90' : ''}`} />
                       </Button>
                     </CollapsibleTrigger>
-                    <CollapsibleContent className="pl-6 space-y-2">
+                    <CollapsibleContent className="pl-6 space-y-1">
                       {item.children.map((child, childIndex) => (
                         <Link key={childIndex} href={child.href} onClick={() => setIsOpen(false)}>
                           <Button
                             variant={pathname === child.href ? "secondary" : "ghost"}
-                            className="w-full justify-start"
+                            className="w-full justify-start mb-1"
                           >
+                            {child.icon && <child.icon className="mr-2 h-4 w-4" />}
                             {child.label}
                           </Button>
                         </Link>
@@ -186,7 +185,7 @@ export default function Component({ isOpen, setIsOpen }: SidebarProps) {
                 <Link key={item.href} href={item.href} onClick={() => setIsOpen(false)}>
                   <Button
                     variant={isActive ? "secondary" : "ghost"}
-                    className="w-full justify-start relative"
+                    className="w-full justify-start mb-1"
                   >
                     <item.icon className="mr-2 h-4 w-4" />
                     {item.label}
@@ -196,7 +195,7 @@ export default function Component({ isOpen, setIsOpen }: SidebarProps) {
             })}
           </nav>
 
-          <div className="p-4 border-t">
+          <div className="p-4 border-t mt-auto">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="w-full justify-start">

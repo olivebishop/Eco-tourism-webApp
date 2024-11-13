@@ -1,143 +1,171 @@
-// File: pages/packages/page.tsx
 'use client'
 
-import * as React from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { useState, useEffect } from "react"
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { PackageCard } from "@/components/packages/package-card"
-import { packageTypes, simpleDestinations } from "@/utils/package"
+import { Package } from "@/types/packages"
+
+// Cache configuration
+const CACHE_KEY = 'packages_data'
+const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
 
 export default function PackagesPage() {
-  const [selectedType, setSelectedType] = React.useState('all')
-  const [currentPage, setCurrentPage] = React.useState(1)
-  const itemsPerPage = 6 // Reduced from 9 to better fit the smaller dataset
+  const [packages, setPackages] = useState<Package[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 6 // Reduced for better visual balance
 
-  // Filter destinations based on selected type
-  const filteredDestinations = simpleDestinations.filter(
-    dest => selectedType === 'all' || dest.type === selectedType
-  )
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        setLoading(true)
+        
+        // Check cache first
+        const cachedData = localStorage.getItem(CACHE_KEY)
+        if (cachedData) {
+          const { data, timestamp } = JSON.parse(cachedData)
+          if (Date.now() - timestamp < CACHE_DURATION) {
+            setPackages(data)
+            setLoading(false)
+            return
+          }
+        }
+
+        const response = await fetch('/api/packages')
+        if (!response.ok) {
+          throw new Error('No packages found , retry refreshing the page')
+        }
+        const data = await response.json()
+        
+        // Update cache
+        localStorage.setItem(CACHE_KEY, JSON.stringify({
+          data,
+          timestamp: Date.now()
+        }))
+        
+        setPackages(data)
+        setError(null)
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPackages()
+  }, [])
 
   // Calculate pagination
-  const totalPages = Math.ceil(filteredDestinations.length / itemsPerPage)
+  const totalPages = Math.ceil(packages.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
-  const displayedDestinations = filteredDestinations.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  )
+  const displayedPackages = packages.slice(startIndex, startIndex + itemsPerPage)
 
-  // Reset to first page when filter changes
-  React.useEffect(() => {
-    setCurrentPage(1)
-  }, [selectedType])
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="text-center space-y-6 max-w-md mx-auto">
+          <h2 className="text-3xl font-bold text-red-600">Error Loading Packages</h2>
+          <p className="text-gray-600 text-lg">{error}</p>
+          <Button 
+            onClick={() => window.location.reload()}
+            className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-lg"
+          >
+            Try Again
+          </Button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
       {/* Hero Section */}
-      <div className="relative h-[40vh] min-h-[300px] flex items-center justify-center mb-8 container mx-auto px-4">
-        <div className="absolute inset-0 rounded-3xl overflow-hidden">
+      <div className="relative h-[50vh] min-h-[400px] flex items-center justify-center mb-16">
+        <div className="absolute inset-0">
           <img
             src="/images/diani.jpg"
             alt="Beach sunset"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/40" />
+          <div className="absolute inset-0 bg-black/50" />
         </div>
         
-        <div className="relative z-10 text-center space-y-4">
-          <h1 className="text-3xl md:text-5xl font-bold text-white">
-            Travel Packages
+        <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
+          <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight">
+            Discover Kenya&apos;s Beauty
           </h1>
-          <p className="text-base md:text-lg text-white/90 max-w-2xl mx-auto px-4">
-            Discover the beauty of Kenya through our carefully curated travel experiences
+          <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto">
+            Experience unforgettable adventures through our carefully curated travel packages
           </p>
-        </div>
-      </div>
-
-      {/* Package Types Filter - Made more responsive */}
-      <div className="max-w-4xl mx-auto px-4 mb-8">
-        <div className="flex flex-wrap justify-center gap-2 md:gap-4">
-          <Button
-            key="all"
-            variant={selectedType === 'all' ? 'default' : 'outline'}
-            className={`h-10 md:h-12 px-4 md:px-6 text-sm md:text-base transition-all ${
-              selectedType === 'all' 
-                ? 'bg-green-600 hover:bg-green-700 text-white' 
-                : 'hover:bg-green-50 hover:text-green-600 hover:border-green-600'
-            }`}
-            onClick={() => setSelectedType('all')}
-          >
-            All Packages
+          <Button className="bg-green-600 hover:bg-green-700 text-white text-lg px-8 py-3">
+            Explore Packages
           </Button>
-          {packageTypes.map((type) => {
-            const Icon = type.icon
-            return (
-              <Button
-                key={type.id}
-                variant={selectedType === type.id ? 'default' : 'outline'}
-                className={`h-10 md:h-12 px-4 md:px-6 text-sm md:text-base transition-all ${
-                  selectedType === type.id 
-                    ? 'bg-green-600 hover:bg-green-700 text-white' 
-                    : 'hover:bg-green-50 hover:text-green-600 hover:border-green-600'
-                }`}
-                onClick={() => setSelectedType(type.id)}
-              >
-                <Icon className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                <span className="hidden sm:inline">{type.name}</span>
-                <span className="sm:hidden">{type.name.split(' ')[0]}</span>
-              </Button>
-            )
-          })}
         </div>
       </div>
 
-      {/* Package Cards - Responsive grid */}
-      <div className="max-w-6xl mx-auto px-4 mb-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {displayedDestinations.map((destination) => (
-            <PackageCard
-              key={destination.id}
-              name={destination.name}
-              image={destination.image}
-            />
-          ))}
-        </div>
+      {/* Package Cards */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8 text-center">Our Featured Packages</h2>
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div 
+                key={index}
+                className="h-[400px] bg-gray-100 rounded-xl animate-pulse"
+              />
+            ))}
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {displayedPackages.map((pkg) => (
+                <PackageCard
+                  key={pkg.id}
+                  package={pkg}
+                />
+              ))}
+            </div>
 
-        {/* Pagination - Made more responsive */}
-        {totalPages > 1 && (
-          <div className="flex justify-center items-center gap-1 md:gap-2 mt-8 md:mt-12">
+            {packages.length === 0 && (
+              <div className="text-center py-16">
+                <h3 className="text-2xl font-semibold text-gray-600 mb-2">
+                  No packages available
+                </h3>
+                <p className="text-gray-500">
+                  Check back later for exciting new travel packages
+                </p>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Pagination */}
+        {!loading && totalPages > 1 && (
+          <div className="flex justify-center items-center gap-4 mt-12">
             <Button
               variant="outline"
               size="icon"
               onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
               disabled={currentPage === 1}
-              className="w-8 h-8 md:w-10 md:h-10 hover:bg-green-50 hover:text-green-600 hover:border-green-600"
+              className="w-12 h-12 rounded-full hover:bg-green-50 hover:text-green-600 hover:border-green-600"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-6 w-6" />
             </Button>
             
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <Button
-                key={page}
-                variant={currentPage === page ? 'default' : 'outline'}
-                className={`w-8 h-8 md:w-10 md:h-10 text-sm md:text-base ${
-                  currentPage === page 
-                    ? 'bg-green-600 hover:bg-green-700 text-white' 
-                    : 'hover:bg-green-50 hover:text-green-600 hover:border-green-600'
-                }`}
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </Button>
-            ))}
+            <span className="text-lg font-medium text-gray-700">
+              Page {currentPage} of {totalPages}
+            </span>
             
             <Button
               variant="outline"
               size="icon"
               onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
               disabled={currentPage === totalPages}
-              className="w-8 h-8 md:w-10 md:h-10 hover:bg-green-50 hover:text-green-600 hover:border-green-600"
+              className="w-12 h-12 rounded-full hover:bg-green-50 hover:text-green-600 hover:border-green-600"
             >
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-6 w-6" />
             </Button>
           </div>
         )}

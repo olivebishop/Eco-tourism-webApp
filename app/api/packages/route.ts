@@ -54,6 +54,13 @@ export async function POST(request: Request) {
     if (!name || !location || !duration || !groupSize || !price || !description) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
+
+    // Transform the included array into the correct format matching your schema
+    const includedData = {
+      create: included.map((item: string) => ({
+        item: item // Changed from 'name' to 'item' to match your schema
+      }))
+    }
     
     const newPackage = await prisma.package.create({
       data: {
@@ -64,10 +71,13 @@ export async function POST(request: Request) {
         groupSize,
         price: parseFloat(price),
         description,
-        included,
+        included: includedData,
         authorId: userId,
         authorName: `${user.firstName} ${user.lastName}`.trim(),
       },
+      include: {
+        included: true // Include the related items in the response
+      }
     })
     
     return NextResponse.json(newPackage, { status: 201 })

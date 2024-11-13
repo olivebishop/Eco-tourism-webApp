@@ -6,6 +6,9 @@ export async function getPackageById(id: string) {
   try {
     const pkg = await prisma.package.findUnique({
       where: { id },
+      include: {
+        included: true, // Include the related items
+      }
     })
     
     if (pkg) {
