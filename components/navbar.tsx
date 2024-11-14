@@ -28,8 +28,8 @@ const Navbar = () => {
         <div className="flex h-20 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
             <Leaf className="h-8 w-8 text-green-600" />
-            <span className="hidden text-2xl font-bold text-green-800 sm:inline-block">
-            Forestline Tours & Travel
+            <span className="hidden text-xl font-bold text-green-800 sm:inline-block">
+            Forestline Tours 
             </span>
           </Link>
           <div className="hidden sm:block">
