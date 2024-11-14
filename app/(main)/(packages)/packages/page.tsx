@@ -98,9 +98,6 @@ export default function PackagesPage() {
           <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto">
             Experience unforgettable adventures through our carefully curated travel packages
           </p>
-          <Button className="bg-green-600 hover:bg-green-700 text-white text-lg px-8 py-3">
-            Explore Packages
-          </Button>
         </div>
       </div>
 
