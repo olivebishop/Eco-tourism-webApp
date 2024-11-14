@@ -236,8 +236,8 @@ const EcoTourismFooter: React.FC = () => {
                   </a>
                 </div>
                 <div className="flex mb-6 lg:mb-0 items-center">
-                  <a className="inline-block mr-4 sm:mr-10 text-sm font-semibold text-gray-500 hover:text-gray-600" href="#">Privacy Policy</a>
-                  <a className="inline-block mr-4 sm:mr-10 text-sm font-semibold text-gray-500 hover:text-gray-600" href="#">Terms & Conditions</a>
+                  <a className="inline-block mr-4 sm:mr-10 text-sm font-semibold text-gray-500 hover:text-gray-600" href="/careers">Careers</a>
+                  <a className="inline-block mr-4 sm:mr-10 text-sm font-semibold text-gray-500 hover:text-gray-600" href="/terms-and-condition">Terms & Conditions</a>
                   <a className="inline-block text-sm font-semibold text-gray-500 hover:text-gray-600" href="/contact">Support</a>
                 </div>
                 <div className="flex-grow mb-6 lg:mb-0"></div>
