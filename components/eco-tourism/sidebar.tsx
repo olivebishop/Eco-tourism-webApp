@@ -200,11 +200,11 @@ export default function Component({ isOpen, setIsOpen }: SidebarProps) {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="w-full justify-start">
                   <Avatar className="mr-2 h-8 w-8">
-                    <AvatarImage src={user?.imageUrl} alt={user?.fullName || 'User'} />
+                    <AvatarImage src={user?.imageUrl} alt={user?.fullName || 'Admin'} />
                     <AvatarFallback>{user?.firstName?.charAt(0) || 'U'}</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col items-start">
-                    <span className="font-medium text-sm">{user?.fullName || 'User'}</span>
+                    <span className="font-medium text-sm">{user?.fullName || 'Admin'}</span>
                     <span className="text-xs text-muted-foreground truncate max-w-[120px]">
                       {user?.primaryEmailAddress?.emailAddress || ''}
                     </span>
