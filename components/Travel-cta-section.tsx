@@ -53,7 +53,7 @@ const TravelCTASection: React.FC = () => {
               
               <a 
                 className="px-8 py-4 bg-green-600 rounded-full text-lg font-bold text-white hover:bg-green-700 transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                href="#"
+                href="/packages"
               >
                 Book Your Safari Now
               </a>
