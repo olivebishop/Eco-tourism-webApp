@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     default: 'Forestline Tours',
     template: `Forestline Tours`
   },
-  description: 'The best tour agency that connects tourist with magical destinations',
+  description: 'The best tour agency  that connects tourist with magical destinations',
   keywords: ['African Safaris', 'Tours in Nairobi', 'Kenya Safaris', 'Best African Tour Company', 'Big Five Safaris', 'Nairobi Tours and Safaris', 'Top Safari Company in Africa', 'Wildlife Tours in Kenya', 'Luxury Safaris', 
     'Adventure Tours Africa', 'Forestline Tours, Kenya', 'Forestline Tours, Nairobi', 'Forestline Tours, Africa', 'Forestline Tours, Best Tour Company in Africa', 'Forestline Tours, Best Tour Company in Kenya', 'Forestline Tours, Best Tour Company in Nairobi,Forestline Packages, Diani Travel Packages, Mombasa Travel Packages, Nairobi Travel Packages, Kenya Travel Packages, Africa Travel Packages, Best Travel Packages in Africa, Best Travel Packages in Kenya, Best Travel Packages in Nairobi, Best Travel Packages in Diani, Best Travel Packages in Mombasa ,Japan Tour Travel',],
   alternates: {
