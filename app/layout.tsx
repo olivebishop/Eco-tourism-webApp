@@ -14,6 +14,8 @@ const geistSans = localFont({
   weight: "100 900",
 });
 
+
+
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
@@ -73,6 +75,7 @@ export default function RootLayout({
     <AuthWrapper>
       <html lang="en" suppressHydrationWarning>
         <head>
+        <meta name="google-site-verification" content="google-site-verification: googlec1b1726e9f555276.html" />
         <Script
           id="Cookiebot"
           src="https://consent.cookiebot.com/uc.js"
