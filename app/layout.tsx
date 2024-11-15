@@ -21,21 +21,14 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.olivebishop.me"),
+  metadataBase: new URL("https://www.forestlinetours.co.ke/"),
   title: {
     default: 'Forestline Tours',
-    template: `|Forestline Tours`
+    template: `Forestline Tours`
   },
-  description: 'Tour agency that connects tourist with magical destinations',
+  description: 'The best tour agency that connects tourist with magical destinations',
   keywords: ['African Safaris', 'Tours in Nairobi', 'Kenya Safaris', 'Best African Tour Company', 'Big Five Safaris', 'Nairobi Tours and Safaris', 'Top Safari Company in Africa', 'Wildlife Tours in Kenya', 'Luxury Safaris', 
-    'Adventure Tours Africa', 'Forestline Tours, Kenya', 'Forestline Tours, Nairobi', 'Forestline Tours, Africa', 'Forestline Tours, Best Tour Company in Africa', 'Forestline Tours, Best Tour Company in Kenya', 'Forestline Tours, Best Tour Company in Nairobi,Forestline Packages, Diani Travel Packages, Mombasa Travel Packages, Nairobi Travel Packages, Kenya Travel Packages, Africa Travel Packages, Best Travel Packages in Africa, Best Travel Packages in Kenya, Best Travel Packages in Nairobi, Best Travel Packages in Diani, Best Travel Packages in Mombasa',],
-  openGraph: {
-    images: '/og-image.png'
-  },
-  twitter: {
-    site: '@Forestline Tours',
-    creator: '@forestlinetours',
-  },
+    'Adventure Tours Africa', 'Forestline Tours, Kenya', 'Forestline Tours, Nairobi', 'Forestline Tours, Africa', 'Forestline Tours, Best Tour Company in Africa', 'Forestline Tours, Best Tour Company in Kenya', 'Forestline Tours, Best Tour Company in Nairobi,Forestline Packages, Diani Travel Packages, Mombasa Travel Packages, Nairobi Travel Packages, Kenya Travel Packages, Africa Travel Packages, Best Travel Packages in Africa, Best Travel Packages in Kenya, Best Travel Packages in Nairobi, Best Travel Packages in Diani, Best Travel Packages in Mombasa ,Japan Tour Travel',],
   alternates: {
     canonical: '/',
     languages: {
@@ -43,7 +36,33 @@ export const metadata: Metadata = {
       'de-DE': '/de-DE'
     }
   },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@forestlinetours', // Your Twitter handle
+    creator: '@forestlinetours', // Your Twitter handle
+    images: {
+      url: 'https://www.forestlinetours.co.ke/opengraph-image',
+      alt: 'Forestline Tours',
+    },
+    
+  },
+  //opengraph for sharing on social media
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://www.forestlinetours.co.ke/',
+    siteName: 'Forestline Tours',
+    title: 'Forestline Tours',
+    description: 'Tour agency that connects tourist with magical destinations',
+    images: [{
+      url: 'https://www.forestlinetours.co.ke/opengraph-image',
+      width: 1200,
+      height: 630,
+      alt: 'Forestline Tours',
+    }],
+  },
 }
+
 
 export default function RootLayout({
   children,
