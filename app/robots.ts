@@ -1,27 +1,46 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
+  const domain = 'https://www.forestlinetours.co.ke'
+
   return {
     rules: [
       {
         userAgent: '*',
         allow: '/',
         disallow: [
-          '/management-portal/dashboard/',
-          '/management-portal/create-blogs/',
-          '/management-portal/create-packages/',
-          '/management-portal/manage-blogs/',
-          '/management-portal/manage-packages/',
-          '/management-portal/user-profile/',
-          '/management-portal/view-bookings/',
-          '/management-portal/view-packages/',
-          '/management-portal/settings/',
-          '/sign-in/',
-          '/sign-up/',
-
+          // Management portal routes
+          '/management-portal',
+          '/management-portal/*',
+          
+          // Authentication routes
+          '/sign-in',
+          '/sign-up',
+          
+          
+          // API routes
+          '/api/*',
+          
+          // Private or sensitive routes
+          '/user/*',
+          '/profile',
+          
+          // Temporary or development routes
+          '/draft/*',
+          '/preview/*',
+          
+          // Error pages
+          '/404',
+          '/500',
+          
+          // Development specific paths
+          '/*.json',
+          '/*.xml',
+          '/*.php',
         ],
       },
     ],
-    sitemap: 'https://www.forestlinetours.co.ke/sitemap.xml',
+    sitemap: `${domain}/sitemap.xml`,
+    host: domain,
   }
 }

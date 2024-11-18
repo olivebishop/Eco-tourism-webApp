@@ -4,6 +4,11 @@ import { Leaf } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 import Link from 'next/link';
 
+
+export const metadata = {
+  title: 'About Us | Forestline Tours',
+  description: 'Learn more about Forestline Tours and our commitment to eco-friendly travel in Kenya.',
+};
 export default function AboutPage() {
   return (
     <section className="bg-green-50">

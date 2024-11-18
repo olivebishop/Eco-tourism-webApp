@@ -6,6 +6,10 @@ import Link from 'next/link';
 import { destinations, featuredAdventures } from '@/utils/destinationData';
 import DestinationsGrid from '@/components/destinations/destinationMiddleEastComponent';
 
+export const metadata = {
+    title: 'Destinations | Forestline Tours',
+    description: 'Explore the best destinations in Middle East with our eco-friendly tours and safaris.',
+  };
 export default function MiddleEastDestinations() {
     return (
         <div className="w-full min-h-screen bg-green-50">
@@ -22,21 +26,21 @@ export default function MiddleEastDestinations() {
                     </div>
                 </div>
                 <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
-                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white leading-tight">
-                        Destinations
-                    </h1>
-                    <p className="text-lg sm:text-xl md:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed">
-                        Discover the best of Middle East with our eco-friendly tours and safaris
-                    </p>
-                </div>
+          <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight">
+            Discover Middle East&apos;s Beauty
+          </h1>
+          <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto">
+            Experience unforgettable adventures through our carefully curated Asian travel destinations
+          </p>
+        </div>
             </div>
 
             {/* Main Content Section */}
             <div className="max-w-7xl mx-auto px-4">
-                <h1 className="text-3xl font-bold mb-6 font-mono">
-                    Discover Middle East&apos;s Finest <br/>
-                    <span className="font-serif italic text-green-600 text-2xl">Destinations</span>
-                </h1>
+                <h2 className="text-3xl font-bold mb-6 font-serif">
+                    Discover Middle-East&apos;s Finest 
+                    <span className="font-serif text-green-600 "> Destinations</span>
+                </h2>
            
                 {/* Adventures Section */}
                 <div className="py-8">

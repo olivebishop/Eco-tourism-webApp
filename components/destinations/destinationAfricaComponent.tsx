@@ -31,7 +31,6 @@ export default function Component() {
               Discover Africa&apos;s Finest Adventures
             </span>
           </h1>
-          <div className="w-24 h-1 bg-green-600 mx-auto mt-6"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
