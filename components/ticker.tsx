@@ -1,58 +1,59 @@
-'use client'
+"use client"
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React from 'react'
+import { Card } from '@/components/ui/card'
+import { motion } from 'framer-motion'
 
-const KenyaParksScroll = () => {
+const ParksTicker = () => {
   const parks = [
-    "Amboseli",
-    "Masaai Mara",
-    "Tsavo",
-    "Lake Nakuru",
-    "Nairobi Park"
-  ];
+    { name: "Amboseli" },
+    { name: "Masaai Mara" },
+    { name: "Tsavo" },
+    { name: "Lake Nakuru" },
+    { name: "Nairobi Park" }
+  ]
+
+  // Calculate the width needed for smooth scrolling
+  // We'll show the list 3 times to ensure smooth looping
+  const parksList = [...parks, ...parks, ...parks]
 
   return (
-    <div className="w-full backdrop-blur-sm py-6 mt-4">
-      <div className="container mx-auto px-4">
-        <div className="relative overflow-hidden">
+    <div className="w-full py-8 bg-gradient-to-r from-green-50 to-emerald-50">
+      <Card className="max-w-6xl mx-auto overflow-hidden">
+        <div className="relative overflow-hidden py-8 bg-green-50">
           <motion.div
             className="flex whitespace-nowrap"
             animate={{
-              x: ['0%', '-50%']
+              x: ["0%", "-33.33%"]
             }}
             transition={{
               x: {
                 repeat: Infinity,
                 repeatType: "loop",
                 duration: 20,
-                ease: "linear"
-              }
+                ease: "linear",
+              },
             }}
           >
-            {/* First set of items */}
-            {parks.map((park, index) => (
-              <span
-                key={`first-${index}`}
-                className="text-4xl font-serif text-gray-800 mx-8 inline-block"
+            {parksList.map((park, index) => (
+              <div
+                key={index}
+                className="inline-flex flex-col items-center px-12 group cursor-pointer"
               >
-                {park}
-              </span>
-            ))}
-            {/* Duplicated set for seamless loop */}
-            {parks.map((park, index) => (
-              <span
-                key={`second-${index}`}
-                className="text-4xl font-serif text-gray-800 mx-8 inline-block"
-              >
-                {park}
-              </span>
+                <span className="text-2xl md:text-3xl lg:text-4xl font-serif text-emerald-800 transition-all duration-300 group-hover:text-emerald-600 group-hover:scale-110">
+                  {park.name}
+                </span>
+              </div>
             ))}
           </motion.div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
-export default KenyaParksScroll;
+          {/* Gradient overlays for smooth fade effect */}
+          <div className="absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-green-100 to-transparent z-10" />
+          <div className="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-green-100 to-transparent z-10" />
+        </div>
+      </Card>
+    </div>
+  )
+}
+
+export default ParksTicker
