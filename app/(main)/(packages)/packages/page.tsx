@@ -103,7 +103,9 @@ export default function PackagesPage() {
 
       {/* Package Cards */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8 text-center">Our Featured Packages</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8 text-center">Our Featured 
+        <span className="text-green-600 "> Packages</span>
+        </h2>
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {Array.from({ length: 6 }).map((_, index) => (
