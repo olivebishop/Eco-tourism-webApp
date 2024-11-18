@@ -7,36 +7,23 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: '/',
+        allow: [
+          '/',
+          '/tours',
+          '/destinations',
+          '/about',
+          '/contact',
+          '/services'
+        ],
         disallow: [
-          // Management portal routes
-          '/management-portal',
           '/management-portal/*',
-          
-          // Authentication routes
           '/sign-in',
           '/sign-up',
-          
-          
-          // API routes
           '/api/*',
-          
-          // Private or sensitive routes
           '/user/*',
           '/profile',
-          
-          // Temporary or development routes
           '/draft/*',
-          '/preview/*',
-          
-          // Error pages
-          '/404',
-          '/500',
-          
-          // Development specific paths
-          '/*.json',
-          '/*.xml',
-          '/*.php',
+          '/preview/*'
         ],
       },
     ],
