@@ -1,5 +1,14 @@
 // app/sitemap.xml/route.ts
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+export const fetchCache = 'force-no-store'
 
+interface SitemapEntry {
+  url: string
+  lastModified: string
+  changeFrequency: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never'
+  priority: number
+}
 
 interface Blog {
   id: string
@@ -15,7 +24,9 @@ interface Package {
 
 async function fetchBlogs() {
   try {
-    const res = await fetch(`${process.env.API_URL}/api/blogs`)
+    const res = await fetch(`${process.env.API_URL}/api/blogs`, { 
+      next: { revalidate: 0 }
+    })
     const blogs: Blog[] = await res.json()
     return blogs
   } catch (error) {
@@ -26,7 +37,9 @@ async function fetchBlogs() {
 
 async function fetchPackages() {
   try {
-    const res = await fetch(`${process.env.API_URL}/api/packages`)
+    const res = await fetch(`${process.env.API_URL}/api/packages`, {
+      next: { revalidate: 0 }
+    })
     const packages: Package[] = await res.json()
     return packages
   } catch (error) {
@@ -39,14 +52,13 @@ export async function GET() {
   const baseUrl = "https://www.forestlinetours.co.ke"
 
   // Static pages with their respective priorities
-  const staticPages = [
+  const staticPages: SitemapEntry[] = [
     {
       url: baseUrl,
       lastModified: new Date().toISOString(),
       changeFrequency: 'daily',
       priority: 1,
     },
-    // Main navigation pages
     {
       url: `${baseUrl}/about`,
       lastModified: new Date().toISOString(),
@@ -54,48 +66,48 @@ export async function GET() {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date().toISOString(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/careers`,
-      lastModified: new Date().toISOString(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/terms-and-condition`,
-      lastModified: new Date().toISOString(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/destinations/africa`,
-      lastModified: new Date().toISOString(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/destinations/middle-east`,
-      lastModified: new Date().toISOString(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/blogs`,
-      lastModified: new Date().toISOString(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/packages`,
-      lastModified: new Date().toISOString(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    // ... rest of your static pages
+        url: `${baseUrl}/contact`,
+        lastModified: new Date().toISOString(),
+        changeFrequency: 'monthly',
+        priority: 0.8,
+      },
+      {
+        url: `${baseUrl}/careers`,
+        lastModified: new Date().toISOString(),
+        changeFrequency: 'monthly',
+        priority: 0.8,
+      },
+      {
+        url: `${baseUrl}/terms-and-condition`,
+        lastModified: new Date().toISOString(),
+        changeFrequency: 'monthly',
+        priority: 0.8,
+      },
+      {
+        url: `${baseUrl}/destinations/africa`,
+        lastModified: new Date().toISOString(),
+        changeFrequency: 'monthly',
+        priority: 0.8,
+      },
+      {
+        url: `${baseUrl}/destinations/middle-east`,
+        lastModified: new Date().toISOString(),
+        changeFrequency: 'monthly',
+        priority: 0.8,
+      },
+      {
+        url: `${baseUrl}/blogs`,
+        lastModified: new Date().toISOString(),
+        changeFrequency: 'monthly',
+        priority: 0.8,
+      },
+      {
+        url: `${baseUrl}/packages`,
+        lastModified: new Date().toISOString(),
+        changeFrequency: 'monthly',
+        priority: 0.8,
+      },
+    // ... rest of your static pages ...
   ]
 
   // Fetch dynamic content
@@ -105,7 +117,7 @@ export async function GET() {
   ])
 
   // Generate blog routes
-  const blogRoutes = blogs.map((blog) => ({
+  const blogRoutes: SitemapEntry[] = blogs.map((blog) => ({
     url: `${baseUrl}/blogs/${blog.slug}`,
     lastModified: blog.updatedAt,
     changeFrequency: 'weekly',
@@ -113,7 +125,7 @@ export async function GET() {
   }))
 
   // Generate package routes
-  const packageRoutes = packages.map((pkg) => ({
+  const packageRoutes: SitemapEntry[] = packages.map((pkg) => ({
     url: `${baseUrl}/packages/${pkg.slug}`,
     lastModified: pkg.updatedAt,
     changeFrequency: 'weekly',
@@ -123,24 +135,24 @@ export async function GET() {
   // Combine all routes
   const routes = [...staticPages, ...blogRoutes, ...packageRoutes]
 
-  // Generate XML
+  // Generate XML with proper formatting and no extra whitespace
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
-    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-      ${routes.map((route) => `
-        <url>
-          <loc>${route.url}</loc>
-          <lastmod>${route.lastModified}</lastmod>
-          <changefreq>${route.changeFrequency}</changefreq>
-          <priority>${route.priority}</priority>
-        </url>
-      `).join('')}
-    </urlset>`
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${routes.map((route) => `  <url>
+    <loc>${route.url}</loc>
+    <lastmod>${route.lastModified}</lastmod>
+    <changefreq>${route.changeFrequency}</changefreq>
+    <priority>${route.priority}</priority>
+  </url>`).join('\n')}
+</urlset>`.trim()
 
   // Return the XML with appropriate headers
   return new Response(xml, {
+    status: 200,
     headers: {
-      'Content-Type': 'application/xml',
-      'Content-Length': xml.length.toString(),
+      'Content-Type': 'application/xml; charset=utf-8',
+      'Cache-Control': 'no-cache,no-store,max-age=0,must-revalidate',
+      'X-Robots-Tag': 'noindex'
     },
   })
 }
