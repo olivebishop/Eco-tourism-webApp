@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
@@ -12,23 +12,21 @@ model User {
   id        String   @id @default(cuid())
   email     String   @unique
   name      String?
-  role      Role     @default( ADMIN)
+  role      Role     @default(ADMIN)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
-
 
 model Blog {
   id         String   @id @default(cuid())
   title      String
   content    String
-  imageData  String?  @db.Text
   authorId   String
-  authorName String
   tags       String[]
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  authorName String
+  imageData  String?
 }
 
 model Booking {
@@ -59,37 +57,42 @@ model PackageBooking {
   bookingDate     DateTime?
   numberOfGuests  Int       @default(1)
   specialRequests String?
-  package         Package   @relation(fields: [packageId], references: [id])
   packageId       String
   price           Decimal   @db.Decimal(10, 2)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+  package         Package   @relation(fields: [packageId], references: [id])
 }
 
 model Package {
-  id          String          @id @default(cuid())
+  id          String           @id @default(cuid())
   name        String
   location    String
-  imageData   String?         @db.Text
+  imageData   String?
   duration    String
   groupSize   String
-  price       Decimal         @db.Decimal(10, 2)
+  price       Decimal          @db.Decimal(10, 2)
   description String
-  included    Included[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
   authorId    String
   authorName  String
+  included    Included[]
   bookings    PackageBooking[]
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
 }
 
 model Included {
-  id        String   @id @default(cuid())
+  id        String  @id @default(cuid())
   item      String
-  package   Package  @relation(fields: [packageId], references: [id])
   packageId String
+  package   Package @relation(fields: [packageId], references: [id])
 }
 
+model KeepAlive {
+  id     BigInt  @id @default(autoincrement())
+  name   String? @default("")
+  random String? @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+}
 
 enum Role {
   ADMIN
