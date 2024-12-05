@@ -11,7 +11,7 @@ export default function CareersPage() {
     };
 
     return (
-        <div className="w-full min-h-screen bg-green-50">
+        <div className="w-full min-h-screen bg-white">
             {/* Hero Section */}
             <div className="relative h-[50vh] md:h-[40vh] min-h-[300px] flex items-center justify-center mb-12 md:mb-16 container mx-auto px-4">
         <div className="absolute inset-0 rounded-3xl overflow-hidden">

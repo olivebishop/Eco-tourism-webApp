@@ -30,7 +30,7 @@ export default function HeroSection() {
           </div>
           <Link 
             href="/destinations/africa" 
-            className="bg-green-600 hover:bg-green-700 hover:text-gray-100 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-base sm:text-lg font-semibold transition duration-300 inline-flex items-center group"
+            className="bg-green-400 hover:bg-green-700 hover:text-gray-100 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-base sm:text-lg font-semibold transition duration-300 inline-flex items-center group"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >

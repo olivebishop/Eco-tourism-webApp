@@ -11,7 +11,7 @@ export const metadata = {
 };
 export default function AboutPage() {
   return (
-    <section className="bg-green-50">
+    <section className="bg-white">
       {/* Hero Section - Increased height on larger screens */}
       <div className="relative h-[50vh] md:h-[40vh] min-h-[300px] flex items-center justify-center mb-12 md:mb-16 container mx-auto px-4">
         <div className="absolute inset-0 rounded-3xl overflow-hidden">

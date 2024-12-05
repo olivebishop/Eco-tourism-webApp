@@ -3,13 +3,12 @@ import ToursHeroCarousel from '../../components/hero-section'
 import EcoTourismFeatures from '../../components/eco-tourism-features'
 import DestinationGrid from '../../components/destinations/destination-grid'
 import TravelCTASection from '../../components/Travel-cta-section'
-import KenyaParksScroll from '../../components/ticker' 
+
 
 function page() {
   return (
-    <div className='bg-green-50'>
+    <div className='bg-white'>
       <ToursHeroCarousel/>
-      <KenyaParksScroll/>
       <EcoTourismFeatures/>
       <DestinationGrid/>
       <TravelCTASection/>

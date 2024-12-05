@@ -67,7 +67,7 @@ export default function ContactSection() {
   }
 
   return (
-    <section className="relative bg-green-50 min-h-screen flex flex-col">
+    <section className="relative bg-white min-h-screen flex flex-col">
       {/* Hero Section */}
       <div className="relative h-[50vh] md:h-[40vh] min-h-[300px] flex items-center justify-center mb-12 md:mb-16 container mx-auto px-4">
       <div className="absolute inset-0 rounded-3xl overflow-hidden">
@@ -94,7 +94,7 @@ export default function ContactSection() {
           <div className="flex flex-wrap -mx-4 items-start">
             <div className="w-full lg:w-1/2 px-4 mb-12 lg:mb-0">
               <div className="space-y-4 sm:space-y-6 lg:space-y-8">
-                <div className="flex flex-col xs:flex-row items-start xs:items-center p-4 sm:p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex flex-col xs:flex-row items-start xs:items-center p-4 sm:p-6 bg-gray-50 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex-shrink-0 mb-4 xs:mb-0 xs:mr-6 p-1 w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-emerald-200">
                     <Mail className="w-6 h-6 sm:w-8 sm:h-8 m-auto mt-2 sm:mt-3 text-emerald-700" />
                   </div>
@@ -104,7 +104,7 @@ export default function ContactSection() {
                   </div>
                 </div>
 
-                <div className="flex flex-col xs:flex-row items-start xs:items-center p-4 sm:p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex flex-col xs:flex-row items-start xs:items-center p-4 sm:p-6 bg-gray-50 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex-shrink-0 mb-4 xs:mb-0 xs:mr-6 p-1 w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-emerald-200">
                     <Phone className="w-6 h-6 sm:w-8 sm:h-8 m-auto mt-2 sm:mt-3 text-emerald-700" />
                   </div>
@@ -114,7 +114,7 @@ export default function ContactSection() {
                   </div>
                 </div>
 
-                <div className="flex flex-col xs:flex-row items-start xs:items-center p-4 sm:p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex flex-col xs:flex-row items-start xs:items-center p-4 sm:p-6 bg-gray-50 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex-shrink-0 mb-4 xs:mb-0 xs:mr-6 p-1 w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-emerald-200">
                     <MapPin className="w-6 h-6 sm:w-8 sm:h-8 m-auto mt-2 sm:mt-3 text-emerald-700" />
                   </div>
@@ -124,7 +124,7 @@ export default function ContactSection() {
                   </div>
                 </div>
 
-                <div className="flex flex-col xs:flex-row items-start xs:items-center p-4 sm:p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex flex-col xs:flex-row items-start xs:items-center p-4 sm:p-6 bg-gray-50 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex-shrink-0 mb-4 xs:mb-0 xs:mr-6 p-1 w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-emerald-200">
                     <Clock className="w-6 h-6 sm:w-8 sm:h-8 m-auto mt-2 sm:mt-3 text-emerald-700" />
                   </div>
@@ -152,7 +152,7 @@ export default function ContactSection() {
             </div>
 
             <div className="w-full lg:w-1/2 px-4">
-              <div className="max-w-lg lg:max-w-xl lg:ml-auto p-4 xs:p-6 sm:p-8 bg-white rounded-2xl shadow-lg">
+              <div className="max-w-lg lg:max-w-xl lg:ml-auto p-4 xs:p-6 sm:p-8 bg-gray-50 rounded-2xl shadow-lg">
                 <h4 className="text-xl sm:text-2xl font-bold text-emerald-900 mb-6 sm:mb-8">
                   Plan your eco-adventure
                 </h4>

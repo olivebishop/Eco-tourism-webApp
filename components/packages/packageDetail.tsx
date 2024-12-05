@@ -79,7 +79,7 @@ export default function PackageDestination({ package: travelPackage }: PackageDe
   }
 
   return (
-    <div className="min-h-screen bg-green-50">
+    <div className="min-h-screen bg-white">
       <div className="max-w-6xl mx-auto px-4 py-8">
         <Link href="/packages" passHref>
           <Button variant="ghost" className="mb-6">
