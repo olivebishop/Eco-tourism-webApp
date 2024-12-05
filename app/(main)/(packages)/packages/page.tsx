@@ -80,7 +80,7 @@ export default function PackagesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <div className="relative h-[40vh] min-h-[300px] flex items-center justify-center mb-8 container mx-auto px-4">
         <div className="absolute inset-0 rounded-3xl overflow-hidden">

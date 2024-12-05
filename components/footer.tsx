@@ -128,7 +128,7 @@ const EcoTourismFooter: React.FC = () => {
   return (
     <>
       <TawkToWidget />
-      <section className="py-20 bg-white lg:pl-40">
+      <section className="py-20 bg-green-50 lg:pl-40">
         <div className="container px-4 mx-auto">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-wrap -mx-4 pb-28">

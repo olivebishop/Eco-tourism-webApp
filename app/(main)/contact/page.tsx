@@ -202,7 +202,7 @@ export default function ContactSection() {
                       id="phone"
                       type="tel"
                       className="w-full"
-                      placeholder="+254791482626"
+                      placeholder="+2547000000"
                       value={formState.phone}
                       onChange={(e) => setFormState({...formState, phone: e.target.value})}
                     />
