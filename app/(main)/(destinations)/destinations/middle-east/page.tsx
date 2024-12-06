@@ -3,45 +3,48 @@ import { Card, CardContent } from '@/components/ui/card';
 import { MapPin } from 'lucide-react';
 import { Button } from '@/components/bookingBtn';
 import Link from 'next/link';
+import Image from 'next/image';
 import { destinations, featuredAdventures } from '@/utils/destinationData';
 import DestinationsGrid from '@/components/destinations/destinationMiddleEastComponent';
 
 export const metadata = {
     title: 'Destinations | Forestline Tours',
     description: 'Explore the best destinations in Middle East with our eco-friendly tours and safaris.',
-  };
+};
 export default function MiddleEastDestinations() {
     return (
-        <div className="w-full min-h-screen bg-green-50">
+        <div className="w-full min-h-screen bg-white">
             {/* Hero Section */}
-            <div className="relative h-[50vh] md:h-[40vh] min-h-[300px] flex items-center justify-center mb-12 md:mb-16 container mx-auto px-4">
-            <div className="absolute inset-0 rounded-3xl overflow-hidden">
-                    <div className="h-full rounded-3xl overflow-hidden">
-                        <img
+            <section className="relative">
+                <div className="relative h-[60vh] md:h-[50vh] min-h-[400px] flex items-center justify-center mb-16 md:mb-20">
+                    <div className="absolute inset-0 overflow-hidden">
+                        <Image
                             src="/images/diani.jpg"
-                            alt="Beach sunset"
-                            className="w-full h-full object-cover"
+                            alt="Contact us beach sunset"
+                            layout="fill"
+                            objectFit="cover"
+                            priority
+                            className="transform transition-transform duration-300 hover:scale-105"
                         />
-                        <div className="absolute inset-0 bg-black/60" />
+                        <div className="absolute inset-0 bg-green-900/70 backdrop-brightness-75" />
+                    </div>
+                    <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
+                        <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold text-white drop-shadow-lg leading-tight">
+                            Discover Middle East&apos;s Beauty
+                        </h1>
+                        <p className="text-xl sm:text-2xl md:text-3xl text-white/90 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
+                            Experience unforgettable adventures through our carefully curated Asian travel destinations
+                        </p>
                     </div>
                 </div>
-                <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight">
-            Discover Middle East&apos;s Beauty
-          </h1>
-          <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto">
-            Experience unforgettable adventures through our carefully curated Asian travel destinations
-          </p>
-        </div>
-            </div>
-
+            </section>
             {/* Main Content Section */}
             <div className="max-w-7xl mx-auto px-4">
                 <h2 className="text-3xl font-bold mb-6 font-serif">
-                    Discover Middle-East&apos;s Finest 
+                    Discover Middle-East&apos;s Finest
                     <span className="font-serif text-green-600 "> Destinations</span>
                 </h2>
-           
+
                 {/* Adventures Section */}
                 <div className="py-8">
                     <h2 className="text-2xl font-bold mb-8">
@@ -90,9 +93,8 @@ export default function MiddleEastDestinations() {
                             {featuredAdventures.map((feature, index) => (
                                 <div
                                     key={feature.id}
-                                    className={`relative rounded-lg overflow-hidden ${
-                                        index === 0 ? 'md:col-span-2 aspect-[16/9]' : 'aspect-square'
-                                    }`}
+                                    className={`relative rounded-lg overflow-hidden ${index === 0 ? 'md:col-span-2 aspect-[16/9]' : 'aspect-square'
+                                        }`}
                                 >
                                     <img
                                         src={feature.imageUrl}

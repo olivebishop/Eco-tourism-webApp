@@ -1,11 +1,12 @@
 'use client'
 
 import React, { useState, FormEvent } from 'react'
+import Image from 'next/image'
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import { Leaf, Phone, Mail, MapPin, Clock, Facebook, Instagram, Twitter } from 'lucide-react'
+import { Phone, Mail, MapPin, Clock, Facebook, Instagram, Twitter } from 'lucide-react'
 import { toast } from 'sonner'
 
 interface FormState {
@@ -66,183 +67,201 @@ export default function ContactSection() {
     }
   }
 
+  const socialLinks = [
+    { 
+      icon: Facebook, 
+      href: "https://www.facebook.com/ecotourcompany",
+      label: "Facebook" 
+    },
+    { 
+      icon: Instagram, 
+      href: "https://www.instagram.com/ecotourcompany",
+      label: "Instagram" 
+    },
+    { 
+      icon: Twitter, 
+      href: "https://www.twitter.com/ecotourcompany",
+      label: "Twitter" 
+    }
+  ]
+
   return (
-    <section className="relative bg-green-50 min-h-screen flex flex-col">
-      {/* Hero Section */}
-      <div className="relative h-[50vh] md:h-[40vh] min-h-[300px] flex items-center justify-center mb-12 md:mb-16 container mx-auto px-4">
-      <div className="absolute inset-0 rounded-3xl overflow-hidden">
-          <img
-            src="/images/diani.jpg"
-            alt="Beach sunset"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/60" />
+    <section className="bg-white">
+      {/* Banner Section */}
+      <section className="relative">
+        <div className="relative h-[60vh] md:h-[50vh] min-h-[400px] flex items-center justify-center mb-16 md:mb-20">
+          <div className="absolute inset-0 overflow-hidden">
+            <Image
+              src="/images/diani.jpg"
+              alt="Contact us beach sunset"
+              layout="fill"
+              objectFit="cover"
+              priority
+              className="transform transition-transform duration-300 hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-green-900/70 backdrop-brightness-75" />
+          </div>
+          <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
+            <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold text-white drop-shadow-lg leading-tight">
+              Contact Us
+            </h1>
+            <p className="text-xl sm:text-2xl md:text-3xl text-white/90 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
+              Connect with our eco-friendly travel experts and start your sustainable adventure
+            </p>
+          </div>
         </div>
-        <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white leading-tight">
-            Contact Us
-          </h1>
-          <p className="text-lg sm:text-xl md:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed">
-            Let&apos;s make your eco-friendly adventure unforgettable
-          </p>
-        </div>
-      </div>
+      </section>
 
-      {/* Contact Section */}
-      <div className="flex-grow container mx-auto px-4 py-12 md:py-24">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-wrap -mx-4 items-start">
-            <div className="w-full lg:w-1/2 px-4 mb-12 lg:mb-0">
-              <div className="space-y-4 sm:space-y-6 lg:space-y-8">
-                <div className="flex flex-col xs:flex-row items-start xs:items-center p-4 sm:p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
-                  <div className="flex-shrink-0 mb-4 xs:mb-0 xs:mr-6 p-1 w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-emerald-200">
-                    <Mail className="w-6 h-6 sm:w-8 sm:h-8 m-auto mt-2 sm:mt-3 text-emerald-700" />
-                  </div>
-                  <div>
-                    <span className="text-base sm:text-lg text-emerald-600">Email Us</span>
-                    <span className="block text-lg sm:text-xl font-semibold text-emerald-900">ecotour@gmail.com</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-col xs:flex-row items-start xs:items-center p-4 sm:p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
-                  <div className="flex-shrink-0 mb-4 xs:mb-0 xs:mr-6 p-1 w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-emerald-200">
-                    <Phone className="w-6 h-6 sm:w-8 sm:h-8 m-auto mt-2 sm:mt-3 text-emerald-700" />
-                  </div>
-                  <div>
-                    <span className="text-base sm:text-lg text-emerald-600">Call Us</span>
-                    <span className="block text-lg sm:text-xl font-semibold text-emerald-900">+2547000000</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-col xs:flex-row items-start xs:items-center p-4 sm:p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
-                  <div className="flex-shrink-0 mb-4 xs:mb-0 xs:mr-6 p-1 w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-emerald-200">
-                    <MapPin className="w-6 h-6 sm:w-8 sm:h-8 m-auto mt-2 sm:mt-3 text-emerald-700" />
-                  </div>
-                  <div>
-                    <span className="text-base sm:text-lg text-emerald-600">Visit Us</span>
-                    <span className="block text-lg sm:text-xl font-semibold text-emerald-900">Nairobi, Kenya</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-col xs:flex-row items-start xs:items-center p-4 sm:p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
-                  <div className="flex-shrink-0 mb-4 xs:mb-0 xs:mr-6 p-1 w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-emerald-200">
-                    <Clock className="w-6 h-6 sm:w-8 sm:h-8 m-auto mt-2 sm:mt-3 text-emerald-700" />
-                  </div>
-                  <div>
-                    <span className="text-base sm:text-lg text-emerald-600">Opening Hours</span>
-                    <span className="block text-lg sm:text-xl font-semibold text-emerald-900">Mon - Sat: 9AM - 6PM</span>
-                  </div>
-                </div>
-
-                <div className="pt-6 sm:pt-8">
-                  <h4 className="text-base sm:text-lg font-semibold text-emerald-900 mb-4">Follow Us</h4>
-                  <div className="flex space-x-3 sm:space-x-4">
-                    {[Facebook, Instagram, Twitter].map((Icon, index) => (
-                      <a
-                        key={index}
-                        href="#"
-                        className="p-2 sm:p-3 bg-emerald-200 rounded-full hover:bg-emerald-300 transition-colors"
-                      >
-                        <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-700" />
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
+      {/* Contact Content */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="bg-emerald-50 rounded-2xl shadow-2xl overflow-hidden grid md:grid-cols-2 gap-8 md:gap-12 p-6 md:p-12 lg:p-16">
+          {/* Contact Information */}
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold text-emerald-900 mb-6">
+                Get In Touch
+              </h2>
+              <p className="text-emerald-700 mb-8 text-base md:text-lg">
+                We&apos;re passionate about sustainable travel. Whether you have a question, want to plan a trip, or simply want to learn more about eco-tourism, we&apos;re here to help.
+              </p>
             </div>
 
-            <div className="w-full lg:w-1/2 px-4">
-              <div className="max-w-lg lg:max-w-xl lg:ml-auto p-4 xs:p-6 sm:p-8 bg-white rounded-2xl shadow-lg">
-                <h4 className="text-xl sm:text-2xl font-bold text-emerald-900 mb-6 sm:mb-8">
-                  Plan your eco-adventure
-                </h4>
-
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="flex flex-wrap -mx-2 sm:-mx-4">
-                    <div className="w-full sm:w-1/2 px-2 sm:px-4 mb-4 sm:mb-0">
-                      <div>
-                        <Label htmlFor="fullName" className="block mb-1.5 text-sm font-semibold">
-                          Full Name
-                          <span className="text-red-600">*</span>
-                        </Label>
-                        <Input 
-                          id="fullName"
-                          className="w-full"
-                          placeholder="John Doe"
-                          value={formState.fullName}
-                          onChange={(e) => setFormState({...formState, fullName: e.target.value})}
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="w-full sm:w-1/2 px-2 sm:px-4">
-                      <div>
-                        <Label htmlFor="email" className="block mb-1.5 text-sm font-semibold">
-                          Email
-                          <span className="text-red-600">*</span>
-                        </Label>
-                        <Input 
-                          id="email"
-                          type="email"
-                          className="w-full"
-                          placeholder="johndoe@example.com"
-                          value={formState.email}
-                          onChange={(e) => setFormState({...formState, email: e.target.value})}
-                          required
-                        />
-                      </div>
-                    </div>
+            <div className="space-y-6">
+              {[
+                { 
+                  icon: Mail, 
+                  title: 'Email', 
+                  content: 'ecotour@gmail.com',
+                  color: 'emerald'
+                },
+                { 
+                  icon: Phone, 
+                  title: 'Phone', 
+                  content: '+2547000000',
+                  color: 'emerald'
+                },
+                { 
+                  icon: MapPin, 
+                  title: 'Location', 
+                  content: 'Nairobi, Kenya',
+                  color: 'emerald'
+                },
+                { 
+                  icon: Clock, 
+                  title: 'Hours', 
+                  content: 'Mon - Sat: 9AM - 6PM',
+                  color: 'emerald'
+                }
+              ].map(({ icon: Icon, title, content, color }, index) => (
+                <div key={index} className="flex items-center space-x-4">
+                  <div className={`p-3 bg-${color}-200 rounded-full`}>
+                    <Icon className={`w-6 h-6 text-${color}-700`} />
                   </div>
-
                   <div>
-                    <Label htmlFor="phone" className="block mb-1.5 text-sm font-semibold">
-                      Phone Number
-                    </Label>
-                    <Input 
-                      id="phone"
-                      type="tel"
-                      className="w-full"
-                      placeholder="+254791482626"
-                      value={formState.phone}
-                      onChange={(e) => setFormState({...formState, phone: e.target.value})}
-                    />
+                    <p className={`text-sm text-${color}-600`}>{title}</p>
+                    <p className={`text-lg font-semibold text-${color}-900`}>{content}</p>
                   </div>
+                </div>
+              ))}
+            </div>
 
-                  <div>
-                    <Label htmlFor="message" className="block mb-1.5 text-sm font-semibold">
-                      Message
-                      <span className="text-red-600">*</span>
-                    </Label>
-                    <Textarea 
-                      id="message"
-                      className="w-full h-24 sm:h-32"
-                      placeholder="Tell us about your dream eco-tour..."
-                      value={formState.message}
-                      onChange={(e) => setFormState({...formState, message: e.target.value})}
-                      required
-                    />
-                  </div>
-
-                  <Button 
-                    type="submit"
-                    className="w-full sm:w-auto px-6 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white text-sm sm:text-base"
-                    disabled={isSubmitting}
+            <div className="pt-6 border-t border-emerald-200">
+              <h4 className="text-base font-semibold text-emerald-900 mb-4">Follow Us</h4>
+              <div className="flex space-x-4">
+                {socialLinks.map(({ icon: Icon, href, label }, index) => (
+                  <a
+                    key={index}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 bg-emerald-200 rounded-full hover:bg-emerald-300 transition-colors group"
+                    aria-label={`${label} link`}
                   >
-                    {isSubmitting ? 'Sending...' : 'Start Your Journey'}
-                  </Button>
-                </form>
+                    <Icon className="w-6 h-6 text-emerald-700 group-hover:text-emerald-900 transition-colors" />
+                  </a>
+                ))}
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Decorative elements */}
-      <div className="hidden md:block absolute top-[40vh] right-0 -mt-24">
-        <Leaf className="w-32 md:w-48 lg:w-64 h-32 md:h-48 lg:h-64 text-green-200" />
-      </div>
-      <div className="hidden md:block absolute bottom-0 left-0 -mb-24 transform rotate-180">
-        <Leaf className="w-32 md:w-48 lg:w-64 h-32 md:h-48 lg:h-64 text-green-200" />
+          {/* Contact Form */}
+          <div className="bg-white rounded-2xl p-6 md:p-8 lg:p-12 shadow-lg">
+            <h4 className="text-2xl md:text-3xl font-bold text-emerald-900 mb-8 text-center">
+              Plan Your Eco-Adventure
+            </h4>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="fullName" className="block mb-2 text-sm font-semibold">
+                    Full Name
+                    <span className="text-red-600">*</span>
+                  </Label>
+                  <Input 
+                    id="fullName"
+                    className="w-full"
+                    placeholder="John Doe"
+                    value={formState.fullName}
+                    onChange={(e) => setFormState({...formState, fullName: e.target.value})}
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="email" className="block mb-2 text-sm font-semibold">
+                    Email
+                    <span className="text-red-600">*</span>
+                  </Label>
+                  <Input 
+                    id="email"
+                    type="email"
+                    className="w-full"
+                    placeholder="johndoe@example.com"
+                    value={formState.email}
+                    onChange={(e) => setFormState({...formState, email: e.target.value})}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="phone" className="block mb-2 text-sm font-semibold">
+                  Phone Number
+                </Label>
+                <Input 
+                  id="phone"
+                  type="tel"
+                  className="w-full"
+                  placeholder="+2547000000"
+                  value={formState.phone}
+                  onChange={(e) => setFormState({...formState, phone: e.target.value})}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="message" className="block mb-2 text-sm font-semibold">
+                  Message
+                  <span className="text-red-600">*</span>
+                </Label>
+                <Textarea 
+                  id="message"
+                  className="w-full h-32"
+                  placeholder="Tell us about your dream eco-tour..."
+                  value={formState.message}
+                  onChange={(e) => setFormState({...formState, message: e.target.value})}
+                  required
+                />
+              </div>
+
+              <Button 
+                type="submit"
+                className="w-full py-3 bg-emerald-700 hover:bg-emerald-800 text-white text-base transition-colors"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Sending...' : 'Start Your Journey'}
+              </Button>
+            </form>
+          </div>
+        </div>
       </div>
     </section>
   )

@@ -3,7 +3,7 @@ import React from 'react';
 const TravelCTASection: React.FC = () => {
   return (
     <section className="relative overflow-hidden py-16 lg:py-24 mt-20">
-      <div className="w-full bg-gradient-to-l from-green-200 rounded-lg relative overflow-hidden">
+      <div className="w-full bg-green-50 rounded-lg relative overflow-hidden">
         {/* Decorative arrow for larger screens */}
         <div className="absolute right-6 top-1/2 transform -translate-y-1/2 hidden lg:block">
           <svg 

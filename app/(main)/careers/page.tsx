@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { LinkedinIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,29 +12,31 @@ export default function CareersPage() {
     };
 
     return (
-        <div className="w-full min-h-screen bg-green-50">
+        <div className="w-full min-h-screen bg-white">
             {/* Hero Section */}
-            <div className="relative h-[50vh] md:h-[40vh] min-h-[300px] flex items-center justify-center mb-12 md:mb-16 container mx-auto px-4">
-        <div className="absolute inset-0 rounded-3xl overflow-hidden">
-                    <div className="h-full rounded-3xl overflow-hidden">
-                        <img
-                            src="/images/diani.jpg"
-                            alt="Team collaboration"
-                            className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-black/60" />
-                    </div>
-                </div>
-                <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
-                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white leading-tight">
-                        Join Our Team
-                    </h1>
-                    <p className="text-lg sm:text-xl md:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed">
-                        Be part of our mission to create unforgettable travel experiences
-                    </p>
-                </div>
-            </div>
-
+            <section className="relative">
+        <div className="relative h-[60vh] md:h-[50vh] min-h-[400px] flex items-center justify-center mb-16 md:mb-20">
+          <div className="absolute inset-0 overflow-hidden">
+            <Image
+              src="/images/diani.jpg"
+              alt="Contact us beach sunset"
+              layout="fill"
+              objectFit="cover"
+              priority
+              className="transform transition-transform duration-300 hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-green-900/70 backdrop-brightness-75" />
+          </div>
+          <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
+            <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold text-white drop-shadow-lg leading-tight">
+            Join Our Team
+            </h1>
+            <p className="text-xl sm:text-2xl md:text-3xl text-white/90 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
+            Be part of our mission to create unforgettable travel experiences
+            </p>
+          </div>
+        </div>
+      </section>
             {/* Main Content */}
             <div className="max-w-7xl mx-auto px-4 py-8">
                 {/* Values Section */}

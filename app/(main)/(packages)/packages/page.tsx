@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { PackageCard } from "@/components/packages/package-card"
 import { Package } from "@/types/packages"
+import Image from 'next/image'
 
 // Cache configuration
 const CACHE_KEY = 'packages_data'
@@ -80,26 +81,31 @@ export default function PackagesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <div className="relative h-[40vh] min-h-[300px] flex items-center justify-center mb-8 container mx-auto px-4">
-        <div className="absolute inset-0 rounded-3xl overflow-hidden">
-          <img
-            src="/images/diani.jpg"
-            alt="Beach sunset"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/50" />
-        </div>
-        <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight">
+      <section className="relative">
+        <div className="relative h-[60vh] md:h-[50vh] min-h-[400px] flex items-center justify-center mb-16 md:mb-20">
+          <div className="absolute inset-0 overflow-hidden">
+            <Image
+              src="/images/diani.jpg"
+              alt="Contact us beach sunset"
+              layout="fill"
+              objectFit="cover"
+              priority
+              className="transform transition-transform duration-300 hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-green-900/70 backdrop-brightness-75" />
+          </div>
+          <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
+            <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold text-white drop-shadow-lg leading-tight">
             Discover Kenya&apos;s Beauty
-          </h1>
-          <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto">
+            </h1>
+            <p className="text-xl sm:text-2xl md:text-3xl text-white/90 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
             Experience unforgettable adventures through our carefully curated travel packages
-          </p>
+            </p>
+          </div>
         </div>
-      </div>
+      </section>
 
       {/* Package Cards */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">

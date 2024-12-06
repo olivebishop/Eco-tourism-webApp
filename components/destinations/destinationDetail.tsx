@@ -75,7 +75,7 @@ export const DestinationDetail: React.FC<DestinationDetailProps> = ({ destinatio
   }
 
   return (
-    <div className="min-h-screen bg-green-50">
+    <div className="min-h-screen bg-white">
       <div className="max-w-6xl mx-auto px-4 py-8">
         <Button onClick={onClose} variant="ghost" className="mb-6">
           <ArrowLeft className="mr-2 h-4 w-4" /> Back to Destinations

@@ -23,7 +23,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false)
 
   return (
-    <header className="sticky top-0 z-50 w-full  bg-green-50">
+    <header className="sticky top-0 z-50 w-full  bg-white">
       <nav className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
@@ -52,7 +52,7 @@ const Navbar = () => {
                 <NavigationMenuItem>
                   <Link href="/packages" legacyBehavior passHref>
                     <NavigationMenuLink className="text-green-800 hover:text-green-600 transition-colors">
-                      Packages
+                      Tour Packages
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
@@ -157,7 +157,7 @@ const MobileNav = () => {
         About
       </Link>
       <Link href="/packages" className="text-lg font-semibold">
-        Packages
+        Tour Packages
       </Link>
       <div className="space-y-2">
         <h2 className="text-lg font-semibold">Destinations</h2>
