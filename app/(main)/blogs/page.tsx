@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Leaf } from 'lucide-react';
+import { Leaf, ChevronDown } from 'lucide-react';
 import BlogCard from '@/components/blogs-card';
 import { BlogListSkeleton } from '@/components/skeletons';
 import type { BlogPost } from '@/types/blogs';
@@ -31,58 +31,63 @@ export default function BlogPage() {
   }, []);
 
   return (
-    <div className=" min-h-screen">
+    <div className="bg-white min-h-screen">
+      {/* Hero Section with Improved Styling */}
       <section className="relative">
-      <div className="relative h-[50vh] md:h-[40vh] min-h-[300px] flex items-center justify-center mb-12 md:mb-16 container mx-auto px-4">
-      <div className="absolute inset-0 rounded-3xl overflow-hidden">
-          <Image
-            src="/images/diani.jpg"
-            alt="Beach sunset in Diani"
-            layout="fill"
-            objectFit="cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-black/60" />
-        </div>
-        </div>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center space-y-6 max-w-4xl mx-auto px-4">
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white leading-tight">
-              Blogs
+        <div className="relative h-[60vh] md:h-[50vh] min-h-[400px] flex items-center justify-center mb-16 md:mb-20">
+          <div className="absolute inset-0 overflow-hidden">
+            <Image
+              src="/images/diani.jpg"
+              alt="Beach sunset in Diani"
+              layout="fill"
+              objectFit="cover"
+              priority
+              className="transform transition-transform duration-300 hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-green-900/70 backdrop-brightness-75" />
+          </div>
+          <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
+            <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold text-white drop-shadow-lg leading-tight">
+              Eco Blogs
             </h1>
-            <p className="text-lg sm:text-xl md:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed">
-              Explore eco-friendly travel tips, conservation stories, and
-              sustainable tourism practices
+            <p className="text-xl sm:text-2xl md:text-3xl text-white/90 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
+              Explore sustainable travel, conservation stories, and eco-friendly adventures
             </p>
           </div>
         </div>
       </section>
 
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-white transform skew-x-12" />
-        <div className="relative container px-4 mx-auto">
-          <div className="max-w-2xl mx-auto mb-16 text-center">
-            <span className="inline-block py-1 px-3 mb-4 text-xs font-semibold text-green-900 bg-green-100 rounded-full">
-              ECO TOURISM BLOG
-            </span>
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-              Sustainable Travel
-              <span className="text-green-600"> Insights</span>
+      {/* Blog List Section with Enhanced Design */}
+      <section className="relative py-16 px-4">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center justify-center mb-6">
+              <Leaf className="w-8 h-8 text-green-600 mr-3" />
+              <span className="text-sm font-semibold uppercase tracking-wide text-green-800 bg-green-100 px-3 py-1 rounded-full">
+                Sustainable Travel Insights
+              </span>
+            </div>
+            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+              Discover <span className="text-green-600">Responsible</span> Travel
             </h2>
-            <p className="text-lg text-gray-500">
-              Discover stories about conservation, eco-friendly adventures, and
-              sustainable tourism practices
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Immerse yourself in stories of environmental stewardship, eco-conscious journeys, and transformative travel experiences
             </p>
           </div>
 
-          <div className="max-w-5xl mx-auto space-y-8">
+          <div className="space-y-10">
             {loading ? (
               Array(3)
                 .fill(0)
                 .map((_, i) => <BlogListSkeleton key={i} />)
             ) : error ? (
-              <div className="text-center p-8 bg-red-50 rounded-lg">
-                <p className="text-red-500">Error: {error}</p>
+              <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-10 text-center shadow-md">
+                <p className="text-2xl text-red-600 font-semibold">
+                  Oops! {error}
+                </p>
+                <p className="text-gray-600 mt-4">
+                  We&apos;re having trouble loading the blogs. Please try again later.
+                </p>
               </div>
             ) : (
               <>
@@ -90,12 +95,16 @@ export default function BlogPage() {
                   <BlogCard key={blog.id} blog={blog} />
                 ))}
                 {visibleBlogs < blogs.length && (
-                  <div className="text-center mt-12">
+                  <div className="text-center mt-16">
                     <button
                       onClick={() => setVisibleBlogs((prev) => prev + 3)}
-                      className="inline-flex items-center px-6 py-3 rounded-full bg-green-600 text-white hover:bg-green-700 transition-colors duration-300"
+                      className="group inline-flex items-center px-8 py-4 rounded-full 
+                        bg-green-600 text-white font-semibold 
+                        hover:bg-green-700 transition-all duration-300 
+                        shadow-lg hover:shadow-xl transform hover:-translate-y-1
+                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                     >
-                      <Leaf className="w-5 h-5 mr-2" />
+                      <ChevronDown className="w-6 h-6 mr-3 group-hover:animate-bounce" />
                       Load More Stories
                     </button>
                   </div>
@@ -108,3 +117,4 @@ export default function BlogPage() {
     </div>
   );
 }
+
