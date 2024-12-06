@@ -52,7 +52,7 @@ const Navbar = () => {
                 <NavigationMenuItem>
                   <Link href="/packages" legacyBehavior passHref>
                     <NavigationMenuLink className="text-green-800 hover:text-green-600 transition-colors">
-                      Packages
+                      Tour Packages
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
@@ -157,7 +157,7 @@ const MobileNav = () => {
         About
       </Link>
       <Link href="/packages" className="text-lg font-semibold">
-        Packages
+        Tour Packages
       </Link>
       <div className="space-y-2">
         <h2 className="text-lg font-semibold">Destinations</h2>
