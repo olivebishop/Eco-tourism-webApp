@@ -79,7 +79,7 @@ export default function PackageDestination({ package: travelPackage }: PackageDe
   }
 
   return (
-    <div className="min-h-screen bg-green-50">
+    <div className="min-h-screen bg-background">
       <div className="max-w-6xl mx-auto px-4 py-8">
         <Link href="/packages" passHref>
           <Button variant="ghost" className="mb-6">
@@ -96,7 +96,7 @@ export default function PackageDestination({ package: travelPackage }: PackageDe
               objectFit="cover"
             />
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
-              <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">{travelPackage.name}</h1>
+              <h1 className="text-3xl sm:text-4xl font-bold text-gray-50 mb-2">{travelPackage.name}</h1>
               <p className="text-lg sm:text-xl text-white flex items-center">
                 <MapPin className="mr-2 h-5 w-5" /> {travelPackage.location}
               </p>

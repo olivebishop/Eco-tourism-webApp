@@ -23,7 +23,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false)
 
   return (
-    <header className="sticky top-0 z-50 w-full  bg-green-50">
+    <header className="sticky top-0 z-50 w-full  bg-white">
       <nav className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
