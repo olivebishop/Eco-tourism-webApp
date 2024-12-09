@@ -22,7 +22,7 @@ const Feature: React.FC<FeatureProps> = ({ icon: Icon, title, description, bgCol
 
 const EcoTourismFeatures: React.FC = () => {
   return (
-    <section className="py-16 lg:py-24 bg-white overflow-hidden">
+    <section className="py-16 lg:py-24 bg-green-50 overflow-hidden">
       <div className="container px-4 mx-auto">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <span className="inline-block py-1 px-3 mb-4 text-xs font-semibold text-green-900 bg-green-100 rounded-full">ECO-TOURISM FEATURES</span>

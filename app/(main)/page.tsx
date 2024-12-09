@@ -7,7 +7,7 @@ import TravelCTASection from '../../components/Travel-cta-section'
 
 function page() {
   return (
-    <div className='bg-white'>
+    <div className='bg-green-50'>
       <ToursHeroCarousel/>
       <EcoTourismFeatures/>
       <DestinationGrid/>

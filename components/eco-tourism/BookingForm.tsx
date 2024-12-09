@@ -243,7 +243,7 @@ export default function AdminBookingsTable() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-green-50 p-4 md:p-6 lg:p-8">
+    <div className="min-h-screen bg-white p-4 md:p-6 lg:p-8">
       <div className="container mx-auto space-y-6">
         {error && (
           <Alert variant="destructive">

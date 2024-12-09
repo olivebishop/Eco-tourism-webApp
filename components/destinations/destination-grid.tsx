@@ -22,15 +22,15 @@ interface WildlifeImageProps {
 const destinations: DestinationProps[] = [
     {
         id: '1',
-        name: "Mombasa North Coast",
+        name: "Maasai Mara",
         packages: 3,
-        images: ["/images/mombasa.jpg", "/images/bamburi.jpg", "/images/nyali.jpg"],
-        description: "Pristine beaches and marine conservation"
+        images: ["/images/wildbeast.jpg", "/images/leopard.jpg", "/images/masaaiMara.jpg","/images/amboseli.jpg","/images/buffalo.jpg","/images/rhino.jpg"],
+        description: "WildeBeest and The Big 5"
     },
-    { id: '2', name: "Diani/Ukunda", packages: 2, images: ["/images/diani.jpg"], description: "Coral reef protection and eco-lodges" },
-    { id: '3', name: "Malindi/Watamu", packages: 2, images: ["/images/watamu.jpg"], description: "Sea turtle conservation and mangrove forests" },
-    { id: '4', name: "Maasai Mara", packages: 2, images: ["/images/masaaiMara.jpg"], description: "Wildlife conservation and cultural experiences" },
-    { id: '5', name: "Amboseli", packages: 1, images: ["/images/amboseli.jpg"], description: "Elephant protection and sustainable safaris" },
+    { id: '2', name: "Bwindi Impenetrable Forest", packages: 2, images: ["/images/gorilla.jpg"], description: "Gorilla Trekking " },
+    { id: '3', name: "Lake Nakuru", packages: 2, images: ["/images/birds.jpeg"], description: "Birding Tours" },
+    { id: '4', name: "Malindi", packages: 1, images: ["/images/marine.jpg"], description: "Marine Life Conservations" },
+    { id: '5', name: "Mt Kilimanjaro", packages: 2, images: ["/images/kilimanjaro.jpg"], description: "Mountain Adventures" },
 ]
 
 const wildlifeImages: WildlifeImageProps[] = [
@@ -60,9 +60,9 @@ const DestinationCard: React.FC<DestinationProps> = ({ name, packages, images, d
     }
 
     return (
-        <Card className="overflow-hidden group h-full transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+        <Card className="overflow-hidden group h-full transition-transform duration-300 hover:scale-105 hover:shadow-lg bg-green-50">
             <CardContent className="p-0 relative h-full">
-                <div className="relative h-64">
+                <div className="relative h-64 md:h-72 lg:h-80 w-full">
                     {images.map((image, index) => (
                         <Image
                             key={index}
@@ -70,16 +70,24 @@ const DestinationCard: React.FC<DestinationProps> = ({ name, packages, images, d
                             alt={`${name} - Image ${index + 1}`}
                             layout="fill"
                             objectFit="cover"
-                            className={`transition-opacity duration-300 ${index === currentImage ? 'opacity-100' : 'opacity-0'
-                                }`}
+                            priority={index === 0}
+                            className={`absolute top-0 left-0 w-full h-full transition-opacity duration-300 ${
+                                index === currentImage ? 'opacity-100' : 'opacity-0'
+                            }`}
                         />
                     ))}
                     {images.length > 1 && (
                         <>
-                            <button onClick={prevImage} className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/50 rounded-full p-1 hover:bg-white/80 transition-colors duration-200 z-10">
+                            <button 
+                                onClick={prevImage} 
+                                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/50 rounded-full p-1 hover:bg-white/80 transition-colors duration-200 z-10"
+                            >
                                 <ChevronLeft className="w-6 h-6 text-green-800" />
                             </button>
-                            <button onClick={nextImage} className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/50 rounded-full p-1 hover:bg-white/80 transition-colors duration-200 z-10">
+                            <button 
+                                onClick={nextImage} 
+                                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/50 rounded-full p-1 hover:bg-white/80 transition-colors duration-200 z-10"
+                            >
                                 <ChevronRight className="w-6 h-6 text-green-800" />
                             </button>
                         </>
@@ -101,10 +109,18 @@ const DestinationCard: React.FC<DestinationProps> = ({ name, packages, images, d
 
 export default function DestinationGrid() {
     return (
-        <div className="bg-white py-16">
+        <div className="py-8 sm:py-12 md:py-16 lg:py-20">
             <div className="container mx-auto px-4">
-                <h2 className="text-4xl font-bold mb-8 text-center text-green-800">Eco-Friendly Destinations</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="max-w-3xl mx-auto text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
+                    <span className="inline-block py-1 px-3 mb-2 sm:mb-3 text-xs font-semibold text-green-900 bg-green-100 rounded-full">
+                        Featured Adventures
+                    </span>
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">
+                        Our Top
+                        <span className="font-serif italic text-green-600 block">Destinations</span>
+                    </h2>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                     {destinations.map((dest, index) => (
                         <div key={dest.id} className={index === 0 ? "md:col-span-2" : ""}>
                             <Link href={`/packages`}>
@@ -114,8 +130,16 @@ export default function DestinationGrid() {
                     ))}
                 </div>
 
-                <h2 className="text-4xl font-bold my-16 text-center text-green-800">Encounter Kenya&apos;s Majestic Wildlife</h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="max-w-3xl mx-auto text-center mt-6 mb-8 sm:mb-10 md:mb-12 lg:mb-16">
+                    <span className="inline-block py-1 px-3 mb-2  sm:mb-3 text-xs font-semibold text-green-900 bg-green-100 rounded-full">
+                        Featured Wildlife
+                    </span>
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">
+                    Encounter Kenya's Majestic           
+                        <span className="font-serif italic text-green-600 block mt-2"> Wildlife Safari</span>
+                    </h2>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
                     {wildlifeImages.map((image) => (
                         <Card key={image.id} className="overflow-hidden group transition-transform duration-300 hover:scale-105 hover:shadow-lg">
                             <CardContent className="p-0 relative aspect-square">

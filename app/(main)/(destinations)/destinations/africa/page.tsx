@@ -13,7 +13,7 @@ export const metadata = {
 };
 export default function AfricaDestinations() {
     return (
-        <div className="w-full min-h-screen bg-white">
+        <div className="w-full min-h-screen bg-green-50">
             {/* Hero Section */}
             <section className="relative">
                 <div className="relative h-[60vh] md:h-[50vh] min-h-[400px] flex items-center justify-center mb-16 md:mb-20">

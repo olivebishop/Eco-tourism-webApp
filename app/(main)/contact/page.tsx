@@ -70,23 +70,23 @@ export default function ContactSection() {
   const socialLinks = [
     { 
       icon: Facebook, 
-      href: "https://www.facebook.com/ecotourcompany",
+      href: "https://www.facebook.com/forestlinetours",
       label: "Facebook" 
     },
     { 
       icon: Instagram, 
-      href: "https://www.instagram.com/ecotourcompany",
+      href: "https://www.instagram.com/forestlinetours",
       label: "Instagram" 
     },
     { 
       icon: Twitter, 
-      href: "https://www.twitter.com/ecotourcompany",
+      href: "https://www.twitter.com/forestlinetours",
       label: "Twitter" 
     }
   ]
 
   return (
-    <section className="bg-white">
+    <section className="bg-green-50">
       {/* Banner Section */}
       <section className="relative">
         <div className="relative h-[60vh] md:h-[50vh] min-h-[400px] flex items-center justify-center mb-16 md:mb-20">
@@ -185,7 +185,7 @@ export default function ContactSection() {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white rounded-2xl p-6 md:p-8 lg:p-12 shadow-lg">
+          <div className="bg-background rounded-2xl p-6 md:p-8 lg:p-12 shadow-lg">
             <h4 className="text-2xl md:text-3xl font-bold text-emerald-900 mb-8 text-center">
               Plan Your Eco-Adventure
             </h4>
