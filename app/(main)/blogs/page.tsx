@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { Leaf, ChevronDown } from "lucide-react";
 import BlogCard from "@/components/blogs-card";
 import { BlogListSkeleton } from "@/components/skeletons";

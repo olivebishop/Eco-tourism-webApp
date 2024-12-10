@@ -3,7 +3,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { MapPin } from "lucide-react";
 import { Button } from "@/components/bookingBtn";
 import Link from "next/link";
-import Image from "next/image";
 import { destinations, featuredAdventures } from "@/utils/destinationData";
 import DestinationsGrid from "@/components/destinations/destinationMiddleEastComponent";
 

@@ -4,7 +4,6 @@ import { MapPin } from "lucide-react";
 import { Button } from "@/components/bookingBtn";
 import Link from "next/link";
 import { destinations, featuredAdventures } from "@/utils/destinationData";
-import Image from "next/image";
 import DestinationsGrid from "@/components/destinations/destinationAfricaComponent";
 
 export const metadata = {

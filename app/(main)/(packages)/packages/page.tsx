@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { PackageCard } from "@/components/packages/package-card";
 import { LocationSidebar } from "@/components/packages/location-sidebar";
 import { Package } from "@/types/packages";
-import Image from "next/image";
+
 
 const CACHE_KEY = "packages_data";
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
