@@ -5,8 +5,7 @@ import {
   Leaf,
   Globe,
   TreePine,
-  Users,
-  ArrowRight
+  Users
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 

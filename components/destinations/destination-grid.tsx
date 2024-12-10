@@ -135,7 +135,7 @@ export default function DestinationGrid() {
                         Featured Wildlife
                     </span>
                     <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">
-                    Encounter Kenya's Majestic           
+                    Encounter Kenya&apos;s Majestic           
                         <span className="font-serif italic text-green-600 block mt-2"> Wildlife Safari</span>
                     </h2>
                 </div>

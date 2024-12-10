@@ -10,6 +10,7 @@ import {
   AlertDescription, 
   AlertTitle 
 } from '@/components/ui/alert';
+import Image from 'next/image';
 
 // Skeleton Component for Loading State
 const BlogPostSkeleton = () => (
@@ -201,7 +202,7 @@ export default function EnhancedBlogPostPage({ params }: { params: { id: string 
 
           {blog.imageData && (
             <div className="mb-6 rounded-lg overflow-hidden shadow-md">
-              <img
+              <Image
                 src={blog.imageData}
                 alt={blog.title}
                 className="w-full h-auto object-cover"
