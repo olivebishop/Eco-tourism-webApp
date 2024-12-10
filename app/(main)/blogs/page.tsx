@@ -1,11 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { Leaf, ChevronDown } from 'lucide-react';
-import BlogCard from '@/components/blogs-card';
-import { BlogListSkeleton } from '@/components/skeletons';
-import type { BlogPost } from '@/types/blogs';
+import { useState, useEffect } from "react";
+import { Leaf, ChevronDown } from "lucide-react";
+import BlogCard from "@/components/blogs-card";
+import { BlogListSkeleton } from "@/components/skeletons";
+import type { BlogPost } from "@/types/blogs";
 
 export default function BlogPage() {
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
@@ -16,12 +15,12 @@ export default function BlogPage() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch('/api/blogs');
-        if (!response.ok) throw new Error('Failed to fetch blogs');
+        const response = await fetch("/api/blogs");
+        if (!response.ok) throw new Error("Failed to fetch blogs");
         const data = await response.json();
         setBlogs(data);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred');
+        setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
         setLoading(false);
       }
@@ -33,30 +32,30 @@ export default function BlogPage() {
   return (
     <div className="bg-green-50 min-h-screen">
       {/* Hero Section with Improved Styling */}
-      <section className="relative">
-        <div className="relative h-[60vh] md:h-[50vh] min-h-[400px] flex items-center justify-center mb-16 md:mb-20">
-          <div className="absolute inset-0 overflow-hidden">
-            <Image
-              src="/images/diani.jpg"
-              alt="Beach sunset in Diani"
-              layout="fill"
-              objectFit="cover"
-              priority
-              className="transform transition-transform duration-300 hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-green-900/70 backdrop-brightness-75" />
-          </div>
-          <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
-            <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold text-white drop-shadow-lg leading-tight">
-              Eco Blogs
+      <div className="relative z-10 overflow-hidden bg-black text-white">
+        <div className="h-40">
+          <img
+            src="/images/hero_packages.jpg"
+            alt="Packages Hero Image"
+            width={1920}
+            height={500}
+            className="object-cover"
+          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg text-center px-4">
+              Blogs
             </h1>
-            <p className="text-xl sm:text-2xl md:text-3xl text-white/90 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
-              Explore sustainable travel, conservation stories, and eco-friendly adventures
-            </p>
           </div>
         </div>
-      </section>
-
+        <div
+          className="relative z-20 h-32 w-full -scale-y-[1] bg-contain bg-repeat-x"
+          style={{
+            backgroundImage: "url('/images/banner_style.png')",
+            filter:
+              "invert(92%) sepia(2%) saturate(1017%) hue-rotate(342deg) brightness(106%) contrast(93%)",
+          }}
+        />
+      </div>
       {/* Blog List Section with Enhanced Design */}
       <section className="relative py-16 px-4">
         <div className="container mx-auto max-w-6xl">
@@ -68,10 +67,12 @@ export default function BlogPage() {
               </span>
             </div>
             <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-              Discover <span className="text-green-600">Responsible</span> Travel
+              Discover <span className="text-green-600">Responsible</span>{" "}
+              Travel
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Immerse yourself in stories of environmental stewardship, eco-conscious journeys, and transformative travel experiences
+              Immerse yourself in stories of environmental stewardship,
+              eco-conscious journeys, and transformative travel experiences
             </p>
           </div>
 
@@ -86,7 +87,8 @@ export default function BlogPage() {
                   Oops! {error}
                 </p>
                 <p className="text-gray-600 mt-4">
-                  We&apos;re having trouble loading the blogs. Please try again later.
+                  We&apos;re having trouble loading the blogs. Please try again
+                  later.
                 </p>
               </div>
             ) : (
@@ -117,4 +119,3 @@ export default function BlogPage() {
     </div>
   );
 }
-

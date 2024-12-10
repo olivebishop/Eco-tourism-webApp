@@ -118,8 +118,8 @@ const Navbar = () => {
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left">
-              <MobileNav />
+            <SheetContent side="left" className="p-0">
+              <MobileNav onClose={() => setIsOpen(false)} />
             </SheetContent>
           </Sheet>
         </div>
@@ -128,58 +128,71 @@ const Navbar = () => {
   )
 }
 
-const MobileNav = () => {
+const MobileNav = ({ onClose }: { onClose: () => void }) => {
   return (
-    <div className="flex flex-col space-y-6 p-4">
-      <Link href="/" className="text-lg font-semibold">
-        Home
-      </Link>
-      <Link href="/about" className="text-lg font-semibold">
-        About
-      </Link>
-      <Link href="/packages" className="text-lg font-semibold">
-        Tour Packages
-      </Link>
-      <div className="space-y-4">
-        <h2 className="text-lg font-semibold">Destinations</h2>
-        <div className="ml-4 space-y-4">
-          <div>
-            <h3 className="font-medium text-muted-foreground mb-2">Africa</h3>
-            <ul className="ml-2 space-y-2">
-              <li><Link href="/destinations/botswana" className="block text-sm hover:text-green-600">Botswana</Link></li>
-              <li><Link href="/destinations/kenya" className="block text-sm hover:text-green-600">Kenya</Link></li>
-              <li><Link href="/destinations/namibia" className="block text-sm hover:text-green-600">Namibia</Link></li>
-              <li><Link href="/destinations/tanzania" className="block text-sm hover:text-green-600">Tanzania</Link></li>
-              <li><Link href="/destinations/south-africa" className="block text-sm hover:text-green-600">South Africa</Link></li>
-            </ul>
+    <div className="h-full flex flex-col">
+      <div className="p-4 border-b border-green-100 flex items-center justify-between">
+        <Link href="/" className="flex items-center space-x-2" onClick={onClose}>
+          <Leaf className="h-8 w-8 text-green-600" />
+          <span className="text-xl font-bold text-green-800">
+            Forestline Tours
+          </span>
+        </Link>
+      </div>
+      <div className="flex-1 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 100px)' }}>
+        <div className="flex flex-col space-y-4 p-4">
+          <Link href="/" className="text-lg font-semibold hover:text-green-600 transition-colors" onClick={onClose}>
+            Home
+          </Link>
+          <Link href="/about" className="text-lg font-semibold hover:text-green-600 transition-colors" onClick={onClose}>
+            About
+          </Link>
+          <Link href="/packages" className="text-lg font-semibold hover:text-green-600 transition-colors" onClick={onClose}>
+            Tour Packages
+          </Link>
+          
+          <div className="space-y-4">
+            <h2 className="text-lg font-semibold">Destinations</h2>
+            <div className="ml-4 space-y-4">
+              <div>
+                <h3 className="font-medium text-muted-foreground mb-2">Africa</h3>
+                <ul className="ml-2 space-y-2">
+                  <li><Link href="/destinations/botswana" className="block text-sm hover:text-green-600" onClick={onClose}>Botswana</Link></li>
+                  <li><Link href="/destinations/kenya" className="block text-sm hover:text-green-600" onClick={onClose}>Kenya</Link></li>
+                  <li><Link href="/destinations/namibia" className="block text-sm hover:text-green-600" onClick={onClose}>Namibia</Link></li>
+                  <li><Link href="/destinations/tanzania" className="block text-sm hover:text-green-600" onClick={onClose}>Tanzania</Link></li>
+                  <li><Link href="/destinations/south-africa" className="block text-sm hover:text-green-600" onClick={onClose}>South Africa</Link></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="font-medium text-muted-foreground mb-2">Asia</h3>
+                <ul className="ml-2 space-y-2">
+                  <li><Link href="/destinations/bali" className="block text-sm hover:text-green-600" onClick={onClose}>Bali</Link></li>
+                  <li><Link href="/destinations/sri-lanka" className="block text-sm hover:text-green-600" onClick={onClose}>Sri Lanka</Link></li>
+                  <li><Link href="/destinations/singapore" className="block text-sm hover:text-green-600" onClick={onClose}>Singapore</Link></li>
+                  <li><Link href="/destinations/vietnam" className="block text-sm hover:text-green-600" onClick={onClose}>Vietnam</Link></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="font-medium text-muted-foreground mb-2">Middle East</h3>
+                <ul className="ml-2 space-y-2">
+                  <li><Link href="/destinations/jordan" className="block text-sm hover:text-green-600" onClick={onClose}>Jordan</Link></li>
+                  <li><Link href="/destinations/uae" className="block text-sm hover:text-green-600" onClick={onClose}>UAE</Link></li>
+                </ul>
+              </div>
+            </div>
           </div>
-          <div>
-            <h3 className="font-medium text-muted-foreground mb-2">Asia</h3>
-            <ul className="ml-2 space-y-2">
-              <li><Link href="/destinations/bali" className="block text-sm hover:text-green-600">Bali</Link></li>
-              <li><Link href="/destinations/sri-lanka" className="block text-sm hover:text-green-600">Sri Lanka</Link></li>
-              <li><Link href="/destinations/singapore" className="block text-sm hover:text-green-600">Singapore</Link></li>
-              <li><Link href="/destinations/vietnam" className="block text-sm hover:text-green-600">Vietnam</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-medium text-muted-foreground mb-2">Middle East</h3>
-            <ul className="ml-2 space-y-2">
-              <li><Link href="/destinations/jordan" className="block text-sm hover:text-green-600">Jordan</Link></li>
-              <li><Link href="/destinations/uae" className="block text-sm hover:text-green-600">UAE</Link></li>
-            </ul>
-          </div>
+          
+          <Link href="/blogs" className="text-lg font-semibold hover:text-green-600 transition-colors" onClick={onClose}>
+            Blog
+          </Link>
+          <Link href="/contact" className="text-lg font-semibold hover:text-green-600 transition-colors" onClick={onClose}>
+            Contact
+          </Link>
         </div>
       </div>
-      <Link href="/blogs" className="text-lg font-semibold">
-        Blog
-      </Link>
-      <Link href="/contact" className="text-lg font-semibold">
-        Contact
-      </Link>
     </div>
   )
 }
 
 export default Navbar
-
