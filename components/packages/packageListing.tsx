@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from 'lucide-react';
-import PackageCard from './PackageCard';
+import PackageCard from '@/components/packages/package-card';
 import { Package } from "@/types/packages";
 
 interface PackageListingProps {
