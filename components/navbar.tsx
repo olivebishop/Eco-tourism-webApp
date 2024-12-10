@@ -1,9 +1,8 @@
 'use client'
+
 import * as React from "react"
 import Link from "next/link"
-import { Leaf, Menu } from "lucide-react"
-
-import { cn } from "@/lib/utils"
+import { Leaf, Menu, ChevronRight } from 'lucide-react'
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -23,13 +22,13 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false)
 
   return (
-    <header className="sticky top-0 z-50 w-full  bg-white">
+    <header className="sticky top-0 z-50 w-full bg-green-50">
       <nav className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
             <Leaf className="h-8 w-8 text-green-600" />
             <span className="hidden text-xl font-bold text-green-800 sm:inline-block">
-            Forestline Tours 
+              Forestline Tours 
             </span>
           </Link>
           <div className="hidden sm:block">
@@ -61,26 +60,34 @@ const Navbar = () => {
                     Destinations
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                      <li className="row-span-3">
-                        <NavigationMenuLink asChild>
-                          <a
-                            className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-green-400 to-green-700 p-6 no-underline outline-none focus:shadow-md"
-                            href="/destinations/africa"
-                          >
-                            <p className="text-sm leading-tight text-white/90">
-                              Destinations
-                            </p>
-                          </a>
-                        </NavigationMenuLink>
-                      </li>
-                      <ListItem href="/destinations/africa" title="Africa">
-                        Kenya, Tanzania, Mauritius, South Africa
-                      </ListItem>
-                      <ListItem href="/destinations/middle-east" title="Middle East">
-                        China, Dubai, Pakistan, Singapore
-                      </ListItem>
-                    </ul>
+                    <div className="grid w-[500px] grid-cols-3 gap-4 p-4 bg-green-50">
+                      <div>
+                        <h3 className="font-medium text-muted-foreground mb-2">Africa</h3>
+                        <ul className="space-y-2">
+                          <li><Link href="/destinations/botswana" className="flex items-center text-sm hover:text-green-600">Botswana <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
+                          <li><Link href="/destinations/kenya" className="flex items-center text-sm hover:text-green-600">Kenya <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
+                          <li><Link href="/destinations/namibia" className="flex items-center text-sm hover:text-green-600">Namibia <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
+                          <li><Link href="/destinations/tanzania" className="flex items-center text-sm hover:text-green-600">Tanzania <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
+                          <li><Link href="/destinations/south-africa" className="flex items-center text-sm hover:text-green-600">South Africa <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-muted-foreground mb-2">Asia</h3>
+                        <ul className="space-y-2">
+                          <li><Link href="/destinations/bali" className="flex items-center text-sm hover:text-green-600">Bali <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
+                          <li><Link href="/destinations/sri-lanka" className="flex items-center text-sm hover:text-green-600">Sri Lanka <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
+                          <li><Link href="/destinations/singapore" className="flex items-center text-sm hover:text-green-600">Singapore <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
+                          <li><Link href="/destinations/vietnam" className="flex items-center text-sm hover:text-green-600">Vietnam <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-muted-foreground mb-2">Middle East</h3>
+                        <ul className="space-y-2">
+                          <li><Link href="/destinations/jordan" className="flex items-center text-sm hover:text-green-600">Jordan <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
+                          <li><Link href="/destinations/uae" className="flex items-center text-sm hover:text-green-600">UAE <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
+                        </ul>
+                      </div>
+                    </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
@@ -121,35 +128,9 @@ const Navbar = () => {
   )
 }
 
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-green-100 hover:text-green-600 focus:bg-green-100 focus:text-green-600",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  )
-})
-ListItem.displayName = "ListItem"
-
 const MobileNav = () => {
   return (
-    <div className="flex flex-col space-y-4">
+    <div className="flex flex-col space-y-6 p-4">
       <Link href="/" className="text-lg font-semibold">
         Home
       </Link>
@@ -159,12 +140,36 @@ const MobileNav = () => {
       <Link href="/packages" className="text-lg font-semibold">
         Tour Packages
       </Link>
-      <div className="space-y-2">
+      <div className="space-y-4">
         <h2 className="text-lg font-semibold">Destinations</h2>
-        <ul className="ml-4 space-y-2">
-          <li><Link href="/destinations/africa" className="text-sm">Africa</Link></li>
-          <li><Link href="/destinations/middle-east" className="text-sm">Middle East</Link></li>
-        </ul>
+        <div className="ml-4 space-y-4">
+          <div>
+            <h3 className="font-medium text-muted-foreground mb-2">Africa</h3>
+            <ul className="ml-2 space-y-2">
+              <li><Link href="/destinations/botswana" className="block text-sm hover:text-green-600">Botswana</Link></li>
+              <li><Link href="/destinations/kenya" className="block text-sm hover:text-green-600">Kenya</Link></li>
+              <li><Link href="/destinations/namibia" className="block text-sm hover:text-green-600">Namibia</Link></li>
+              <li><Link href="/destinations/tanzania" className="block text-sm hover:text-green-600">Tanzania</Link></li>
+              <li><Link href="/destinations/south-africa" className="block text-sm hover:text-green-600">South Africa</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-medium text-muted-foreground mb-2">Asia</h3>
+            <ul className="ml-2 space-y-2">
+              <li><Link href="/destinations/bali" className="block text-sm hover:text-green-600">Bali</Link></li>
+              <li><Link href="/destinations/sri-lanka" className="block text-sm hover:text-green-600">Sri Lanka</Link></li>
+              <li><Link href="/destinations/singapore" className="block text-sm hover:text-green-600">Singapore</Link></li>
+              <li><Link href="/destinations/vietnam" className="block text-sm hover:text-green-600">Vietnam</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-medium text-muted-foreground mb-2">Middle East</h3>
+            <ul className="ml-2 space-y-2">
+              <li><Link href="/destinations/jordan" className="block text-sm hover:text-green-600">Jordan</Link></li>
+              <li><Link href="/destinations/uae" className="block text-sm hover:text-green-600">UAE</Link></li>
+            </ul>
+          </div>
+        </div>
       </div>
       <Link href="/blogs" className="text-lg font-semibold">
         Blog
@@ -177,3 +182,4 @@ const MobileNav = () => {
 }
 
 export default Navbar
+

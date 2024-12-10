@@ -39,7 +39,7 @@ export default function TermsAndPrivacyPage() {
                 </div>
 
                 {/* Content Cards */}
-                <Card className="p-6 bg-white shadow-lg rounded-lg">
+                <Card className="p-6 bg-green-50 shadow-lg rounded-lg">
                     {activeTab === 'terms' && (
                         <div className="space-y-6">
                             <h2 className="text-2xl font-bold mb-4">Terms & Conditions</h2>
