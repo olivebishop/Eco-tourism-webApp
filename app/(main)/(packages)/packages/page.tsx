@@ -1,13 +1,13 @@
-'use client'
+"use client"
 
 import { useState, useEffect } from "react"
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { PackageCard } from "@/components/packages/package-card"
+import { LocationSidebar } from "@/components/packages/location-sidebar"
 import { Package } from "@/types/packages"
 import Image from 'next/image'
 
-// Cache configuration
 const CACHE_KEY = 'packages_data'
 const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
 
@@ -16,14 +16,14 @@ export default function PackagesPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 6 // Reduced for better visual balance
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null)
+  const itemsPerPage = 6
 
   useEffect(() => {
     const fetchPackages = async () => {
       try {
         setLoading(true)
         
-        // Check cache first
         const cachedData = localStorage.getItem(CACHE_KEY)
         if (cachedData) {
           const { data, timestamp } = JSON.parse(cachedData)
@@ -36,11 +36,10 @@ export default function PackagesPage() {
 
         const response = await fetch('/api/packages')
         if (!response.ok) {
-          throw new Error('No packages found , retry refreshing the page')
+          throw new Error('No packages found, retry refreshing the page')
         }
         const data = await response.json()
         
-        // Update cache
         localStorage.setItem(CACHE_KEY, JSON.stringify({
           data,
           timestamp: Date.now()
@@ -58,14 +57,22 @@ export default function PackagesPage() {
     fetchPackages()
   }, [])
 
-  // Calculate pagination
-  const totalPages = Math.ceil(packages.length / itemsPerPage)
+  const filteredPackages = selectedLocation
+    ? packages.filter(pkg => pkg.location.toLowerCase().includes(selectedLocation.toLowerCase()))
+    : packages
+
+  const totalPages = Math.ceil(filteredPackages.length / itemsPerPage)
   const startIndex = (currentPage - 1) * itemsPerPage
-  const displayedPackages = packages.slice(startIndex, startIndex + itemsPerPage)
+  const displayedPackages = filteredPackages.slice(startIndex, startIndex + itemsPerPage)
+
+  const handleLocationSelect = (location: string | null) => {
+    setSelectedLocation(location)
+    setCurrentPage(1)
+  }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-green-100">
         <div className="text-center space-y-6 max-w-md mx-auto">
           <h2 className="text-3xl font-bold text-red-600">Error Loading Packages</h2>
           <p className="text-gray-600 text-lg">{error}</p>
@@ -81,99 +88,114 @@ export default function PackagesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#f6efe5]">
       {/* Hero Section */}
-      <section className="relative">
-        <div className="relative h-[60vh] md:h-[50vh] min-h-[400px] flex items-center justify-center mb-16 md:mb-20">
-          <div className="absolute inset-0 overflow-hidden">
-            <Image
-              src="/images/diani.jpg"
-              alt="Contact us beach sunset"
-              layout="fill"
-              objectFit="cover"
-              priority
-              className="transform transition-transform duration-300 hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-green-900/70 backdrop-brightness-75" />
-          </div>
-          <div className="relative z-10 text-center space-y-6 max-w-4xl mx-auto px-4">
-            <h1 className="text-5xl sm:text-6xl md:text-8xl font-extrabold text-white drop-shadow-lg leading-tight">
-            Discover Kenya&apos;s Beauty
+      <div className="relative z-10 overflow-hidden bg-black text-white">
+        <div className="h-[40vh] md:h-[50vh] lg:h-[60vh] relative bg-black">
+          <Image
+            src="https://cms.travelworld.nl/assets/hero/hero-5.jpg"
+            alt="Hero image"
+            fill
+            priority
+            className="object-cover z-1 opacity-60"
+            style={{ objectPosition: 'center' }}
+          />
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 z-20">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-4">
+              Packages
             </h1>
-            <p className="text-xl sm:text-2xl md:text-3xl text-white/90 max-w-2xl mx-auto leading-relaxed font-light tracking-wide">
-            Experience unforgettable adventures through our carefully curated travel packages
-            </p>
           </div>
         </div>
-      </section>
+        <div
+          className="relative z-20 h-16 sm:h-20 md:h-24 lg:h-28 w-full -scale-y-100 bg-contain bg-repeat-x"
+          style={{
+            backgroundImage: "url('/images/banner_style.png')",
+            filter: "invert(92%) sepia(2%) saturate(1017%) hue-rotate(342deg) brightness(106%) contrast(93%)"
+          }}
+        />
+      </div>
 
-      {/* Package Cards */}
+      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-8 text-center">Our Featured 
-        <span className="text-green-600 "> Packages</span>
+        <h2 className="text-3xl mt-4 md:text-4xl font-bold text-gray-800 mb-8 text-center">
+          Our Featured <span className="text-green-600">Packages</span>
         </h2>
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <div 
-                key={index}
-                className="h-[400px] bg-gray-100 rounded-xl animate-pulse"
-              />
-            ))}
+        
+        <div className="flex flex-col lg:flex-row">
+          {/* Location Sidebar (hidden on small screens) */}
+          <div className="hidden lg:block">
+            <LocationSidebar onLocationSelect={handleLocationSelect} selectedLocation={selectedLocation} />
           </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {displayedPackages.map((pkg) => (
-                <PackageCard
-                  key={pkg.id}
-                  package={pkg}
-                />
-              ))}
-            </div>
 
-            {packages.length === 0 && (
-              <div className="text-center py-16">
-                <h3 className="text-2xl font-semibold text-gray-600 mb-2">
-                  No packages available
-                </h3>
-                <p className="text-gray-500">
-                  Check back later for exciting new travel packages
-                </p>
+          {/* Package Cards */}
+          <div className="flex-1">
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <div 
+                    key={index}
+                    className="h-[400px] bg-gray-100 rounded-xl animate-pulse"
+                  />
+                ))}
+              </div>
+            ) : (
+              <>
+                {displayedPackages.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {displayedPackages.map((pkg) => (
+                      <PackageCard
+                        key={pkg.id}
+                        package={pkg}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-16">
+                    <h3 className="text-2xl font-semibold text-gray-600 mb-2">
+                      No packages found
+                    </h3>
+                    <p className="text-gray-500">
+                      {selectedLocation 
+                        ? `No packages available for ${selectedLocation}. Try selecting a different location.`
+                        : "Check back later for exciting new travel packages."}
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Pagination */}
+            {!loading && totalPages > 1 && (
+              <div className="flex justify-center items-center gap-4 mt-12">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="w-12 h-12 rounded-full hover:bg-green-50 hover:text-green-600 hover:border-green-600"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </Button>
+                
+                <span className="text-lg font-medium text-gray-700">
+                  Page {currentPage} of {totalPages}
+                </span>
+                
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="w-12 h-12 rounded-full hover:bg-green-50 hover:text-green-600 hover:border-green-600"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </Button>
               </div>
             )}
-          </>
-        )}
-
-        {/* Pagination */}
-        {!loading && totalPages > 1 && (
-          <div className="flex justify-center items-center gap-4 mt-12">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-              disabled={currentPage === 1}
-              className="w-12 h-12 rounded-full hover:bg-green-50 hover:text-green-600 hover:border-green-600"
-            >
-              <ChevronLeft className="h-6 w-6" />
-            </Button>
-            
-            <span className="text-lg font-medium text-gray-700">
-              Page {currentPage} of {totalPages}
-            </span>
-            
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-              disabled={currentPage === totalPages}
-              className="w-12 h-12 rounded-full hover:bg-green-50 hover:text-green-600 hover:border-green-600"
-            >
-              <ChevronRight className="h-6 w-6" />
-            </Button>
           </div>
-        )}
+        </div>
       </div>
     </div>
   )
 }
+

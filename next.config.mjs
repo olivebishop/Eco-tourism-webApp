@@ -1,8 +1,11 @@
 /** @type {import('next').NextConfig} */ 
 const nextConfig = {
     images: {
-        domains: ['images.unsplash.com'],
+        domains: [
+            'images.unsplash.com', 
+            'cms.travelworld.nl'
+        ],
     },
- };
- 
- export default nextConfig;
+};
+
+export default nextConfig;

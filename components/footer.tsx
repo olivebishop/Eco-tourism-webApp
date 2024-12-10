@@ -128,7 +128,7 @@ const EcoTourismFooter: React.FC = () => {
   return (
     <>
       <TawkToWidget />
-      <section className="py-20 bg-green-50 lg:pl-40">
+      <section className="py-20 bg-green-100 lg:pl-40">
         <div className="container px-4 mx-auto">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-wrap -mx-4 pb-28">
@@ -219,7 +219,7 @@ const EcoTourismFooter: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="pt-10 border-t border-gray-200">
+            <div className="pt-10 border-t border-gray-200 ">
               <div className="lg:flex flex-wrap items-center justify-between">
                 <div className="flex mb-6 lg:mb-0 lg:mr-8 items-center">
                   <a className="inline-block mr-5 hover:bg-green-100 rounded-md p-2" href="#">

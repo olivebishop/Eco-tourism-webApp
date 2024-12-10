@@ -31,7 +31,7 @@ export default function BlogPage() {
   }, []);
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-green-50 min-h-screen">
       {/* Hero Section with Improved Styling */}
       <section className="relative">
         <div className="relative h-[60vh] md:h-[50vh] min-h-[400px] flex items-center justify-center mb-16 md:mb-20">
