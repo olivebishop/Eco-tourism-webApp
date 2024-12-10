@@ -133,9 +133,9 @@ export default function AboutPage() {
           <div className="container px-4 mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-gray-800 mb-4">Our Core Values</h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                We are driven by a passion for sustainable travel and a deep respect for Kenya's natural and cultural heritage.
-              </p>
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                We are driven by a passion for sustainable travel and a deep respect for Kenya&apos;s natural and cultural heritage.
+                </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
