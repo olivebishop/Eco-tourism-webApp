@@ -17,21 +17,21 @@ interface CarouselItem {
 // Carousel data
 const carouselItems: CarouselItem[] = [
   {
-    image: '/images/amboseli.jpg',
-    title: 'Explore the World',
-    subtitle: 'Luxury Adventures And Unforgettable Moments',
-   link: '/packages'
-  },
-  {
-    image: '/images/bamburi.jpg',
-    title: 'African Wilderness',
-    subtitle: 'Discover the Untamed Beauty of Nature',
+    image: '/images/twelve.jpg',
+    title: 'Mountain Expeditions',
+    subtitle: 'Conquer Peaks, Create Memories',
     link: '/packages'
   },
   {
-    image: '/images/buffalo.jpg',
-    title: 'Mountain Expeditions',
-    subtitle: 'Conquer Peaks, Create Memories',
+    image: '/images/one.jpg',
+    title: 'Bird Watching',
+    subtitle: 'Explore the Avian Wonders',
+    link: '/packages'
+  },
+  {
+    image: '/images/lamu.jpg',
+    title: 'Coastal Experiences',
+    subtitle: 'Luxury Adventures and Unforgettable Moments',
     link: '/packages'
   }
 ]
