@@ -124,7 +124,7 @@ export default function ContactSection() {
 
       {/* Contact Content */}
       <div className="container mx-auto px-4 py-16">
-        <div className="bg-emerald-50 rounded-2xl shadow-2xl overflow-hidden grid md:grid-cols-2 gap-8 md:gap-12 p-6 md:p-12 lg:p-16">
+        <div className=" overflow-hidden grid md:grid-cols-2 gap-8 md:gap-12 p-6 md:p-12 lg:p-16">
           {/* Contact Information */}
           <div className="space-y-8">
             <div>
