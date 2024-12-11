@@ -128,22 +128,22 @@ const EcoTourismFooter: React.FC = () => {
   return (
     <>
       <TawkToWidget />
-      <section className="py-20 bg-green-100 lg:pl-40">
+      <section className="py-20 bg-emerald-950 lg:pl-40">
         <div className="container px-4 mx-auto">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-wrap -mx-4 pb-28">
               <div className="w-full lg:w-1/2 px-4 mb-12 lg:mb-0">
                 <div className="max-w-md mx-auto lg:mx-0">
                   <div className="mb-8">
-                    <h2 className="text-2xl font-bold text-green-600">  Forestline Tours & Travel</h2>
-                    <p className="text-sm text-gray-500">Sustainable Travel Experiences</p>
+                    <h2 className="text-2xl font-bold text-green-600 ">  Forestline Tours & Travel</h2>
+                    <p className="text-sm text-gray-100">Sustainable Travel Experiences</p>
                   </div>
-                  <h3 className="max-w-sm font-heading text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+                  <h3 className="max-w-sm font-heading text-5xl md:text-6xl font-bold text-white mb-6">
                     <span>Ready for an </span>
                     <span className="font-serif italic">eco-adventure</span>
                     <span>?</span>
                   </h3>
-                  <p className="max-w-sm text-gray-500 mb-8">
+                  <p className="max-w-sm text-gray-100 mb-8">
                     Subscribe to our newsletter for exclusive eco-friendly travel tips, 
                     special offers, and updates on sustainable destinations.
                   </p>
@@ -193,9 +193,9 @@ const EcoTourismFooter: React.FC = () => {
                   </form>
                 </div>
               </div>
-              <div className="w-full lg:w-1/2 px-4">
+              <div className="w-full lg:w-1/2 px-4 text-gray-200">
                 <div className="max-w-md mx-auto lg:mr-0">
-                  <p className="text-2xl font-semibold text-gray-900 mb-8">Explore our eco-tourism FAQs</p>
+                  <p className="text-2xl font-semibold text-white mb-8">Explore our eco-tourism FAQs</p>
                   <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="item-1">
                       <AccordionTrigger>What is eco-tourism?</AccordionTrigger>
@@ -236,16 +236,16 @@ const EcoTourismFooter: React.FC = () => {
                   </a>
                 </div>
                 <div className="flex mb-6 lg:mb-0 items-center">
-                  <a className="inline-block mr-4 sm:mr-10 text-sm font-semibold text-gray-500 hover:text-gray-600" href="/careers">Careers</a>
-                  <a className="inline-block mr-4 sm:mr-10 text-sm font-semibold text-gray-500 hover:text-gray-600" href="/terms-and-condition">Terms & Conditions</a>
-                  <a className="inline-block text-sm font-semibold text-gray-500 hover:text-gray-600" href="/contact">Support</a>
+                  <a className="inline-block mr-4 sm:mr-10 text-sm font-semibold text-gray-100 hover:text-gray-200" href="/careers">Careers</a>
+                  <a className="inline-block mr-4 sm:mr-10 text-sm font-semibold text-gray-100 hover:text-gray-200" href="/terms-and-condition">Terms & Conditions</a>
+                  <a className="inline-block text-sm font-semibold text-gray-100 hover:text-gray-200" href="/contact">Support</a>
                 </div>
                 <div className="flex-grow mb-6 lg:mb-0"></div>
                 <div className="w-full lg:w-auto flex flex-col lg:flex-row items-center justify-center lg:justify-end">
-                  <span className="inline-block mb-2 lg:mb-0 lg:mr-4 text-sm text-gray-500">© {currentYear} All Rights Reserved</span>
-                  <span className="inline-flex items-center text-sm text-gray-500">
+                  <span className="inline-block mb-2 lg:mb-0 lg:mr-4 text-sm text-gray-100">© {currentYear} All Rights Reserved</span>
+                  <span className="inline-flex items-center text-sm text-gray-100">
                      .{' '}
-                    <a href="https://olivebishop.vercel.app" target="_blank" rel="noopener noreferrer" className="ml-1 text-green-600 hover:text-green-700">
+                    <a href="https://olivebishop.vercel.app" target="_blank" rel="noopener noreferrer" className="ml-1 text-green-600 hover:underline">
                     Forestline  Tours and Travel
                     </a>
                   </span>
