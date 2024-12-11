@@ -1,30 +1,54 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
+import {   
+  Dialog,   
+  DialogContent,   
+  DialogHeader,   
+  DialogTitle,   
+  DialogDescription, 
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { isHoliday } from "@/utils/holidayChecker";
 import { Plane } from 'lucide-react';
 
 export function PromoModal() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [holiday, setHoliday] = useState<{ name: string; date: Date } | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Check if it's a mobile screen
+    const checkMobileScreen = () => {
+      setIsMobile(window.innerWidth <= 640); // 640px is typically the sm breakpoint
+    };
+
+    // Check initial screen size
+    checkMobileScreen();
+
+    // Add event listener for screen resize
+    window.addEventListener('resize', checkMobileScreen);
+
+    // Check for holiday and local storage
+    const hasShownModal = localStorage.getItem('hasShownPromoModal');
     const currentHoliday = isHoliday();
-    if (currentHoliday) {
+
+    if (!hasShownModal && !isMobile && currentHoliday) {
       setHoliday(currentHoliday);
+      setIsOpen(true);
+      localStorage.setItem('hasShownPromoModal', 'true');
     }
+
+    // Cleanup event listener
+    return () => {
+      window.removeEventListener('resize', checkMobileScreen);
+    };
   }, []);
 
+  if (isMobile) return null;
+
   return (
-    <div className="fixed bottom-4 right-4 z-50 w-full sm:max-w-[425px]">
+    <div className="fixed bottom-4 left-4 z-50 w-full max-w-[425px]">
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="bg-green-50 w-full">
           <DialogHeader>
@@ -60,4 +84,3 @@ export function PromoModal() {
     </div>
   );
 }
-
