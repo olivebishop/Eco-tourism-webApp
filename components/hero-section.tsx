@@ -1,44 +1,166 @@
 'use client'
 
-import Image from 'next/image'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
-import { MoveUpRight  } from 'lucide-react'
-import { useState } from 'react'
+import { MoveUpRight } from 'lucide-react'
+import ScrollIndicator from '@/components/scroll-indicator'
 
+// Define the structure of a carousel item
+interface CarouselItem {
+  image: string
+  title: string
+  subtitle: string
+  link: string
+}
 
-export default function HeroSection() {
-  const [isHovered, setIsHovered] = useState(false)
+// Carousel data
+const carouselItems: CarouselItem[] = [
+  {
+    image: '/images/twelve.jpg',
+    title: 'Mountain Expeditions',
+    subtitle: 'Conquer Peaks, Create Memories',
+    link: '/packages'
+  },
+  {
+    image: '/images/one.jpg',
+    title: 'Bird Watching',
+    subtitle: 'Explore the Avian Wonders',
+    link: '/packages'
+  },
+  {
+    image: '/images/lamu.jpg',
+    title: 'Coastal Experiences',
+    subtitle: 'Luxury Adventures and Unforgettable Moments',
+    link: '/packages'
+  }
+]
+
+export default function HeroCarousel() {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [direction, setDirection] = useState(0)
+  const [showScrollIndicator, setShowScrollIndicator] = useState(true)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDirection(1)
+      setCurrentSlide((prev) => (prev + 1) % carouselItems.length)
+    }, 5000) // Change slide every 5 seconds
+
+    const handleScroll = () => {
+      if (window.scrollY > 100) { // Hide after 100px of scrolling
+        setShowScrollIndicator(false)
+      } else {
+        setShowScrollIndicator(true)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      clearInterval(interval)
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  const backgroundVariants = {
+    initial: (direction: number) => ({
+      opacity: 0,
+      scale: direction > 0 ? 1.1 : 0.9,
+      transition: { duration: 0 }
+    }),
+    animate: {
+      opacity: 1,
+      scale: 1.1,
+      transition: {
+        duration: 5,
+        ease: 'easeInOut'
+      }
+    },
+    exit: (direction: number) => ({
+      opacity: 0,
+      scale: direction > 0 ? 1.2 : 1,
+      transition: {
+        duration: 1.5,
+        ease: 'easeInOut'
+      }
+    })
+  }
+
+  const currentItem = carouselItems[currentSlide]
+  const nextItem = carouselItems[(currentSlide + 1) % carouselItems.length]
 
   return (
-    <section className="container mx-auto px-4 ">
-      <div className="rounded-3xl overflow-hidden">
-        <Image
-          src="/images/amboseli.jpg"
-          alt="hero image"
-          width={1200}
-          height={600}
-          className="w-full h-[300px] sm:h-[400px] md:h-[500px] object-cover lg:mt-8"
+    <section className="relative w-full h-screen overflow-hidden bg-emerald-950">
+      <div className="absolute inset-0">
+        {/* Previous/Current Background */}
+        <motion.div
+          key={`bg-${currentSlide}`}
+          custom={direction}
+          variants={backgroundVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${currentItem.image})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
+        />
+        
+        {/* Preload Next Background */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-0"
+          style={{
+            backgroundImage: `url(${nextItem.image})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
         />
       </div>
-      <div className="mt-8 mb-12  ">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end">
-          <div className="mb-6 md:mb-0 w-full md:w-auto ">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-gray-900 mb-4 leading-tight">Explore the World</h1>
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl font-mono">
-            Luxury Adventures And  Unforgettable Moments
-            </p>
+      
+     
+    
+      
+      {/* Content */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentSlide}
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -100 }}
+          transition={{ 
+            type: 'tween',
+            duration: 0.8
+          }}
+          className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center items-start text-white"
+        >
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 tracking-tight">
+            {currentItem.title}
+          </h1>
+          
+          <p className="text-xl md:text-2xl mb-8 max-w-2xl opacity-90">
+            {currentItem.subtitle}
+          </p>
+          
+          <div>
+            <Link 
+              href={currentItem.link}
+              className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg flex items-center transition duration-300 group/link"
+            >
+              View Destinations
+              <MoveUpRight className="ml-2 h-5 w-5 transition group-hover/link:translate-x-1 group-hover/link:-translate-y-1" />
+            </Link>
           </div>
-          <Link 
-            href="/destinations/africa" 
-            className="bg-green-400 hover:bg-green-700 hover:text-gray-100 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg text-base sm:text-lg font-semibold transition duration-300 inline-flex items-center group"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            View Destinations
-            <MoveUpRight  className={`ml-2 h-5 w-5  font-bold transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
-          </Link>
-        </div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20">
+        <ScrollIndicator isVisible={showScrollIndicator} />
       </div>
     </section>
   )
 }
+
