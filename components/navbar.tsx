@@ -22,45 +22,45 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false)
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-green-50">
+    <header className="sticky top-0 z-50 w-full bg-emerald-950 ">
       <nav className="container mx-auto px-4">
         <div className="flex h-20 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
             <Leaf className="h-8 w-8 text-green-600" />
-            <span className="hidden text-xl font-bold text-green-800 sm:inline-block">
+            <span className="hidden text-xl font-bold text-gray-100 sm:inline-block">
               Forestline Tours 
             </span>
           </Link>
-          <div className="hidden sm:block">
+          <div className="hidden sm:block ">
             <NavigationMenu>
               <NavigationMenuList className="flex space-x-4">
                 <NavigationMenuItem>
                   <Link href="/" legacyBehavior passHref>
-                    <NavigationMenuLink className="text-green-800 hover:text-green-600 transition-colors">
+                    <NavigationMenuLink className="text-white hover:text-green-600 transition-colors">
                       Home
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <Link href="/about" legacyBehavior passHref>
-                    <NavigationMenuLink className="text-green-800 hover:text-green-600 transition-colors">
+                    <NavigationMenuLink className="text-white hover:text-green-600 transition-colors">
                       About
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <Link href="/packages" legacyBehavior passHref>
-                    <NavigationMenuLink className="text-green-800 hover:text-green-600 transition-colors">
+                    <NavigationMenuLink className="text-white hover:text-green-600  transition-colors">
                       Tour Packages
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="group text-green-800 hover:text-green-600 transition-colors bg-transparent">
+                  <NavigationMenuTrigger className="group text-white bg-emerald-950 hover:text-white transition-colors  ">
                     Destinations
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="grid w-[500px] grid-cols-3 gap-4 p-4 bg-green-50">
+                    <div className="grid w-[500px] grid-cols-3 gap-4 p-4 bg-emerald-950  text-white">
                       <div>
                         <h3 className="font-medium text-muted-foreground mb-2">Africa</h3>
                         <ul className="space-y-2">
@@ -92,14 +92,14 @@ const Navbar = () => {
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <Link href="/blogs" legacyBehavior passHref>
-                    <NavigationMenuLink className="text-green-800 hover:text-green-600 transition-colors">
+                    <NavigationMenuLink className="text-white hover:text-green-600 transition-colors">
                       Blog
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <Link href="/contact" legacyBehavior passHref>
-                    <NavigationMenuLink className="text-green-800 hover:text-green-600 transition-colors">
+                    <NavigationMenuLink className="text-white hover:text-green-600 transition-colors">
                       Contact
                     </NavigationMenuLink>
                   </Link>
@@ -112,13 +112,13 @@ const Navbar = () => {
               <Button
                 variant="outline"
                 size="icon"
-                className="shrink-0 md:hidden"
+                className="shrink-0 md:hidden bg-emerald-950 text-white"
               >
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle menu</span>
+                <Menu className="h-5 w-5 text-white " />
+                <span className="sr-only text-white">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="p-0">
+            <SheetContent side="left" className="p-0 t">
               <MobileNav onClose={() => setIsOpen(false)} />
             </SheetContent>
           </Sheet>
@@ -130,11 +130,11 @@ const Navbar = () => {
 
 const MobileNav = ({ onClose }: { onClose: () => void }) => {
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col bg-emerald-950 text-white">
       <div className="p-4 border-b border-green-100 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2" onClick={onClose}>
-          <Leaf className="h-8 w-8 text-green-600" />
-          <span className="text-xl font-bold text-green-800">
+          <Leaf className="h-6 w-6 text-green-600" />
+          <span className="text-md font-bold text-white">
             Forestline Tours
           </span>
         </Link>
