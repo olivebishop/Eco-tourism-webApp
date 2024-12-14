@@ -1,5 +1,8 @@
+'use client'
+
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface Country {
@@ -9,6 +12,7 @@ interface Country {
 }
 
 const countries: Country[] = [
+  { name: "Kenya", image: "/images/Nairobi.jpg", slug: "kenya" },
   { name: "Tanzania", image: "/images/Nairobi.jpg", slug: "tanzania" },
   { name: "UAE", image: "/images/Nairobi.jpg", slug: "uae" },
   { name: "South Africa", image: "/images/Nairobi.jpg", slug: "south-africa" },
@@ -18,15 +22,17 @@ const countries: Country[] = [
   { name: "Singapore", image: "/images/Nairobi.jpg", slug: "singapore" },
   { name: "Vietnam", image: "/images/Nairobi.jpg", slug: "vietnam" },
   { name: "Jordan", image: "/images/Nairobi.jpg", slug: "jordan" },
-  
 ]
 
 export function CountrySidebar() {
+  const pathname = usePathname()
+  const currentCountry = pathname.split('/').pop()
+
   return (
     <aside className="w-64 bg-gray-50 rounded-lg shadow-sm">
       <ScrollArea className="h-[calc(100vh-4rem)]">
         <div className="space-y-4 p-4">
-          {countries.map((country) => (
+          {countries.filter(country => country.slug !== currentCountry).map((country) => (
             <Link 
               key={country.name} 
               href={`/destinations/${country.slug}`}
@@ -69,3 +75,4 @@ export function CountrySidebar() {
     </aside>
   )
 }
+

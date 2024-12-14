@@ -1,72 +1,30 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState,} from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { DestinationCard } from '@/components/destinations/destinations-card'
+import { DestinationCard } from '@/components/destinations/destination-card'
 import { DestinationCardSkeleton } from '@/components/destinations/destinations-card-skeleton'
 import { CountrySidebar } from '@/components/destinations/location-sidebar'
 import { Destination } from '@/types/destinations'
-import { useParams } from 'next/navigation'
+import { motion } from 'framer-motion';
 
-const CACHE_KEY = 'destinations_data'
-const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
+interface DestinationsPageProps {
+  initialDestinations: Destination[]
+  country?: string
+}
 
-export default function DestinationsPage() {
-  const [destinations, setDestinations] = useState<Destination[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+export default function DestinationsPage({ initialDestinations, country }: DestinationsPageProps) {
+  const [destinations] = useState<Destination[]>(initialDestinations)
+  const [loading] = useState(false)
+  const [error] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const params = useParams()
-  const countrySlug = params?.country as string | undefined
 
-  const itemsPerPage = 8
+  const itemsPerPage = 6
 
-  useEffect(() => {
-    const fetchDestinations = async () => {
-      try {
-        setLoading(true)
-
-        const cachedData = localStorage.getItem(CACHE_KEY)
-        if (cachedData) {
-          const { data, timestamp } = JSON.parse(cachedData)
-          if (Date.now() - timestamp < CACHE_DURATION) {
-            setDestinations(data)
-            setLoading(false)
-            return
-          }
-        }
-
-        const response = await fetch('/api/destinations')
-        if (!response.ok) {
-          throw new Error('No destinations found, retry refreshing the page')
-        }
-        const data = await response.json()
-
-        localStorage.setItem(
-          CACHE_KEY,
-          JSON.stringify({
-            data,
-            timestamp: Date.now(),
-          })
-        )
-
-        setDestinations(data)
-        setError(null)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An error occurred')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchDestinations()
-  }, [])
-
-  // Filter destinations by country slug if provided
-  const filteredDestinations = countrySlug
+  const filteredDestinations = country
     ? destinations.filter((dest) =>
-        dest.country.toLowerCase() === decodeURIComponent(countrySlug).toLowerCase()
+        dest.country.toLowerCase() === country.toLowerCase()
       )
     : destinations
 
@@ -102,26 +60,87 @@ export default function DestinationsPage() {
       <div className="relative z-10 overflow-hidden bg-black text-white">
         <div className="h-40">
           <img
-            src="/images/hero_packages.jpg"
+            src="/images/packages.jpeg"
             alt="Destinations Hero"
             className="z-1 absolute left-0 top-0 h-full w-full object-cover"
           />
           <div className="absolute inset-0 flex items-center justify-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg text-center px-4">
-              {countrySlug 
-                ? `${decodeURIComponent(countrySlug)} Destinations` 
+          <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg text-center px-4 capitalize">
+              {country 
+                ? `${country} Destinations` 
                 : 'Explore Destinations'
               }
             </h1>
           </div>
         </div>
+        <div
+          className="relative z-20 h-32 w-full -scale-y-[1] bg-contain bg-repeat-x"
+          style={{
+            backgroundImage: "url('/images/banner_style.png')",
+            filter:
+              "invert(92%) sepia(2%) saturate(1017%) hue-rotate(342deg) brightness(106%) contrast(93%)",
+          }}
+        />
       </div>
+
+      {/* Framer Animation for Dotted Line */}
+      <section className="block-divider_dotted scroll-my-28 w-full">
+        <div className="container">
+          <div className="flex justify-center relative">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 165 157" 
+              className="h-28 md:h-36"
+            >
+              <motion.path 
+                d="M0 0c14.69 46.684 41.909 70.026 81.657 70.026 59.623 0 72.343 45.146 72.343 68.914" 
+                stroke="#283A2C"
+                strokeWidth="2"
+                opacity="0.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+                fillRule="evenodd"
+                strokeMiterlimit="10"
+                initial={{ strokeDashoffset: 10 }}
+                animate={{ 
+                  strokeDashoffset: 0,
+                  transition: {
+                    duration: 1,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }
+                }}
+                style={{
+                  strokeDasharray: "0, 10"
+                }}
+              />
+              <ellipse 
+                fill="#283A2C" 
+                opacity="0.25" 
+                cx="154" 
+                cy="145.932" 
+                rx="11" 
+                ry="11.068"
+              />
+              <ellipse 
+                fill="#283A2C" 
+                cx="154" 
+                cy="145.932" 
+                rx="5" 
+                ry="5.031"
+              />
+            </svg>
+          </div>
+        </div>
+      </section>
+     
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-      <h2 className="text-3xl mt-4  md:text-4xl font-semibold text-gray-800 mb-12 text-center">
+        <h2 className="text-3xl mt-4 md:text-4xl font-semibold text-gray-800 mb-12 text-center">
           Our Featured <span className="text-green-600 relative">
-          Packages
+       Destinations
           <svg
             className="absolute -bottom-1 left-0 w-full"
             viewBox="0 0 100 15"
@@ -129,14 +148,12 @@ export default function DestinationsPage() {
           >
             <path
               d="M0,10 Q50,0 100,10"
-              //  stroke="#000000"
-             stroke="currentColor"
+              stroke="currentColor"
               strokeWidth="3"
               fill="none"
             />
           </svg>
         </span>
-          
         </h2>
 
         <div className="flex flex-col lg:flex-row">
@@ -167,8 +184,8 @@ export default function DestinationsPage() {
                       No destinations found
                     </h3>
                     <p className="text-gray-500">
-                      {countrySlug
-                        ? `No destinations available for ${decodeURIComponent(countrySlug)}. Try exploring other countries.`
+                      {country
+                        ? `No destinations available for ${country}. Try exploring other countries.`
                         : "Check back later for exciting new travel destinations."}
                     </p>
                   </div>
@@ -182,25 +199,21 @@ export default function DestinationsPage() {
                 <Button
                   variant="outline"
                   size="icon"
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.max(1, prev - 1))
-                  }
+                  onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
                   className="w-12 h-12 rounded-full hover:bg-green-50 hover:text-green-600 hover:border-green-600"
                 >
                   <ChevronLeft className="h-6 w-6" />
                 </Button>
 
-                <span className="text-lg font-medium text-gray-700">
+                <span className="text-lg font-bold text-gray-700">
                   Page {currentPage} of {totalPages}
                 </span>
 
                 <Button
                   variant="outline"
                   size="icon"
-                  onClick={() =>
-                    setCurrentPage((prev) => Math.min(totalPages, prev + 1))
-                  }
+                  onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
                   className="w-12 h-12 rounded-full hover:bg-green-50 hover:text-green-600 hover:border-green-600"
                 >
@@ -214,3 +227,4 @@ export default function DestinationsPage() {
     </div>
   )
 }
+

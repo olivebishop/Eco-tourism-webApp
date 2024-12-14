@@ -1,13 +1,33 @@
-import { NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
+import { NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-// Public GET endpoint - /api/destinations
-export async function GET() {
+export async function GET(request: Request) {
+  const { userId } = await auth()
+
+  if (!userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const { searchParams } = new URL(request.url)
+  const country = searchParams.get('country')
+
   try {
-    const destinations = await prisma.destination.findMany()
+    let destinations
+    if (country) {
+      destinations = await prisma.destination.findMany({
+        where: {
+          country: {
+            equals: country,
+            mode: 'insensitive'
+          }
+        }
+      })
+    } else {
+      destinations = await prisma.destination.findMany()
+    }
     return NextResponse.json(destinations)
   } catch (error) {
     console.error('Error fetching destinations:', error)
@@ -15,7 +35,6 @@ export async function GET() {
   }
 }
 
-// Protected POST endpoint - /api/destinations
 export async function POST(request: Request) {
   try {
     const { userId } = await auth()

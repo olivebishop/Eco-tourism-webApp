@@ -1,23 +1,34 @@
 import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
+import { getDestinationById } from '@/lib/destinations'
 import DestinationDetail from '@/components/destinations/destination-detail'
-import { getDestinationById, getDestinationBySlug } from '@/lib/destinations'
-import { Destination } from '@/types/destinations'
 
-export default async function DestinationPage({ params }: { params: { country: string, id: string } }) {
-  let destination: Destination | null = null
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const destination = await getDestinationById(params.id)
+  if (!destination) return { title: 'Destination Not Found' }
 
-  // Try fetching by ID first
-  destination = await getDestinationById(params.id)
-
-  // If not found by ID, try fetching by slug
-  if (!destination) {
-    destination = await getDestinationBySlug(params.id)
+  return {
+    title: `${destination.name} | Forestline Tours`,
+    description: `Explore ${destination.name} in ${destination.country} with Forestline Tours.`,
   }
+}
 
-  if (!destination || destination.country.toLowerCase() !== params.country.toLowerCase()) {
+export default async function DestinationDetailPage({ params }: { params: { id: string } }) {
+  const destination = await getDestinationById(params.id)
+
+  if (!destination) {
     notFound()
   }
 
-  return <DestinationDetail destination={destination} />
+  return (
+    <Suspense fallback={<DestinationDetailSkeleton />}>
+      <DestinationDetail destination={destination} />
+    </Suspense>
+  )
+}
+
+function DestinationDetailSkeleton() {
+  // Implement a loading skeleton for the destination detail page
+  return <div>Loading...</div>
 }
 
