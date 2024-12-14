@@ -4,10 +4,10 @@ import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PackageCard } from "@/components/packages/package-card";
+import { PackageCardSkeleton } from "@/components/packages/packageSkeleton";
 import { LocationSidebar } from "@/components/packages/location-sidebar";
 import { Package } from "@/types/packages";
 import { motion } from 'framer-motion';
-
 
 const CACHE_KEY = "packages_data";
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
@@ -123,61 +123,79 @@ export default function PackagesPage() {
           }}
         />
       </div>
-      {/* framer animation for dotted line for in svg */}
+
+      {/* Framer Animation for Dotted Line */}
       <section className="block-divider_dotted scroll-my-28 w-full">
-      <div className="container">
-        <div className="flex justify-center relative">
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 165 157" 
-            className="h-28 md:h-36"
-          >
-            <motion.path 
-              d="M0 0c14.69 46.684 41.909 70.026 81.657 70.026 59.623 0 72.343 45.146 72.343 68.914" 
-              stroke="#283A2C"
-              strokeWidth="2"
-              opacity="0.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-              fillRule="evenodd"
-              strokeMiterlimit="10"
-              initial={{ strokeDashoffset: 10 }}
-              animate={{ 
-                strokeDashoffset: 0,
-                transition: {
-                  duration: 1,
-                  repeat: Infinity,
-                  ease: "linear"
-                }
-              }}
-              style={{
-                strokeDasharray: "0, 10"
-              }}
-            />
-            <ellipse 
-              fill="#283A2C" 
-              opacity="0.25" 
-              cx="154" 
-              cy="145.932" 
-              rx="11" 
-              ry="11.068"
-            />
-            <ellipse 
-              fill="#283A2C" 
-              cx="154" 
-              cy="145.932" 
-              rx="5" 
-              ry="5.031"
-            />
-          </svg>
+        <div className="container">
+          <div className="flex justify-center relative">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 165 157" 
+              className="h-28 md:h-36"
+            >
+              <motion.path 
+                d="M0 0c14.69 46.684 41.909 70.026 81.657 70.026 59.623 0 72.343 45.146 72.343 68.914" 
+                stroke="#283A2C"
+                strokeWidth="2"
+                opacity="0.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+                fillRule="evenodd"
+                strokeMiterlimit="10"
+                initial={{ strokeDashoffset: 10 }}
+                animate={{ 
+                  strokeDashoffset: 0,
+                  transition: {
+                    duration: 1,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }
+                }}
+                style={{
+                  strokeDasharray: "0, 10"
+                }}
+              />
+              <ellipse 
+                fill="#283A2C" 
+                opacity="0.25" 
+                cx="154" 
+                cy="145.932" 
+                rx="11" 
+                ry="11.068"
+              />
+              <ellipse 
+                fill="#283A2C" 
+                cx="154" 
+                cy="145.932" 
+                rx="5" 
+                ry="5.031"
+              />
+            </svg>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-        <h2 className="text-3xl mt-4 md:text-4xl font-bold text-gray-800 mb-8 text-center">
-          Our Featured <span className="text-green-600">Packages</span>
+        <h2 className="text-3xl mt-4  md:text-4xl font-semibold text-gray-800 mb-12 text-center">
+          Our Featured <span className="text-green-600 relative">
+          Packages
+          <svg
+            className="absolute -bottom-1 left-0 w-full"
+            viewBox="0 0 100 15"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M0,10 Q50,0 100,10"
+              //  stroke="#000000"
+             stroke="currentColor"
+              strokeWidth="3"
+              fill="none"
+            />
+          </svg>
+        </span>
+          
         </h2>
 
         <div className="flex flex-col lg:flex-row">
@@ -194,10 +212,7 @@ export default function PackagesPage() {
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {Array.from({ length: 6 }).map((_, index) => (
-                  <div
-                    key={index}
-                    className="h-[400px] bg-gray-100 rounded-xl animate-pulse"
-                  />
+                  <PackageCardSkeleton key={index} />
                 ))}
               </div>
             ) : (

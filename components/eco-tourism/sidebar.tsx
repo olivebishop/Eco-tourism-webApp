@@ -4,7 +4,7 @@ import * as React from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useUser, useClerk } from "@clerk/nextjs"
-import { ChevronDown, ChevronRight, Home, LogOut, Menu, Settings, X, PenTool, Leaf, UserCircle, Package, BookOpen, FileText } from 'lucide-react'
+import { ChevronDown, ChevronRight, Home, LogOut, Menu, Settings, X, PenTool, Leaf, UserCircle, Package, BookOpen, FileText,Plane  } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import {
@@ -48,6 +48,14 @@ export default function Component({ isOpen, setIsOpen }: SidebarProps) {
       children: [
         { href: "/management-portal/view-bookings", label: "View Destination", icon: Package },
         { href: "/management-portal/view-packages", label: "View Packages", icon: Package },
+      ]
+    },
+    { 
+      icon: Plane , 
+      label: "Destinations",
+      children: [
+        { href: "/management-portal/create-destinations", label: "Create Destinations", icon: FileText },
+        { href: "/management-portal/manage-destinations", label: "Manage Destinations", icon: Settings },
       ]
     },
     { 

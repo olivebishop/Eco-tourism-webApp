@@ -94,6 +94,26 @@ model KeepAlive {
   random String? @default(dbgenerated("gen_random_uuid()")) @db.Uuid
 }
 
+model Destination {
+  id          String   @id @default(cuid())
+  name        String
+  country     String
+  city        String
+  amount      Decimal  @db.Decimal(10, 2)
+  tags        String[]
+  imageData   String?
+  description String
+  daysNights  Int
+  tourType    TourType
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum TourType {
+  DAYS
+  NIGHTS
+}
+
 enum Role {
   ADMIN
 }
