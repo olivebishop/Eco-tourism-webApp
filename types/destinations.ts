@@ -1,22 +1,13 @@
-export interface Included {
-    id: number;
-    item: string;
-  }
-  
-  export interface Destination {
-    id: number;
-    name: string;
-    location: string;
-    description: string;
-    imageUrl: string;
-    price: number;
-    duration: string;
-    bestTime: string;
-    difficulty: 'Easy' | 'Moderate' | 'Challenging';
-    included: Included[];
-    category: string;
-    totalReviews?: number;
-    rating?: number;
-  }
+export interface Destination {
+  id: string
+  name: string
+  country: string
+  city: string
+  amount: number
+  tags: string[]
+  imageData: string
+  description: string
+  daysNights: number
+  tourType: 'DAYS' | 'NIGHTS'
+}
 
-  

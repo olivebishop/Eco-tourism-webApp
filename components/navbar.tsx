@@ -74,7 +74,7 @@ const Navbar = () => {
                       <div>
                         <h3 className="font-medium text-muted-foreground mb-2">Asia</h3>
                         <ul className="space-y-2">
-                          <li><Link href="/destinations/bali" className="flex items-center text-sm hover:text-green-600">Bali <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
+                          <li><Link href="/destinations/indonesia" className="flex items-center text-sm hover:text-green-600">Indonesia <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
                           <li><Link href="/destinations/sri-lanka" className="flex items-center text-sm hover:text-green-600">Sri Lanka <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
                           <li><Link href="/destinations/singapore" className="flex items-center text-sm hover:text-green-600">Singapore <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
                           <li><Link href="/destinations/vietnam" className="flex items-center text-sm hover:text-green-600">Vietnam <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
@@ -84,7 +84,7 @@ const Navbar = () => {
                         <h3 className="font-medium text-muted-foreground mb-2">Middle East</h3>
                         <ul className="space-y-2">
                           <li><Link href="/destinations/jordan" className="flex items-center text-sm hover:text-green-600">Jordan <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
-                          <li><Link href="/destinations/uae" className="flex items-center text-sm hover:text-green-600">UAE <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
+                          <li><Link href="/destinations/united-arab-emirates" className="flex items-center text-sm hover:text-green-600">UAE <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
                         </ul>
                       </div>
                     </div>
@@ -167,7 +167,7 @@ const MobileNav = ({ onClose }: { onClose: () => void }) => {
               <div>
                 <h3 className="font-medium text-muted-foreground mb-2">Asia</h3>
                 <ul className="ml-2 space-y-2">
-                  <li><Link href="/destinations/bali" className="block text-sm hover:text-green-600" onClick={onClose}>Bali</Link></li>
+                  <li><Link href="/destinations/indonesia" className="block text-sm hover:text-green-600" onClick={onClose}>Indonesia</Link></li>
                   <li><Link href="/destinations/sri-lanka" className="block text-sm hover:text-green-600" onClick={onClose}>Sri Lanka</Link></li>
                   <li><Link href="/destinations/singapore" className="block text-sm hover:text-green-600" onClick={onClose}>Singapore</Link></li>
                   <li><Link href="/destinations/vietnam" className="block text-sm hover:text-green-600" onClick={onClose}>Vietnam</Link></li>
@@ -177,7 +177,7 @@ const MobileNav = ({ onClose }: { onClose: () => void }) => {
                 <h3 className="font-medium text-muted-foreground mb-2">Middle East</h3>
                 <ul className="ml-2 space-y-2">
                   <li><Link href="/destinations/jordan" className="block text-sm hover:text-green-600" onClick={onClose}>Jordan</Link></li>
-                  <li><Link href="/destinations/uae" className="block text-sm hover:text-green-600" onClick={onClose}>UAE</Link></li>
+                  <li><Link href="/destinations/united-arab-emirates" className="block text-sm hover:text-green-600" onClick={onClose}>UAE</Link></li>
                 </ul>
               </div>
             </div>

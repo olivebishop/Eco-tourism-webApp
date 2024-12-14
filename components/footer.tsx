@@ -128,6 +128,15 @@ const EcoTourismFooter: React.FC = () => {
   return (
     <>
       <TawkToWidget />
+      <div className="relative z-10 overflow-hidden text-white">
+  <div
+    className="relative z-20 h-32 w-full -scale-y-[1] bg-contain bg-repeat-x"
+    style={{
+      backgroundImage: "url('/images/footer.png')",
+     
+    }}
+  />
+</div>
       <section className="py-20 bg-emerald-950 lg:pl-40">
         <div className="container px-4 mx-auto">
           <div className="max-w-7xl mx-auto">
@@ -255,6 +264,7 @@ const EcoTourismFooter: React.FC = () => {
           </div>
         </div>
       </section>
+      
       
       <ScrollToTopButton />
       
