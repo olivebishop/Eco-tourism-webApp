@@ -5,6 +5,7 @@ import { Toaster } from 'sonner'
 import AuthWrapper from '@/components/auth-wrapper'
 import { Analytics } from "@vercel/analytics/react"
 import Script from 'next/script'
+import { OfflineWrapper } from "@/components/offlineWrapper"
 
 
 
@@ -97,9 +98,11 @@ export default function RootLayout({
           />
         </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <OfflineWrapper>
         {children}
         <Toaster />
         <Analytics />
+        </OfflineWrapper>
       </body>
       </html>
     </AuthWrapper>
