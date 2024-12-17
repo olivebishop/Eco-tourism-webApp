@@ -2,8 +2,8 @@ import React from 'react';
 
 const TravelCTASection: React.FC = () => {
   return (
-    <section className="relative overflow-hidden py-16 lg:py-24 mt-20">
-      <div className="w-full bg-green-50 rounded-lg relative overflow-hidden">
+    <section className="relative overflow-hidden py-16 lg:py-24 mt-20 ">
+      <div className="w-full bg-gradient-to-r from-white  to-green-100  rounded-lg relative overflow-hidden">
         {/* Decorative arrow for larger screens */}
         <div className="absolute right-6 top-1/2 transform -translate-y-1/2 hidden lg:block">
           <svg 
@@ -61,9 +61,7 @@ const TravelCTASection: React.FC = () => {
           </div>
         </div>
 
-        {/* Optional: Decorative background elements */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/80 to-transparent pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-green-100 to-transparent pointer-events-none" />
+     
       </div>
     </section>
   );
