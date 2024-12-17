@@ -206,6 +206,11 @@ export default function EnhancedBlogPostPage({ params }: { params: { id: string 
                 src={blog.imageData}
                 alt={blog.title}
                 className="w-full h-auto object-cover"
+                width={1200}  // Added width
+                height={600}  // Added height
+                {...(blog.imageData.startsWith('data:') 
+                  ? { unoptimized: true } 
+                  : {})}
               />
             </div>
           )}
