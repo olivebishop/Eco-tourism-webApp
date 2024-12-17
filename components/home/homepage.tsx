@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useState, useEffect } from 'react'
 import { FeaturesSection } from "@/components/home/features-section"
 import { BlogsSection } from "@/components/home/offers-section"
@@ -7,15 +8,15 @@ import { WorldMap } from "@/components/home/world-map"
 import { DestinationCard } from "@/components/home/destination-card"
 import { DestinationSkeleton } from "@/components/home/destination-sketelon"
 
-export default function HomePage() {
-  interface Destination {
-    id: string;
-    imageData: string;
-    name: string;
-    amount: number;
-    city: string;
-  }
+interface Destination {
+  id: string;
+  imageData: string;
+  name: string;
+  amount: number;
+  city: string;
+}
 
+export default function HomePage() {
   const [destinations, setDestinations] = useState<Destination[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -44,7 +45,7 @@ export default function HomePage() {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="mb-8">
-            <h2 className="text-2xl font-bold">Recommendation for you</h2>
+            <h2 className="lg:text-2xl text-md font-bold">Recommendations for you</h2>
           </div>
           
           {loading ? (
@@ -58,8 +59,8 @@ export default function HomePage() {
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
               {destinations.slice(0, 5).map((destination) => (
-                <DestinationCard 
-                  key={destination.id} 
+                <DestinationCard
+                  key={destination.id}
                   image={destination.imageData || "/images/lamu.jpg"}
                   title={destination.name}
                   price={destination.amount}
