@@ -2,49 +2,76 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import Image from "next/image"
 
-interface Location {
+// Enhanced package category type with keywords for filtering
+interface PackageCategory {
   name: string
   image: string
+  keywords: string[]
 }
 
-const locations: Location[] = [
-  { name: "Nairobi", image: "/images/Nairobi.jpg" },
-  { name: "Mombasa", image: "/images/msa.jpg" },
-  { name: "Lamu", image: "/images/lamu.jpg" },
-  { name: "Nakuru", image: "/images/Nakuru.jpg" },
+// Expanded package categories with comprehensive keywords
+const packageCategories: PackageCategory[] = [
+  { 
+    name: "All Packages",
+    image: "/images/nairobi.jpg", 
+    keywords: []
+  },
+  { 
+    name: "Beach", 
+    image: "/images/msa.jpg", 
+    keywords: ["beach", "ocean", "coast", "seaside", "shore", "sand", "sea", "waves", "lake", "riverside", "waterfront", "coastal"]
+  },
+  { 
+    name: "Wildlife", 
+    image: "/images/wildbeast.jpg", 
+    keywords: ["wildlife", "safari", "park", "animal", "nature reserve", "ecosystem", "habitat", "jungle", "wilderness", "game reserve", "national park"]
+  },
+  { 
+    name: "Desert", 
+    image: "/images/dessert.jpeg", 
+    keywords: ["desert", "sand dunes", "arid", "semi-arid", "sahara", "wasteland", "dry", "barren", "rocky terrain", "desert adventure"]
+  },
+  { 
+    name: "Forest", 
+    image: "/images/forest.jpg", 
+    keywords: ["forest", "woodland", "rainforest", "jungle", "plantation", "grove", "timberland", "tree cover", "forest adventure"]
+  }
 ]
 
-interface LocationSidebarProps {
-  onLocationSelect: (location: string | null) => void
-  selectedLocation: string | null
+interface PackageSidebarProps {
+  onCategorySelect: (category: string | null) => void
+  selectedCategory: string | null
 }
 
-export function LocationSidebar({ onLocationSelect, selectedLocation }: LocationSidebarProps) {
+export function PackageSidebar({ 
+  onCategorySelect, 
+  selectedCategory
+}: PackageSidebarProps) {
   return (
-    <aside className="w-64  bg-gray-50">
+    <aside className="w-64 bg-gray-50">
       <ScrollArea className="h-full">
         <div className="space-y-4 p-4">
-          {locations.map((location) => (
+          {packageCategories.map((category) => (
             <div
-              key={location.name}
+              key={category.name}
               className="group relative h-40 cursor-pointer overflow-hidden rounded-lg"
-              onClick={() => onLocationSelect(location.name === selectedLocation ? null : location.name)}
+              onClick={() => onCategorySelect(category.name === "All Packages" ? null : category.name)}
             >
               <Image
-                src={location.image}
-                alt={location.name}
+                src={category.image}
+                alt={category.name}
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                 width={300}
                 height={200}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               <div className="absolute bottom-0 w-full p-4">
-                <h3 className="text-lg font-semibold text-white">{location.name}</h3>
+                <h3 className="text-lg font-semibold text-white">{category.name}</h3>
                 <Button
-                  variant={selectedLocation === location.name ? "secondary" : "ghost"}
+                  variant={selectedCategory === category.name || (category.name === "All Packages" && selectedCategory === null) ? "secondary" : "ghost"}
                   className="mt-2 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
                 >
-                  {selectedLocation === location.name ? "Selected" : "Explore"}
+                  {selectedCategory === category.name || (category.name === "All Packages" && selectedCategory === null) ? "Selected" : "Explore"}
                 </Button>
               </div>
             </div>
@@ -54,4 +81,7 @@ export function LocationSidebar({ onLocationSelect, selectedLocation }: Location
     </aside>
   )
 }
+
+// Export the keywords for potential reuse in filtering
+export const packageCategoryKeywords = packageCategories.flatMap(cat => cat.keywords);
 

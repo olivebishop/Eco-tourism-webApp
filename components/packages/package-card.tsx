@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { Package } from '@/types/packages';
-import { ArrowRight } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { ArrowRight } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface PackageCardProps {
   package: Package;
@@ -10,48 +10,62 @@ interface PackageCardProps {
 
 export function PackageCard({ package: pkg }: PackageCardProps) {
   return (
-    <div className="bg-gray-50 shadow-md rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
-      <div className="relative h-48">
+    <div className="h-full flex flex-col bg-white shadow-md rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
+      <div className="relative pt-[66.66%] w-full">
         <Image
           src={pkg.imageData || "/placeholder.svg?height=300&width=400"}
           alt={pkg.name}
           fill
-          className="object-cover transition-transform duration-300 hover:scale-105"
+          className="absolute inset-0 object-cover transition-transform duration-300 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
-      <div className="p-4 space-y-2">
-        <h2 className="text-xl font-bold mb-2 capitalize text-gray-800">{pkg.name}</h2>
-        <div className="space-y-1">
-          <p className="text-gray-600 capitalize flex items-center">
+      <div className="flex flex-col flex-grow p-4 space-y-3">
+        <h2 className="text-lg md:text-xl font-bold mb-2 capitalize text-gray-800 line-clamp-2 min-h-[2.5rem]">
+          {pkg.name}
+        </h2>
+        <div className="flex-grow space-y-2">
+          <p className="text-gray-600 text-sm md:text-base capitalize flex items-center">
             <span className="mr-2">📍</span>
             {pkg.location}
           </p>
-          <p className="text-gray-600 capitalize flex items-center">
+          <p className="text-gray-600 text-sm md:text-base capitalize flex items-center">
             <span className="mr-2">⏱️</span>
             {pkg.duration}
           </p>
           {pkg.type && (
-            <p className="text-gray-600 capitalize flex items-center">
+            <p className="text-gray-600 text-sm md:text-base capitalize flex items-center">
               <span className="mr-2">🏷️</span>
               Type: {pkg.type}
             </p>
           )}
         </div>
         <div className="flex justify-between items-center mt-4">
-          <p className="text-gray-700 font-semibold text-lg">
+          <p className="text-gray-700 font-semibold text-base md:text-lg">
             Kes. {pkg.price.toLocaleString()}
           </p>
-          <Link href={`/packages/${pkg.id}`}>
-            <Button 
-              className="bg-green-600 hover:bg-green-700 text-white transition-all duration-300 group/btn text-xs sm:text-sm px-3 py-1 sm:px-4 sm:py-2"
+          <Link href={`/packages/${pkg.id}`} className="group">
+            <Button
+              className="bg-green-600 hover:bg-green-700 text-white transition-all 
+              duration-300 text-xs sm:text-sm px-3 py-1 sm:px-4 sm:py-2 flex items-center"
             >
-              <span className="mr-1 sm:mr-2">View Details</span>
-              <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
+              <span className="mr-1 sm:mr-2 whitespace-nowrap">View Details</span>
+              <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
           </Link>
         </div>
       </div>
+    </div>
+  );
+}
+
+// Recommended Wrapper Component for Grid Layout
+export function PackageCardGrid({ packages }: { packages: Package[] }) {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 w-full">
+      {packages.map((pkg) => (
+        <PackageCard key={pkg.id} package={pkg} />
+      ))}
     </div>
   );
 }
