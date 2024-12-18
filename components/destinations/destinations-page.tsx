@@ -55,7 +55,7 @@ export default function DestinationsPage({ initialDestinations, country }: Desti
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f6efe5]">
+    <div className="min-h-screen bg-gradient-to-b from-[#f6efe5] to-white">
       {/* Hero Section */}
       <div className="relative z-10 overflow-hidden bg-black text-white">
         <div className="h-40">
@@ -140,10 +140,10 @@ export default function DestinationsPage({ initialDestinations, country }: Desti
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
         <h2 className="text-3xl mt-4 md:text-4xl font-semibold text-gray-800 mb-12 text-center">
           Our Featured <span className="text-green-600 relative">
-       Destinations
+           Destinations
           <svg
             className="absolute -bottom-1 left-0 w-full"
-            viewBox="0 0 100 15"
+            viewBox="0 0 100 9"
             preserveAspectRatio="none"
           >
             <path
@@ -151,6 +151,7 @@ export default function DestinationsPage({ initialDestinations, country }: Desti
               stroke="currentColor"
               strokeWidth="3"
               fill="none"
+              
             />
           </svg>
         </span>
