@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PackageCard } from "@/components/packages/package-card";
 import { PackageCardSkeleton } from "@/components/packages/packageSkeleton";
-import { LocationSidebar } from "@/components/packages/location-sidebar";
+import { PackageSidebar } from "@/components/packages/location-sidebar";
 import { Package } from "@/types/packages";
 import { motion } from 'framer-motion';
 
@@ -17,7 +17,7 @@ export default function PackagesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const itemsPerPage = 6;
 
   useEffect(() => {
@@ -61,10 +61,13 @@ export default function PackagesPage() {
     fetchPackages();
   }, []);
 
-  const filteredPackages = selectedLocation
-    ? packages.filter((pkg) =>
-        pkg.location.toLowerCase().includes(selectedLocation.toLowerCase())
-      )
+  const filteredPackages = selectedCategory
+    ? packages.filter((pkg) => {
+        // Check if package location or type matches the selected category keywords
+        const locationMatch = pkg.location.toLowerCase().includes(selectedCategory.toLowerCase());
+        const typeMatch = pkg.type && pkg.type.toLowerCase().includes(selectedCategory.toLowerCase());
+        return locationMatch || typeMatch;
+      })
     : packages;
 
   const totalPages = Math.ceil(filteredPackages.length / itemsPerPage);
@@ -74,8 +77,8 @@ export default function PackagesPage() {
     startIndex + itemsPerPage
   );
 
-  const handleLocationSelect = (location: string | null) => {
-    setSelectedLocation(location);
+  const handleCategorySelect = (category: string | null) => {
+    setSelectedCategory(category);
     setCurrentPage(1);
   };
 
@@ -178,7 +181,7 @@ export default function PackagesPage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-        <h2 className="text-3xl mt-4  md:text-4xl font-semibold text-gray-800 mb-12 text-center">
+        <h2 className="text-3xl mt-4 md:text-4xl font-semibold text-gray-800 mb-12 text-center">
           Our Featured <span className="text-green-600 relative">
           Packages
           <svg
@@ -188,22 +191,20 @@ export default function PackagesPage() {
           >
             <path
               d="M0,10 Q50,0 100,10"
-              //  stroke="#000000"
-             stroke="currentColor"
+              stroke="currentColor"
               strokeWidth="3"
               fill="none"
             />
           </svg>
         </span>
-          
         </h2>
 
         <div className="flex flex-col lg:flex-row">
-          {/* Location Sidebar (hidden on small screens) */}
+          {/* Package Sidebar (hidden on small screens) */}
           <div className="hidden lg:block">
-            <LocationSidebar
-              onLocationSelect={handleLocationSelect}
-              selectedLocation={selectedLocation}
+            <PackageSidebar
+              onCategorySelect={handleCategorySelect}
+              selectedCategory={selectedCategory}
             />
           </div>
 
@@ -229,8 +230,8 @@ export default function PackagesPage() {
                       No packages found
                     </h3>
                     <p className="text-gray-500">
-                      {selectedLocation
-                        ? `No packages available for ${selectedLocation}. Try selecting a different location.`
+                      {selectedCategory
+                        ? `No packages available for ${selectedCategory}. Try selecting a different category.`
                         : "Check back later for exciting new travel packages."}
                     </p>
                   </div>

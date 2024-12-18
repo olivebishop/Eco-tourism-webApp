@@ -132,7 +132,7 @@ const MobileNav = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className="h-full flex flex-col bg-emerald-950 text-white">
       <div className="p-4 border-b border-green-100 flex items-center justify-between">
-        <Link href="/" className="flex items-center space-x-2" onClick={onClose}>
+        <Link href="#" className="flex items-center space-x-2" onClick={onClose}>
           <Leaf className="h-6 w-6 text-green-600" />
           <span className="text-md font-bold text-white">
             Forestline Tours
