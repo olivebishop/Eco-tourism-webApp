@@ -1,5 +1,4 @@
 export interface Destination {
-  [x: string]: string | StaticImport
   id: string
   name: string
   country: string
