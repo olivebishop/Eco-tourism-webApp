@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { PackageCard } from "@/components/packages/package-card";
 import { PackageCardSkeleton } from "@/components/packages/packageSkeleton";
@@ -63,7 +63,6 @@ export default function PackagesPage() {
 
   const filteredPackages = selectedCategory
     ? packages.filter((pkg) => {
-        // Check if package location or type matches the selected category keywords
         const locationMatch = pkg.location.toLowerCase().includes(selectedCategory.toLowerCase());
         const typeMatch = pkg.type && pkg.type.toLowerCase().includes(selectedCategory.toLowerCase());
         return locationMatch || typeMatch;
@@ -277,3 +276,4 @@ export default function PackagesPage() {
     </div>
   );
 }
+

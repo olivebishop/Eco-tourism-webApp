@@ -12,6 +12,11 @@ interface PackageCategory {
 // Expanded package categories with comprehensive keywords
 const packageCategories: PackageCategory[] = [
   { 
+    name: "All Packages",
+    image: "/images/nairobi.jpg", 
+    keywords: []
+  },
+  { 
     name: "Beach", 
     image: "/images/msa.jpg", 
     keywords: ["beach", "ocean", "coast", "seaside", "shore", "sand", "sea", "waves", "lake", "riverside", "waterfront", "coastal"]
@@ -50,7 +55,7 @@ export function PackageSidebar({
             <div
               key={category.name}
               className="group relative h-40 cursor-pointer overflow-hidden rounded-lg"
-              onClick={() => onCategorySelect(category.name === selectedCategory ? null : category.name)}
+              onClick={() => onCategorySelect(category.name === "All Packages" ? null : category.name)}
             >
               <Image
                 src={category.image}
@@ -61,12 +66,12 @@ export function PackageSidebar({
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               <div className="absolute bottom-0 w-full p-4">
-                <h3 className="text-lg font-semibold text-white">{category.name} Packages</h3>
+                <h3 className="text-lg font-semibold text-white">{category.name}</h3>
                 <Button
-                  variant={selectedCategory === category.name ? "secondary" : "ghost"}
+                  variant={selectedCategory === category.name || (category.name === "All Packages" && selectedCategory === null) ? "secondary" : "ghost"}
                   className="mt-2 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
                 >
-                  {selectedCategory === category.name ? "Selected" : "Explore"}
+                  {selectedCategory === category.name || (category.name === "All Packages" && selectedCategory === null) ? "Selected" : "Explore"}
                 </Button>
               </div>
             </div>
@@ -79,3 +84,4 @@ export function PackageSidebar({
 
 // Export the keywords for potential reuse in filtering
 export const packageCategoryKeywords = packageCategories.flatMap(cat => cat.keywords);
+
