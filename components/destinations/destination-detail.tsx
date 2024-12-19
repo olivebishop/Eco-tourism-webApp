@@ -6,9 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { ArrowLeft, MapPin, Calendar, Clock, Users, DollarSign } from 'lucide-react'
-import {
-  format
-} from "date-fns"
+import { format } from "date-fns"
 import { Calendar as CalendarComponent } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { toast } from "sonner"
@@ -20,15 +18,107 @@ interface DestinationDetailProps {
   destination: Destination
 }
 
+interface BookingFormData {
+  firstname: string
+  lastname: string
+  email: string
+  phone: string
+  numberOfGuests: string
+  bookingDate?: string | Date
+  specialRequests?: string
+}
+
+// Email validation regex
+const EMAIL_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+// Phone validation regex (allows +, spaces, and numbers)
+const PHONE_REGEX = /^[+\d][\d\s-]{7,}$/
+
 export default function DestinationDetail({ destination }: DestinationDetailProps) {
   const [bookingDate, setBookingDate] = useState<Date>()
   const [isLoading, setIsLoading] = useState(false)
+  const [errors, setErrors] = useState<Partial<BookingFormData>>({})
+
+  // Form validation function
+  const validateForm = (formData: FormData): Partial<BookingFormData> => {
+    const errors: Partial<BookingFormData> = {}
+    
+    // First name validation
+    const firstname = formData.get('firstname') as string
+    if (!firstname) {
+      errors.firstname = 'First name is required'
+    } else if (firstname.length < 2) {
+      errors.firstname = 'First name must be at least 2 characters'
+    }
+    
+    // Last name validation
+    const lastname = formData.get('lastname') as string
+    if (!lastname) {
+      errors.lastname = 'Last name is required'
+    } else if (lastname.length < 2) {
+      errors.lastname = 'Last name must be at least 2 characters'
+    }
+    
+    // Email validation
+    const email = formData.get('email') as string
+    if (!email) {
+      errors.email = 'Email is required'
+    } else if (!EMAIL_REGEX.test(email)) {
+      errors.email = 'Please enter a valid email address'
+    }
+    
+    // Phone validation
+    const phone = formData.get('phone') as string
+    if (!phone) {
+      errors.phone = 'Phone number is required'
+    } else if (!PHONE_REGEX.test(phone)) {
+      errors.phone = 'Please enter a valid phone number'
+    }
+    
+    // Number of guests validation
+    const guests = parseInt(formData.get('guests') as string, 10)
+    if (isNaN(guests) || guests < 1) {
+      errors.numberOfGuests = 'Number of guests must be at least 1'
+    } else if (guests > 50) {
+      errors.numberOfGuests = 'For groups larger than 50, please contact us directly'
+    }
+    
+    // Booking date validation
+    if (!bookingDate) {
+      errors.bookingDate = 'Please select a booking date'
+    } else {
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      if (bookingDate < today) {
+        errors.bookingDate = 'Booking date cannot be in the past'
+      }
+    }
+    
+    return errors
+  }
+
+  // Reset form function
+  const resetForm = (form: HTMLFormElement) => {
+    form.reset()
+    setBookingDate(undefined)
+    setErrors({})
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
 
-    const formData = new FormData(e.currentTarget)
+    const form = e.currentTarget
+    const formData = new FormData(form)
+    
+    // Validate form
+    const validationErrors = validateForm(formData)
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors)
+      setIsLoading(false)
+      toast.error('Please correct the errors in the form')
+      return
+    }
+
     const bookingData = {
       firstname: formData.get('firstname') as string,
       lastname: formData.get('lastname') as string,
@@ -59,7 +149,8 @@ export default function DestinationDetail({ destination }: DestinationDetailProp
         duration: 5000,
       })
       
-      // Reset form fields here if needed
+      // Reset form after successful submission
+      resetForm(form)
     } catch (error) {
       console.error('Error submitting booking:', error)
       toast.error('Booking Failed', {
@@ -147,29 +238,72 @@ export default function DestinationDetail({ destination }: DestinationDetailProp
                   
                   <div>
                     <Label htmlFor="firstname">First Name</Label>
-                    <Input id="firstname" name="firstname" placeholder="Enter your first name" required />
+                    <Input 
+                      id="firstname" 
+                      name="firstname" 
+                      placeholder="Enter your first name" 
+                      className={errors.firstname ? 'border-red-500' : ''}
+                      required 
+                    />
+                    {errors.firstname && (
+                      <p className="text-red-500 text-sm mt-1">{errors.firstname}</p>
+                    )}
                   </div>
 
                   <div>
                     <Label htmlFor="lastname">Last Name</Label>
-                    <Input id="lastname" name="lastname" placeholder="Enter your last name" required />
+                    <Input 
+                      id="lastname" 
+                      name="lastname" 
+                      placeholder="Enter your last name" 
+                      className={errors.lastname ? 'border-red-500' : ''}
+                      required 
+                    />
+                    {errors.lastname && (
+                      <p className="text-red-500 text-sm mt-1">{errors.lastname}</p>
+                    )}
                   </div>
 
                   <div>
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" name="email" type="email" placeholder="Enter your email" required />
+                    <Input 
+                      id="email" 
+                      name="email" 
+                      type="email" 
+                      placeholder="Enter your email" 
+                      className={errors.email ? 'border-red-500' : ''}
+                      required 
+                    />
+                    {errors.email && (
+                      <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                    )}
                   </div>
 
                   <div>
                     <Label htmlFor="phone">Phone Number</Label>
-                    <Input id="phone" name="phone" type="tel" placeholder="Enter your phone number" required />
+                    <Input 
+                      id="phone" 
+                      name="phone" 
+                      type="tel" 
+                      placeholder="Enter your phone number (e.g., +254 712345678)" 
+                      className={errors.phone ? 'border-red-500' : ''}
+                      required 
+                    />
+                    {errors.phone && (
+                      <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+                    )}
                   </div>
 
                   <div>
                     <Label>Preferred Date</Label>
                     <Popover>
                       <PopoverTrigger asChild>
-                        <Button variant="outline" className="w-full justify-start text-left font-normal">
+                        <Button 
+                          variant="outline" 
+                          className={`w-full justify-start text-left font-normal ${
+                            errors.bookingDate ? 'border-red-500' : ''
+                          }`}
+                        >
                           <Calendar className="mr-2 h-4 w-4" />
                           {bookingDate ? format(bookingDate, 'PPP') : <span>Pick a date</span>}
                         </Button>
@@ -179,20 +313,40 @@ export default function DestinationDetail({ destination }: DestinationDetailProp
                           mode="single"
                           selected={bookingDate}
                           onSelect={setBookingDate}
+                          disabled={(date) => date < new Date()}
                           initialFocus
                         />
                       </PopoverContent>
                     </Popover>
+                    {errors.bookingDate && (
+                      <p className="text-red-500 text-sm mt-1">{errors.bookingDate?.toString()}</p>
+                    )}
                   </div>
 
                   <div>
                     <Label htmlFor="guests">Number of Guests</Label>
-                    <Input id="guests" name="guests" type="number" min="1" placeholder="Enter number of guests" required />
+                    <Input 
+                      id="guests" 
+                      name="guests" 
+                      type="number" 
+                      min="1" 
+                      max="50"
+                      placeholder="Enter number of guests" 
+                      className={errors.numberOfGuests ? 'border-red-500' : ''}
+                      required 
+                    />
+                    {errors.numberOfGuests && (
+                      <p className="text-red-500 text-sm mt-1">{errors.numberOfGuests}</p>
+                    )}
                   </div>
 
                   <div>
                     <Label htmlFor="special-requests">Special Requests</Label>
-                    <Textarea id="special-requests" name="special-requests" placeholder="Any special requests or requirements?" />
+                    <Textarea 
+                      id="special-requests" 
+                      name="special-requests" 
+                      placeholder="Any special requests or requirements?" 
+                    />
                   </div>
 
                   <Button 
@@ -211,4 +365,3 @@ export default function DestinationDetail({ destination }: DestinationDetailProp
     </div>
   )
 }
-
