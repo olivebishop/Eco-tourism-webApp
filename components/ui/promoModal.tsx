@@ -1,86 +1,59 @@
-"use client";
-
+'use client'
 import { useState, useEffect } from "react";
-import {   
-  Dialog,   
-  DialogContent,   
-  DialogHeader,   
-  DialogTitle,   
-  DialogDescription, 
-} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { isHoliday } from "@/utils/holidayChecker";
-import { Plane } from 'lucide-react';
+import { Plane, X } from 'lucide-react';
 
-export function PromoModal() {
-  const [isOpen, setIsOpen] = useState(false);
+export function PromoBanner() {
+  const [isVisible, setIsVisible] = useState(false);
   const [holiday, setHoliday] = useState<{ name: string; date: Date } | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Check if it's a mobile screen
-    const checkMobileScreen = () => {
-      setIsMobile(window.innerWidth <= 640); // 640px is typically the sm breakpoint
-    };
-
-    // Check initial screen size
-    checkMobileScreen();
-
-    // Add event listener for screen resize
-    window.addEventListener('resize', checkMobileScreen);
-
     // Check for holiday and local storage
-    const hasShownModal = localStorage.getItem('hasShownPromoModal');
+    const hasShownBanner = localStorage.getItem('hasShownPromoBanner');
     const currentHoliday = isHoliday();
 
-    if (!hasShownModal && !isMobile && currentHoliday) {
+    if (!hasShownBanner && currentHoliday) {
       setHoliday(currentHoliday);
-      setIsOpen(true);
-      localStorage.setItem('hasShownPromoModal', 'true');
+      setIsVisible(true);
+      localStorage.setItem('hasShownPromoBanner', 'true');
     }
-
-    // Cleanup event listener
-    return () => {
-      window.removeEventListener('resize', checkMobileScreen);
-    };
   }, []);
 
-  if (isMobile) return null;
+  if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 z-50 w-full max-w-[425px]">
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="bg-green-50 w-full">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-center">
-              {holiday
-                ? `${holiday.name} Special Offer!`
-                : "Special Travel Offer!"}
-            </DialogTitle>
-            <DialogDescription className="text-center">
-              Celebrate with our exclusive holiday deals!
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex flex-col items-center space-y-4 p-4">
-            <Plane className="w-16 h-16 text-green-600" />
-            <p className="text-lg font-semibold text-center">
-              Get up to 30% off on selected tour packages!
-            </p>
-            <p className="text-sm text-gray-600 text-center">
-              Book your dream vacation now and create unforgettable memories.
-            </p>
-            <Button
-              className="w-full bg-green-600 hover:bg-green-700 text-white"
-              onClick={() => {
-                setIsOpen(false);
-                window.location.href = '/packages';
-              }}
-            >
-              Explore Holiday Deals
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+    <div className="fixed z-50 bg-green-50 shadow-lg overflow-hidden sm:bottom-4 sm:left-4 sm:max-w-[300px] sm:rounded-lg bottom-0 left-0 w-full rounded-t-lg">
+      <div className="relative p-4">
+        <button
+          onClick={() => setIsVisible(false)}
+          className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+        >
+          <X className="w-4 h-4" />
+        </button>
+
+        <div className="flex flex-col items-center space-y-3">
+          <Plane className="w-10 h-10 text-green-600" />
+          
+          <h3 className="text-lg font-bold text-center">
+            {holiday ? `${holiday.name} Special Offer!` : "Special Travel Offer!"}
+          </h3>
+          
+          <p className="text-sm text-gray-600 text-center">
+            Get up to 30% off on selected tour packages!
+          </p>
+          
+          <Button
+            className="w-full bg-green-600 hover:bg-green-700 text-white"
+            onClick={() => {
+              setIsVisible(false);
+              window.location.href = '/packages';
+            }}
+          >
+            Explore Deals
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
