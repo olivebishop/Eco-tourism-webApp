@@ -59,6 +59,13 @@ const CookieConsentBanner = () => {
                 Accept All
               </button>
             </div>
+            <div className="text-xs text-gray-500">
+              <p>
+                For more information about our cookie practices, please view our{' '}
+                <a href="/terms-and-condition" className="underline hover:text-gray-700">Privacy Policy</a>.
+                You can change your preferences at any time.
+              </p>
+            </div>
           </div>
         </div>
       </div>
