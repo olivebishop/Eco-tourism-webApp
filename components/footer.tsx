@@ -71,7 +71,7 @@ const ScrollToTopButton: React.FC = () => {
 
   return (
     <div
-      className={`fixed bottom-6 right-6 bg-green-600 hover:bg-green-700 text-white rounded-full p-3 cursor-pointer transition-colors duration-200 ease-in-out ${
+      className={`fixed bottom-4 left-4 z-[60] bg-green-600 hover:bg-green-700 text-white rounded-full p-3 cursor-pointer transition-colors duration-200 ease-in-out ${
         isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
       }`}
       onClick={scrollToTop}
@@ -127,7 +127,10 @@ const EcoTourismFooter: React.FC = () => {
 
   return (
     <>
-      <TawkToWidget />
+  
+    <TawkToWidget />
+
+     
       <div className="relative z-10 overflow-hidden text-white">
   <div
     className="relative z-20 h-32 w-full -scale-y-[1] bg-contain bg-repeat-x"
