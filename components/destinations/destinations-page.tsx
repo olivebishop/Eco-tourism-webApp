@@ -61,7 +61,7 @@ export default function DestinationsPage({ initialDestinations, country }: Desti
       <div className="relative z-10 overflow-hidden bg-black text-white">
         <div className="h-40">
         <Image
-        src="/images/packages.jpg"
+        src="/images/packages.jpeg"
         alt="image"
         width={1920}
         height={160}
