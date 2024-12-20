@@ -8,6 +8,7 @@ import { DestinationCardSkeleton } from '@/components/destinations/destinations-
 import { CountrySidebar } from '@/components/destinations/location-sidebar'
 import { Destination } from '@/types/destinations'
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 interface DestinationsPageProps {
   initialDestinations: Destination[]
@@ -59,11 +60,14 @@ export default function DestinationsPage({ initialDestinations, country }: Desti
       {/* Hero Section */}
       <div className="relative z-10 overflow-hidden bg-black text-white">
         <div className="h-40">
-          <img
-            src="/images/packages.jpeg"
-            alt="Destinations Hero"
-            className="z-1 absolute left-0 top-0 h-full w-full object-cover"
-          />
+        <Image
+        src="/images/packages.jpg"
+        alt="image"
+        width={1920}
+        height={160}
+        className="z-1 absolute left-0 top-0 h-full w-full object-cover"
+        priority
+      />
           <div className="absolute inset-0 flex items-center justify-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg text-center px-4 capitalize">
               {country 

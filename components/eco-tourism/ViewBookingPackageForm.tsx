@@ -83,7 +83,6 @@ export default function PackageBookingsView() {
         throw new Error('Failed to update status')
       }
 
-      const data = await response.json()
 
       toast({
         title: 'Status Updated Successfully',
