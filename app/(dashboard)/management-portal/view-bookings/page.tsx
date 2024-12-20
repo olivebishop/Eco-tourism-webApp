@@ -1,5 +1,5 @@
 import React from 'react'
-import BookingsForm from '@/components/eco-tourism/BookingForm';
+import BookingsForm from '@/components/eco-tourism/DestinationBookingTable';
 
 function page() {
   return (

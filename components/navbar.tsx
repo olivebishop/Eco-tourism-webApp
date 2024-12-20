@@ -84,7 +84,7 @@ const Navbar = () => {
                         <h3 className="font-medium text-muted-foreground mb-2">Middle East</h3>
                         <ul className="space-y-2">
                           <li><Link href="/destinations/jordan" className="flex items-center text-sm hover:text-green-600">Jordan <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
-                          <li><Link href="/destinations/united-arab-emirates" className="flex items-center text-sm hover:text-green-600">UAE <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
+                          <li><Link href="/destinations/uae" className="flex items-center text-sm hover:text-green-600">UAE <ChevronRight className="h-4 w-4 ml-auto" /></Link></li>
                         </ul>
                       </div>
                     </div>
@@ -177,7 +177,7 @@ const MobileNav = ({ onClose }: { onClose: () => void }) => {
                 <h3 className="font-medium text-muted-foreground mb-2">Middle East</h3>
                 <ul className="ml-2 space-y-2">
                   <li><Link href="/destinations/jordan" className="block text-sm hover:text-green-600" onClick={onClose}>Jordan</Link></li>
-                  <li><Link href="/destinations/united-arab-emirates" className="block text-sm hover:text-green-600" onClick={onClose}>UAE</Link></li>
+                  <li><Link href="/destinations/uae" className="block text-sm hover:text-green-600" onClick={onClose}>UAE</Link></li>
                 </ul>
               </div>
             </div>

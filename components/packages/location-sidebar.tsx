@@ -13,7 +13,7 @@ interface PackageCategory {
 const packageCategories: PackageCategory[] = [
   { 
     name: "All Packages",
-    image: "/images/nairobi.jpg", 
+    image: "/images/family.svg", 
     keywords: []
   },
   { 
