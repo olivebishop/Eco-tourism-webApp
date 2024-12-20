@@ -35,6 +35,7 @@ import {
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Check, Filter, MoreVertical, Search, SlidersHorizontal, X, AlertCircle, Calendar, Users, MapPin } from 'lucide-react'
 import { format } from 'date-fns'
+import { useToast } from '@/hooks/use-toast'
 
 interface PackageBooking {
   id: string
@@ -59,10 +60,16 @@ export default function PackageBookingsView() {
   const [error, setError] = useState<string | null>(null)
   const [globalFilter, setGlobalFilter] = useState('')
   const [sorting, setSorting] = useState<SortingState>([])
+  const { toast } = useToast()
 
   const handleStatusChange = async (bookingId: string, newStatus: PackageBooking['status']) => {
     try {
-      const response = await fetch(`/api/packages/bookings?id=${bookingId}`, {
+      toast({
+        title: 'Updating booking status...',
+        description: 'Please wait while we process your request.',
+      })
+
+      const response = await fetch(`/api/packages/bookings/${bookingId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -72,11 +79,45 @@ export default function PackageBookingsView() {
         }),
       })
 
-      if (!response.ok) throw new Error('Failed to update status')
+      if (!response.ok) {
+        throw new Error('Failed to update status')
+      }
+
+      const data = await response.json()
+
+      toast({
+        title: 'Status Updated Successfully',
+        description: `Booking status has been changed to ${newStatus.toLowerCase()}. ${newStatus === 'APPROVED' || newStatus === 'REJECTED' ? 'An email notification has been sent to the guest.' : ''}`,
+        variant: 'default',
+        duration: 5000,
+      })
       
-      fetchPackageBookings()
-    } catch {
+      await fetchPackageBookings()
+    } catch (error) {
+      console.error('Error updating status:', error)
       setError('Failed to update booking status')
+      
+      toast({
+        title: 'Error',
+        description: 'Failed to update booking status. Please try again.',
+        variant: 'destructive',
+        duration: 5000,
+      })
+    }
+  }
+
+  const fetchPackageBookings = async () => {
+    try {
+      const response = await fetch('/api/packages/bookings')
+      if (!response.ok) {
+        throw new Error('Failed to fetch package bookings')
+      }
+      const data = await response.json()
+      setBookings(data.bookings)
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'An unknown error occurred')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -178,6 +219,8 @@ export default function PackageBookingsView() {
       header: '',
       cell: ({ row }) => {
         const booking = row.original
+        const isEmailActionable = booking.status === 'PENDING'
+        
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -188,18 +231,22 @@ export default function PackageBookingsView() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => handleStatusChange(booking.id, 'APPROVED')}
-                className="text-green-600"
-              >
-                <Check className="mr-2 h-4 w-4" /> Approve
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => handleStatusChange(booking.id, 'REJECTED')}
-                className="text-red-600"
-              >
-                <X className="mr-2 h-4 w-4" /> Reject
-              </DropdownMenuItem>
+              {isEmailActionable && (
+                <>
+                  <DropdownMenuItem
+                    onClick={() => handleStatusChange(booking.id, 'APPROVED')}
+                    className="text-green-600"
+                  >
+                    <Check className="mr-2 h-4 w-4" /> Approve & Send Email
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => handleStatusChange(booking.id, 'REJECTED')}
+                    className="text-red-600"
+                  >
+                    <X className="mr-2 h-4 w-4" /> Reject & Send Email
+                  </DropdownMenuItem>
+                </>
+              )}
               <DropdownMenuItem
                 onClick={() => handleStatusChange(booking.id, 'COMPLETED')}
                 className="text-blue-600"
@@ -227,21 +274,6 @@ export default function PackageBookingsView() {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
   })
-
-  const fetchPackageBookings = async () => {
-    try {
-      const response = await fetch('/api/packages/bookings')
-      if (!response.ok) {
-        throw new Error('Failed to fetch package bookings')
-      }
-      const data = await response.json()
-      setBookings(data.bookings)
-    } catch (error) {
-      setError(error instanceof Error ? error.message : 'An unknown error occurred')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   useEffect(() => {
     fetchPackageBookings()
