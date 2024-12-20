@@ -24,65 +24,56 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { Pencil, Trash2, ChevronLeft, ChevronRight, Users } from 'lucide-react'
+import { Pencil, Trash2, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Badge } from '@/components/ui/badge'
 
-interface IncludedItem {
-  id: string
-  item: string
-  packageId: string
-}
-
-interface Package {
+interface Destination {
   id: string
   name: string
-  location: string
-  imageData?: string
-  duration: number
-  groupSize: number
-  price: number
-  description: string
-  included: IncludedItem[]
-  authorId: string
-  authorName: string
+  country: string
+  city: string
+  amount: number
+  tags: string[]
+  daysNights: number
+  tourType: string
   createdAt: string
-  updatedAt: string
 }
 
-export default function PackageManagement() {
-  const [packages, setPackages] = useState<Package[]>([])
+export default function DestinationManagement() {
+  const [destinations, setDestinations] = useState<Destination[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const router = useRouter()
   const { toast } = useToast()
 
   const ITEMS_PER_PAGE = 8
-  const totalPages = Math.ceil(packages.length / ITEMS_PER_PAGE)
+  const totalPages = Math.ceil(destinations.length / ITEMS_PER_PAGE)
   
+  // Get current page's destinations
   const getCurrentPageData = () => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
     const endIndex = startIndex + ITEMS_PER_PAGE
-    return packages.slice(startIndex, endIndex)
+    return destinations.slice(startIndex, endIndex)
   }
 
   useEffect(() => {
-    fetchPackages()
+    fetchDestinations()
   }, [])
 
-  const fetchPackages = async () => {
+  const fetchDestinations = async () => {
     try {
-      const response = await fetch('/api/packages')
-      if (!response.ok) throw new Error('Failed to fetch packages')
+      const response = await fetch('/api/destinations')
+      if (!response.ok) throw new Error('Failed to fetch destinations')
       const data = await response.json()
-      setPackages(data)
+      setDestinations(data)
     } catch (error) {
-      console.error('Error fetching packages:', error)
-      setPackages([])
+      console.error('Error fetching destinations:', error)
+      setDestinations([])
       toast({
         title: "Error",
-        description: "Failed to fetch packages",
+        description: "Failed to fetch destinations",
         variant: "destructive",
       })
     } finally {
@@ -90,30 +81,30 @@ export default function PackageManagement() {
     }
   }
 
-  const handleEdit = (packageId: string) => {
-    router.push(`/management-portal/manage-packages/${packageId}`)
+  const handleEdit = (destinationId: string) => {
+    router.push(`/management-portal/manage-destinations/${destinationId}`)
   }
 
-  const handleDelete = async (packageId: string) => {
+  const handleDelete = async (destinationId: string) => {
     try {
-      const response = await fetch(`/api/packages/${packageId}`, {
+      const response = await fetch(`/api/destinations/${destinationId}`, {
         method: 'DELETE',
       })
 
-      if (!response.ok) throw new Error('Failed to delete package')
+      if (!response.ok) throw new Error('Failed to delete destination')
 
       toast({
         title: "Success",
-        description: "Package deleted successfully",
+        description: "Destination deleted successfully",
       })
 
-      fetchPackages()
+      fetchDestinations()
       router.refresh()
     } catch (error) {
-      console.error('Error deleting package:', error)
+      console.error('Error deleting destination:', error)
       toast({
         title: "Error",
-        description: "Failed to delete package",
+        description: "Failed to delete destination",
         variant: "destructive",
       })
     }
@@ -141,9 +132,9 @@ export default function PackageManagement() {
   return (
     <Card className="w-full max-w-5xl mx-auto">
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Manage Packages</CardTitle>
-        <Button onClick={() => router.push('/management-portal/create-packages')}>
-          Create New Package
+        <CardTitle>Manage Destinations</CardTitle>
+        <Button onClick={() => router.push('/management-portal/create-destination')}>
+          Create New Destination
         </Button>
       </CardHeader>
       <CardContent>
@@ -153,8 +144,8 @@ export default function PackageManagement() {
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Location</TableHead>
+                <TableHead>Tour Type</TableHead>
                 <TableHead>Duration</TableHead>
-                <TableHead>Group Size</TableHead>
                 <TableHead>Price (KES)</TableHead>
                 <TableHead>Actions</TableHead>
               </TableRow>
@@ -165,11 +156,11 @@ export default function PackageManagement() {
               ))}
             </TableBody>
           </Table>
-        ) : packages.length === 0 ? (
+        ) : destinations.length === 0 ? (
           <Alert>
-            <AlertTitle>No packages found</AlertTitle>
+            <AlertTitle>No destinations found</AlertTitle>
             <AlertDescription>
-              There are currently no packages. Click the &quot;Create New Package&quot; button to get started.
+              There are currently no destinations. Click the &quot;Create New Destination&quot; button to get started.
             </AlertDescription>
           </Alert>
         ) : (
@@ -179,44 +170,35 @@ export default function PackageManagement() {
                 <TableRow>
                   <TableHead>Name</TableHead>
                   <TableHead>Location</TableHead>
+                  <TableHead>Tour Type</TableHead>
                   <TableHead>Duration</TableHead>
-                  <TableHead>Group Size</TableHead>
                   <TableHead>Price (KES)</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {getCurrentPageData().map((pkg) => (
-                  <TableRow key={pkg.id}>
+                {getCurrentPageData().map((destination) => (
+                  <TableRow key={destination.id}>
                     <TableCell className="font-medium">
-                      {pkg.name}
+                      {destination.name}
                       <div className="flex flex-wrap gap-1 mt-1">
-                        {pkg.included.map((includedItem) => (
-                          <Badge 
-                            key={includedItem.id}
-                            variant="secondary" 
-                            className="text-xs bg-green-50"
-                          >
-                            {includedItem.item}
+                        {destination.tags.map((tag) => (
+                          <Badge key={tag} variant="secondary" className="text-xs  bg-green-50">
+                            {tag}
                           </Badge>
                         ))}
                       </div>
                     </TableCell>
-                    <TableCell>{pkg.location}</TableCell>
-                    <TableCell>{`${pkg.duration} Days`}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center">
-                        <Users className="h-4 w-4 mr-1" />
-                        {pkg.groupSize}
-                      </div>
-                    </TableCell>
-                    <TableCell>{pkg.price.toLocaleString()}</TableCell>
+                    <TableCell>{`${destination.city}, ${destination.country}`}</TableCell>
+                    <TableCell>{destination.tourType}</TableCell>
+                    <TableCell>{`${destination.daysNights} Days`}</TableCell>
+                    <TableCell>{destination.amount.toLocaleString()}</TableCell>
                     <TableCell>
                       <div className="flex space-x-2">
                         <Button
                           variant="outline"
                           size="sm"
-                          onClick={() => handleEdit(pkg.id)}
+                          onClick={() => handleEdit(destination.id)}
                         >
                           <Pencil className="h-4 w-4" />
                           <span className="sr-only">Edit</span>
@@ -232,13 +214,13 @@ export default function PackageManagement() {
                             <AlertDialogHeader>
                               <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                               <AlertDialogDescription>
-                                This action cannot be undone. This will permanently delete the package
+                                This action cannot be undone. This will permanently delete the destination
                                 and all associated data from our servers.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction onClick={() => handleDelete(pkg.id)}>
+                              <AlertDialogAction onClick={() => handleDelete(destination.id)}>
                                 Continue
                               </AlertDialogAction>
                             </AlertDialogFooter>
@@ -252,7 +234,7 @@ export default function PackageManagement() {
             </Table>
             <div className="flex items-center justify-between mt-4">
               <div className="text-sm text-gray-500">
-                Showing {((currentPage - 1) * ITEMS_PER_PAGE) + 1} to {Math.min(currentPage * ITEMS_PER_PAGE, packages.length)} of {packages.length} packages
+                Showing {((currentPage - 1) * ITEMS_PER_PAGE) + 1} to {Math.min(currentPage * ITEMS_PER_PAGE, destinations.length)} of {destinations.length} destinations
               </div>
               <div className="flex space-x-2">
                 <Button

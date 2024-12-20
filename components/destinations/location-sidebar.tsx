@@ -12,15 +12,14 @@ interface Country {
 
 const countries: Country[] = [
   { name: "Kenya", image: "/images/Nairobi.jpg", slug: "kenya" },
-  { name: "Tanzania", image: "/images/Nairobi.jpg", slug: "tanzania" },
-  { name: "UAE", image: "/images/Nairobi.jpg", slug: "uae" },
-  { name: "South Africa", image: "/images/Nairobi.jpg", slug: "south-africa" },
-  { name: "Namibia", image: "/images/Nairobi.jpg", slug: "namibia" },
-  { name: "Botswana", image: "/images/Nairobi.jpg", slug: "botswana" },
-  { name: "Sri Lanka", image: "/images/Nairobi.jpg", slug: "sri-lanka" },
-  { name: "Singapore", image: "/images/Nairobi.jpg", slug: "singapore" },
-  { name: "Vietnam", image: "/images/Nairobi.jpg", slug: "vietnam" },
-  { name: "Jordan", image: "/images/Nairobi.jpg", slug: "jordan" },
+  { name: "Tanzania", image: "/images/tz.png", slug: "tanzania" },
+  { name: "UAE", image: "/images/uae.jpg", slug: "uae" },
+  { name: "South Africa", image: "/images/south-africa.jpg", slug: "south-africa" },
+  { name: "Namibia", image: "/images/dessert.jpeg", slug: "namibia" },
+  { name: "Botswana", image: "/images/botswana.jpg", slug: "botswana" },
+  { name: "Sri Lanka", image: "/images/sirilanka.jpg", slug: "sri-lanka" },
+  { name: "Singapore", image: "/images/singapore.jpg", slug: "singapore" },
+ 
 ]
 
 export function CountrySidebar() {

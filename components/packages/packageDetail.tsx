@@ -27,15 +27,90 @@ interface PackageDestinationProps {
   }
 }
 
+interface FormErrors {
+  firstname?: string
+  lastname?: string
+  email?: string
+  phone?: string
+  numberOfGuests?: string
+  bookingDate?: string
+}
+
 export default function PackageDestination({ package: travelPackage }: PackageDestinationProps) {
   const [bookingDate, setBookingDate] = useState<Date>()
   const [isLoading, setIsLoading] = useState(false)
+  const [errors, setErrors] = useState<FormErrors>({})
+  const formRef = React.useRef<HTMLFormElement>(null)
+
+  const validateForm = (formData: FormData): FormErrors => {
+    const errors: FormErrors = {}
+    
+    // First Name validation
+    const firstname = formData.get('firstname') as string
+    if (!firstname || firstname.trim().length < 2) {
+      errors.firstname = 'First name must be at least 2 characters'
+    }
+
+    // Last Name validation
+    const lastname = formData.get('lastname') as string
+    if (!lastname || lastname.trim().length < 2) {
+      errors.lastname = 'Last name must be at least 2 characters'
+    }
+
+    // Email validation
+    const email = formData.get('email') as string
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!email || !emailRegex.test(email)) {
+      errors.email = 'Please enter a valid email address'
+    }
+
+    // Phone validation
+    const phone = formData.get('phone') as string
+    const phoneRegex = /^\+?[\d\s-]{10,}$/
+    if (!phone || !phoneRegex.test(phone)) {
+      errors.phone = 'Please enter a valid phone number (min 10 digits)'
+    }
+
+    // Number of guests validation
+    const guests = parseInt(formData.get('guests') as string, 10)
+    if (isNaN(guests) || guests < 1) {
+      errors.numberOfGuests = 'Number of guests must be at least 1'
+    }
+
+    // Booking date validation
+    if (!bookingDate) {
+      errors.bookingDate = 'Please select a booking date'
+    } else {
+      const today = new Date()
+      if (bookingDate < today) {
+        errors.bookingDate = 'Booking date cannot be in the past'
+      }
+    }
+
+    return errors
+  }
+
+  const clearForm = () => {
+    if (formRef.current) {
+      formRef.current.reset()
+      setBookingDate(undefined)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
 
     const formData = new FormData(e.currentTarget)
+    const validationErrors = validateForm(formData)
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors)
+      setIsLoading(false)
+      toast.error('Please correct the errors in the form')
+      return
+    }
+
     const bookingData = {
       firstname: formData.get('firstname') as string,
       lastname: formData.get('lastname') as string,
@@ -66,7 +141,10 @@ export default function PackageDestination({ package: travelPackage }: PackageDe
         duration: 5000,
       })
       
-      // Reset form fields here if needed
+      // Clear form after successful submission
+      clearForm()
+      setErrors({})
+      
     } catch (error) {
       console.error('Error submitting booking:', error)
       toast.error('Booking Failed', {
@@ -149,34 +227,75 @@ export default function PackageDestination({ package: travelPackage }: PackageDe
               </div>
               
               <div>
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
                   <h3 className="text-2xl font-bold mb-4">Book Your Package</h3>
                   
                   <div>
                     <Label htmlFor="firstname">First Name</Label>
-                    <Input id="firstname" name="firstname" placeholder="Enter your first name" required />
+                    <Input 
+                      id="firstname" 
+                      name="firstname" 
+                      placeholder="Enter your first name" 
+                      className={errors.firstname ? "border-red-500" : ""}
+                      required 
+                    />
+                    {errors.firstname && (
+                      <p className="text-red-500 text-sm mt-1">{errors.firstname}</p>
+                    )}
                   </div>
 
                   <div>
                     <Label htmlFor="lastname">Last Name</Label>
-                    <Input id="lastname" name="lastname" placeholder="Enter your last name" required />
+                    <Input 
+                      id="lastname" 
+                      name="lastname" 
+                      placeholder="Enter your last name" 
+                      className={errors.lastname ? "border-red-500" : ""}
+                      required 
+                    />
+                    {errors.lastname && (
+                      <p className="text-red-500 text-sm mt-1">{errors.lastname}</p>
+                    )}
                   </div>
 
                   <div>
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" name="email" type="email" placeholder="Enter your email" required />
+                    <Input 
+                      id="email" 
+                      name="email" 
+                      type="email" 
+                      placeholder="Enter your email" 
+                      className={errors.email ? "border-red-500" : ""}
+                      required 
+                    />
+                    {errors.email && (
+                      <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                    )}
                   </div>
 
                   <div>
                     <Label htmlFor="phone">Phone Number</Label>
-                    <Input id="phone" name="phone" type="tel" placeholder="Enter your phone number" required />
+                    <Input 
+                      id="phone" 
+                      name="phone" 
+                      type="tel" 
+                      placeholder="Enter your phone number" 
+                      className={errors.phone ? "border-red-500" : ""}
+                      required 
+                    />
+                    {errors.phone && (
+                      <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+                    )}
                   </div>
 
                   <div>
                     <Label>Preferred Date</Label>
                     <Popover>
                       <PopoverTrigger asChild>
-                        <Button variant="outline" className="w-full justify-start text-left font-normal">
+                        <Button 
+                          variant="outline" 
+                          className={`w-full justify-start text-left font-normal ${errors.bookingDate ? "border-red-500" : ""}`}
+                        >
                           <Calendar className="mr-2 h-4 w-4" />
                           {bookingDate ? format(bookingDate, 'PPP') : <span>Pick a date</span>}
                         </Button>
@@ -190,16 +309,34 @@ export default function PackageDestination({ package: travelPackage }: PackageDe
                         />
                       </PopoverContent>
                     </Popover>
+                    {errors.bookingDate && (
+                      <p className="text-red-500 text-sm mt-1">{errors.bookingDate}</p>
+                    )}
                   </div>
 
                   <div>
                     <Label htmlFor="guests">Number of Guests</Label>
-                    <Input id="guests" name="guests" type="number" min="1" placeholder="Enter number of guests" required />
+                    <Input 
+                      id="guests" 
+                      name="guests" 
+                      type="number" 
+                      min="1" 
+                      placeholder="Enter number of guests" 
+                      className={errors.numberOfGuests ? "border-red-500" : ""}
+                      required 
+                    />
+                    {errors.numberOfGuests && (
+                      <p className="text-red-500 text-sm mt-1">{errors.numberOfGuests}</p>
+                    )}
                   </div>
 
                   <div>
                     <Label htmlFor="special-requests">Special Requests</Label>
-                    <Textarea id="special-requests" name="special-requests" placeholder="Any special requests or requirements?" />
+                    <Textarea 
+                      id="special-requests" 
+                      name="special-requests" 
+                      placeholder="Any special requests or requirements?" 
+                    />
                   </div>
 
                   <Button 

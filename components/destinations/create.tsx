@@ -56,7 +56,7 @@ export function CreateDestinationForm() {
       }
 
       toast.success('Destination created successfully')
-      router.push(`/destinations`)
+      router.push(`/management-portal/create-destinations`)
     } catch (error) {
       console.error('Error creating destination:', error)
       toast.error('Failed to create destination')
@@ -84,7 +84,7 @@ export function CreateDestinationForm() {
         <Input id="amount" name="amount" type="number" step="0.01" placeholder="Enter amount" required />
       </div>
       <div>
-        <Label htmlFor="tags">Tags</Label>
+        <Label htmlFor="tags">Tags/Whats Included</Label>
         <Input id="tags" name="tags" placeholder="Enter tags (comma-separated)" required />
       </div>
       <div>

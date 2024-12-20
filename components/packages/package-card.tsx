@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Package } from '@/types/packages';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, MapPin, CalendarDays,Tag } from 'lucide-react'
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -26,16 +26,16 @@ export function PackageCard({ package: pkg }: PackageCardProps) {
         </h2>
         <div className="flex-grow space-y-2">
           <p className="text-gray-600 text-sm md:text-base capitalize flex items-center">
-            <span className="mr-2">📍</span>
+            <span className="mr-2"><MapPin /></span>
             {pkg.location}
           </p>
-          <p className="text-gray-600 text-sm md:text-base capitalize flex items-center">
-            <span className="mr-2">⏱️</span>
+          <p className="text-gray-600 text-sm md:text-base  flex items-center">
+            <span className="mr-2"><CalendarDays /></span>
             {pkg.duration}
           </p>
           {pkg.type && (
             <p className="text-gray-600 text-sm md:text-base capitalize flex items-center">
-              <span className="mr-2">🏷️</span>
+              <span className="mr-2"> <Tag /></span>
               Type: {pkg.type}
             </p>
           )}

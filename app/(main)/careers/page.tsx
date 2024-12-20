@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { LinkedinIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion'
+import Image from 'next/image';
 
 export default function CareersPage() {
   const handleLinkedIn = () => {
@@ -16,11 +17,14 @@ export default function CareersPage() {
       {/* Hero Section */}
       <div className="relative z-10 overflow-hidden bg-black text-white">
         <div className="h-40">
-          <img
-            src="images/hero_packages.jpg"
-            alt="image"
-            className="z-1 absolute left-0 top-0 h-full w-full object-cover"
-          />
+        <Image
+        src="/images/hero_packages.jpg"
+        alt="image"
+        width={1920}
+        height={160}
+        className="z-1 absolute left-0 top-0 h-full w-full object-cover"
+        priority
+      />
           <div className="absolute inset-0 flex items-center justify-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg text-center px-4">
               Explore Careers

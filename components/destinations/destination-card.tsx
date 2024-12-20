@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, MapPin, CalendarDays } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Destination } from '@/types/destinations'
 
@@ -26,11 +26,11 @@ export function DestinationCard({ destination }: DestinationCardProps) {
         </h2>
         <div className="flex-grow space-y-2">
           <p className="text-gray-600 text-sm md:text-base capitalize flex items-center">
-            <span className="mr-2">📍</span>
+            <span className="mr-2"> <MapPin /></span>
             {destination.country}, {destination.city}
           </p>
-          <p className="text-gray-600 text-sm md:text-base capitalize flex items-center">
-            <span className="mr-2">⏱️</span>
+          <p className="text-gray-600 text-sm md:text-base  flex items-center">
+            <span className="mr-2"> <CalendarDays /></span>
             {destination.daysNights} {destination.tourType}
           </p>
         </div>

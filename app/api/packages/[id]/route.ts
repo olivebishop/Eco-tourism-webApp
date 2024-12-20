@@ -10,6 +10,9 @@ export async function GET(request: Request, { params }: { params: { id: string }
     const id = params.id
     const pkg = await prisma.package.findUnique({
       where: { id },
+      include: {
+        included: true
+      }
     })
 
     if (!pkg) {
@@ -41,6 +44,9 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 
     const existingPackage = await prisma.package.findUnique({
       where: { id },
+      include: {
+        included: true
+      }
     })
 
     if (!existingPackage) {
@@ -51,18 +57,33 @@ export async function PUT(request: Request, { params }: { params: { id: string }
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
     }
 
+    // First delete all existing included items
+    await prisma.included.deleteMany({
+      where: {
+        packageId: id
+      }
+    })
+
+    // Update package with new data
     const updatedPackage = await prisma.package.update({
       where: { id },
       data: {
         name,
         location,
         imageData,
-        duration,
-        groupSize,
-        price: parseFloat(price),
+        duration: duration.toString(),
+        groupSize: groupSize.toString(),
+        price: parseFloat(price.toString()),
         description,
-        included,
+        included: {
+          create: included.map((item: string) => ({
+            item: item
+          }))
+        }
       },
+      include: {
+        included: true
+      }
     })
 
     return NextResponse.json(updatedPackage)
@@ -95,6 +116,14 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
     }
 
+    // Delete the included items first (due to foreign key constraint)
+    await prisma.included.deleteMany({
+      where: {
+        packageId: id
+      }
+    })
+
+    // Then delete the package
     await prisma.package.delete({
       where: { id },
     })
