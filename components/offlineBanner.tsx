@@ -30,9 +30,9 @@ export function OfflineBanner() {
   if (!isOffline) return null
 
   return (
-    <div className="fixed inset-0 bg-green-50 flex items-center justify-center z-50">
-      <div className="text-center p-6 max-w-sm mx-auto">
-        <CloudOff className="mx-auto h-12 w-12 text-black  mb-4 animate-pulse" />
+    <div className="fixed inset-0 bg-green-50 flex items-center justify-center z-50 p-4">
+      <div className="text-center p-6 max-w-sm w-full bg-white rounded-lg shadow-lg">
+        <CloudOff className="mx-auto h-12 w-12 text-black mb-4 animate-pulse" />
         <h2 className="text-2xl font-bold mb-2 text-black">You&apos;re offline</h2>
         <p className="text-slate-950 mb-4">
           Seems like you lost connectivity. Please check your network connection and try again. 
