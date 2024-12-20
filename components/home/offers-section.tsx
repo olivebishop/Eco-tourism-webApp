@@ -46,9 +46,12 @@ export function BlogsSection() {
     return (
       <section className="py-16">
         <div className="container mx-auto px-4">
+        <div className="inline-flex items-center rounded-full bg-green-100 px-4 py-1 text-sm text-green-600">
+            Get the lastst blogs
+            </div>
           <div className="mb-8 flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Check our latest blogs</h2>
-            <Link href="/blogs" className="text-green-600 hover:underline">
+            <h2 className="text-2xl font-bold mt4 mb-1">Check our latest blogs</h2>
+            <Link href="/blogs" className="text-green-600 text-md hover:underline">
               View Blogs
             </Link>
           </div>
