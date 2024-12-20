@@ -44,10 +44,10 @@ export default function HomePage() {
     <main>
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="mb-8">
-            <h2 className="lg:text-2xl text-md font-bold">Recommendations for you</h2>
-          </div>
-          
+        <div className="inline-flex items-center rounded-full bg-green-100 px-4 py-1 text-sm text-green-600">
+             Made for you
+            </div>
+          <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-1 mt-4">Recommendations for you</h2>
           {loading ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
               {[...Array(5)].map((_, index) => (

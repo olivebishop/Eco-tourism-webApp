@@ -13,9 +13,12 @@ export function CategoriesSection() {
   return (
     <section className="py-16">
       <div className="container mx-auto px-4">
+      <div className="inline-flex items-center rounded-full bg-green-100 px-4 py-1 text-sm text-green-600">
+             We belive in freedom
+            </div>
         <div className="mb-8 flex items-center justify-between">
-          <h2 className="text-2xl font-bold">Explore another category</h2>
-          <Link href="/packages" className="text-green-600 hover:underline">
+          <h2 className="text-2xl font-bold mt-4 mb-2">Explore another category</h2>
+          <Link href="/packages" className="text-green-600 text-md hover:underline">
             All Category
           </Link>
         </div>

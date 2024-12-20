@@ -91,13 +91,6 @@ export default function RootLayout({
               "url" : "https://www.forestlinetours.co.ke"
             }`}
         </Script>
-        <Script
-            id="Cookiebot"
-            src="https://consent.cookiebot.com/uc.js"
-            data-cbid="f69895d8-3ecd-40e1-820b-c2bddf530d37"
-            data-blockingmode="auto"
-            strategy="beforeInteractive"
-          />
         </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <OfflineWrapper>
