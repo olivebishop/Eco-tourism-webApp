@@ -98,6 +98,13 @@ const Navbar = () => {
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
+                  <Link href="/gallery" legacyBehavior passHref>
+                    <NavigationMenuLink className="text-white hover:text-green-600 transition-colors">
+                      Gallery
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
                   <Link href="/contact" legacyBehavior passHref>
                     <NavigationMenuLink className="text-white hover:text-green-600 transition-colors">
                       Contact
@@ -185,6 +192,9 @@ const MobileNav = ({ onClose }: { onClose: () => void }) => {
           
           <Link href="/blogs" className="text-lg font-semibold hover:text-green-600 transition-colors" onClick={onClose}>
             Blog
+          </Link>
+          <Link href="/gallery" className="text-lg font-semibold hover:text-green-600 transition-colors" onClick={onClose}>
+            Gallery
           </Link>
           <Link href="/contact" className="text-lg font-semibold hover:text-green-600 transition-colors" onClick={onClose}>
             Contact

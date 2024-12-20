@@ -11,7 +11,7 @@ export function FeaturesSection() {
         <div className="grid gap-12 lg:grid-cols-2">
           <div className="space-y-6">
             <div className="inline-flex items-center rounded-full bg-green-100 px-4 py-1 text-sm text-green-600">
-              #1 Travel Service
+             Travel Service
             </div>
             <h2 className="text-2xl font-bold leading-tight sm:text-4xl">Choose the best holiday package for you</h2>
             <p className="text-gray-600">
