@@ -80,6 +80,8 @@ export default function RootLayout({
     <AuthWrapper>
       <html lang="en" suppressHydrationWarning>
         <head>
+        <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="f69895d8-3ecd-40e1-820b-c2bddf530d37" data-blockingmode="auto" type="text/javascript"></script>
+        <script id="CookieDeclaration" src="https://consent.cookiebot.com/f69895d8-3ecd-40e1-820b-c2bddf530d37/cd.js" type="text/javascript" async></script>
          <Script id="schema-org-markup-website" type="application/ld+json">
           {`
             {
