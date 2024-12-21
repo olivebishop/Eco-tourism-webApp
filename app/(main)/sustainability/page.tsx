@@ -204,7 +204,7 @@ const SustainabilityPage = () => {
       <div className="container mx-auto px-4 py-8 sm:py-12 lg:py-16 text-center">
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">Make Your Travel Matter</h2>
         <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
-          Join us in promoting sustainable tourism while exploring Kenya's most beautiful destinations.
+          Join us in promoting sustainable tourism while exploring Kenya&apos;s most beautiful destinations.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4 px-4">
           <Link href="/destinations">
