@@ -48,44 +48,83 @@ const SustainabilityPage = () => {
 
   return (
     <div className="bg-gradient-to-b from-[#f6efe5] to-white min-h-screen">
-      {/* Hero Section */}
-      <div className="relative z-10 overflow-hidden bg-black text-white">
-        <div className="h-32 sm:h-36 md:h-40 lg:h-48">
-          <Image
-            src="/images/hero_packages.jpg"
-            alt="image"
-            width={1920}
-            height={160}
-            className="z-1 absolute left-0 top-0 h-full w-full object-cover"
-            priority
-          />
-          <div className="absolute inset-0 flex items-center justify-center px-4">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg text-center">
-              Sustainable Tourism for Tomorrow
+     <div className="relative z-10 overflow-hidden bg-black text-white">
+        <div className="h-40">
+        <Image
+        src="/images/hero_packages.jpg"
+        alt="image"
+        width={1920}
+        height={160}
+        className="z-1 absolute left-0 top-0 h-full w-full object-cover"
+        priority
+      />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg text-center px-4">
+            Sustainable Tourism for Tomorrow
             </h1>
           </div>
         </div>
         <div
-          className="relative z-20 h-24 sm:h-28 md:h-32 w-full -scale-y-[1] bg-contain bg-repeat-x"
+          className="relative z-20 h-32 w-full -scale-y-[1] bg-contain bg-repeat-x"
           style={{
             backgroundImage: "url('/images/banner_style.png')",
-            filter: "invert(92%) sepia(2%) saturate(1017%) hue-rotate(342deg) brightness(106%) contrast(93%)",
+            filter:
+              "invert(92%) sepia(2%) saturate(1017%) hue-rotate(342deg) brightness(106%) contrast(93%)",
           }}
         />
       </div>
 
-      {/* Mission Statement */}
-      <div className="container mx-auto px-4 py-8 sm:py-12 lg:py-16">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 text-gray-800">
-            Our Vision for Responsible Tourism
-          </h2>
-          <p className="text-base sm:text-lg text-gray-600 leading-relaxed px-4">
-            At Forestline Tours, we're committed to creating a positive impact through sustainable tourism. Our approach combines environmental conservation, cultural preservation, and community development across Kenya and beyond.
-          </p>
+      {/* Framer Animation for Dotted Line */}
+      <section className="block-divider_dotted scroll-my-28 w-full">
+        <div className="container">
+          <div className="flex justify-center relative">
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 165 157" 
+              className="h-28 md:h-36"
+            >
+              <motion.path 
+                d="M0 0c14.69 46.684 41.909 70.026 81.657 70.026 59.623 0 72.343 45.146 72.343 68.914" 
+                stroke="#283A2C"
+                strokeWidth="2"
+                opacity="0.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+                fillRule="evenodd"
+                strokeMiterlimit="10"
+                initial={{ strokeDashoffset: 10 }}
+                animate={{ 
+                  strokeDashoffset: 0,
+                  transition: {
+                    duration: 1,
+                    repeat: Infinity,
+                    ease: "linear"
+                  }
+                }}
+                style={{
+                  strokeDasharray: "0, 10"
+                }}
+              />
+              <ellipse 
+                fill="#283A2C" 
+                opacity="0.25" 
+                cx="154" 
+                cy="145.932" 
+                rx="11" 
+                ry="11.068"
+              />
+              <ellipse 
+                fill="#283A2C" 
+                cx="154" 
+                cy="145.932" 
+                rx="5" 
+                ry="5.031"
+              />
+            </svg>
+          </div>
         </div>
-      </div>
-
+      </section>
       {/* Key Initiatives with Images */}
       <div className="container mx-auto px-4 py-8 sm:py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
