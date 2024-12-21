@@ -49,6 +49,13 @@ const Navbar = () => {
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
+                  <Link href="/sustainability" legacyBehavior passHref>
+                    <NavigationMenuLink className="text-white hover:text-green-600 transition-colors">
+                    Sustainability
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
                   <Link href="/packages" legacyBehavior passHref>
                     <NavigationMenuLink className="text-white hover:text-green-600  transition-colors">
                       Tour Packages
@@ -153,6 +160,9 @@ const MobileNav = ({ onClose }: { onClose: () => void }) => {
           </Link>
           <Link href="/about" className="text-lg font-semibold hover:text-green-600 transition-colors" onClick={onClose}>
             About
+          </Link>
+          <Link href="/sustainability" className="text-lg font-semibold hover:text-green-600 transition-colors" onClick={onClose}>
+          Sustainability
           </Link>
           <Link href="/packages" className="text-lg font-semibold hover:text-green-600 transition-colors" onClick={onClose}>
             Tour Packages
