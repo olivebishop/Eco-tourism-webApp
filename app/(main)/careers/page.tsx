@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { LinkedinIcon, Car } from "lucide-react";
+import { LinkedinIcon} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
