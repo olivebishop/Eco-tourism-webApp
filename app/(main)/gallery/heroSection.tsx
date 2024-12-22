@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+
 
 export default function HeroSection() {
   return (
@@ -30,57 +30,6 @@ export default function HeroSection() {
           }}
         />
       </div>
-
-      <section className="block-divider_dotted scroll-my-28 w-full">
-        <div className="container">
-          <div className="flex justify-center relative">
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              viewBox="0 0 165 157" 
-              className="h-28 md:h-36"
-            >
-              <motion.path 
-                d="M0 0c14.69 46.684 41.909 70.026 81.657 70.026 59.623 0 72.343 45.146 72.343 68.914" 
-                stroke="#283A2C"
-                strokeWidth="2"
-                opacity="0.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-                fillRule="evenodd"
-                strokeMiterlimit="10"
-                initial={{ strokeDashoffset: 10 }}
-                animate={{ 
-                  strokeDashoffset: 0,
-                  transition: {
-                    duration: 1,
-                    repeat: Infinity,
-                    ease: "linear"
-                  }
-                }}
-                style={{
-                  strokeDasharray: "0, 10"
-                }}
-              />
-              <ellipse 
-                fill="#283A2C" 
-                opacity="0.25" 
-                cx="154" 
-                cy="145.932" 
-                rx="11" 
-                ry="11.068"
-              />
-              <ellipse 
-                fill="#283A2C" 
-                cx="154" 
-                cy="145.932" 
-                rx="5" 
-                ry="5.031"
-              />
-            </svg>
-          </div>
-        </div>
-      </section>
     </>
   )
 }
