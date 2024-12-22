@@ -15,7 +15,6 @@ import {
   Twitter,
 } from "lucide-react";
 import { toast } from "sonner";
-import { motion } from 'framer-motion'
 import Image from 'next/image';
 
 interface FormState {
@@ -125,60 +124,20 @@ export default function ContactSection() {
         />
       </div>
 
-      {/* Framer Animation for Dotted Line */}
-      <section className="block-divider_dotted scroll-my-28 w-full">
-        <div className="container">
-          <div className="flex justify-center relative">
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              viewBox="0 0 165 157" 
-              className="h-28 md:h-36"
-            >
-              <motion.path 
-                d="M0 0c14.69 46.684 41.909 70.026 81.657 70.026 59.623 0 72.343 45.146 72.343 68.914" 
-                stroke="#283A2C"
-                strokeWidth="2"
-                opacity="0.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-                fillRule="evenodd"
-                strokeMiterlimit="10"
-                initial={{ strokeDashoffset: 10 }}
-                animate={{ 
-                  strokeDashoffset: 0,
-                  transition: {
-                    duration: 1,
-                    repeat: Infinity,
-                    ease: "linear"
-                  }
-                }}
-                style={{
-                  strokeDasharray: "0, 10"
-                }}
-              />
-              <ellipse 
-                fill="#283A2C" 
-                opacity="0.25" 
-                cx="154" 
-                cy="145.932" 
-                rx="11" 
-                ry="11.068"
-              />
-              <ellipse 
-                fill="#283A2C" 
-                cx="154" 
-                cy="145.932" 
-                rx="5" 
-                ry="5.031"
-              />
-            </svg>
-          </div>
-        </div>
-      </section>
-
       {/* Contact Content */}
       <div className="container mx-auto px-4 py-16">
+      <div className="text-center mb-8 md:mb-12 lg:mb-16">
+      <div className="inline-flex items-center justify-center mb-4 md:mb-6">
+        <span className="text-xs sm:text-sm md:text-base font-semibold uppercase tracking-wide text-green-800 bg-green-100 px-2 sm:px-3 py-1 rounded-full">
+       Do you have any questions?
+        </span>
+      </div>
+      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 md:mb-6 leading-tight">
+      Chat <span className="text-green-600">With</span>{" "}
+        US
+      </h2>
+    </div>
+
         <div className=" overflow-hidden grid md:grid-cols-2 gap-8 md:gap-12 p-6 md:p-12 lg:p-16">
           {/* Contact Information */}
           <div className="space-y-8">
