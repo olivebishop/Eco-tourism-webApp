@@ -72,7 +72,7 @@ const EcoTourismFeatures: React.FC = () => {
             <div className="relative mx-auto" style={{ maxWidth: '300px' }}>
               <Image
                 className="rounded-lg shadow-xl"
-                src="/images/zebra.jpg"
+                src="/images/masaai_women.jpg"
                 alt="Eco-tourism"
                 width={300}
                 height={400}
