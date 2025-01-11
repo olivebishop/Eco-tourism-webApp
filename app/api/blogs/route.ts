@@ -24,7 +24,7 @@ export async function GET() {
     })
     return NextResponse.json(blogs)
   } catch (error) {
-    console.error('Error fetching blogs:', error)
+    console.error('no blogs available:', error)
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
