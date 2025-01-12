@@ -17,7 +17,7 @@ export const keepAliveConfig = {
   consoleLogOnError: true,
 
   otherEndpoints: [
-    'https://www.forestlinetours.co.ke/api/keep-alive',
+    'https://www.forestlinetours.com/api/keep-alive',
     // 'https://your-other-supabase-app.com/api/keep-alive',
     'http://localhost:3001/api/keep-alive'
   ]

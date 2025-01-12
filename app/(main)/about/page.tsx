@@ -26,18 +26,19 @@ export default function AboutPage() {
 
   const coreValues = [
     {
-      icon: Users,
-      title: "Community Empowerment",
+      icon: TreePine,
+      title: "Environmental Conservation",
       description:
-        "Supporting local communities and ensuring tourism benefits are shared equitably.",
+        "Leading efforts in helping Africa transition to a green economy through eco-friendly travel solutions.",
     },
     {
-      icon: TreePine,
-      title: "Environmental Stewardship",
+      icon: Users,
+      title: "Memorable Experiences",
       description:
-        "Minimizing ecological impact and actively contributing to conservation efforts.",
+        "Creating unforgettable adventures while maintaining focus on environmental conservation.",
     },
   ];
+  
   return (
     <div className="bg-gradient-to-b from-[#f6efe5] to-white min-h-screen">
       {/* Hero Section */}
@@ -73,17 +74,17 @@ export default function AboutPage() {
         <div className="text-center mb-8 md:mb-12 lg:mb-16">
           <div className="inline-flex items-center justify-center mb-4 md:mb-6">
             <span className="text-xs sm:text-sm md:text-base font-semibold uppercase tracking-wide text-green-800 bg-green-100 px-2 sm:px-3 py-1 rounded-full">
-              Get to know us better
+              Nurture Nature and Experience the Adventure
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 md:mb-6 leading-tight">
-            Discover <span className="text-green-600">Forestline</span> Tours
+            Welcome to <span className="text-green-600">Forestline</span> Tours
           </h2>
         </div>
 
-        {/* Mission & Vales Grid */}
+        {/* Mission & Values Grid */}
         <div className="grid lg:grid-cols-12 gap-8 mb-16">
-          {/* Mission Section */}
+          {/* Who We Are Section */}
           <div className="lg:col-span-7">
             <div className="bg-green-50 rounded-2xl shadow-lg p-6 md:p-8 h-full">
               <div className="grid md:grid-cols-2 gap-8 items-center">
@@ -91,17 +92,14 @@ export default function AboutPage() {
                   <div className="inline-flex items-center gap-3">
                     <Leaf className="text-green-500" size={24} />
                     <span className="text-green-600 font-semibold">
-                      Our Mission
+                      Who We Are
                     </span>
                   </div>
                   <h3 className="text-2xl md:text-3xl font-bold text-gray-800">
-                    Pioneering Sustainable Tourism
+                    Leading Eco-Friendly Tourism
                   </h3>
                   <p className="text-gray-600 text-base md:text-lg leading-relaxed">
-                    Forestline Tours is committed to transforming travel
-                    experiences in Kenya. We blend adventure, conservation, and
-                    community empowerment to create journeys that are not just
-                    memorable, but meaningful.
+                    Founded in Nairobi, Kenya, Forestline is emerging as a leading travels and tours company with an eco-friendly business approach. We are dedicated to revolutionizing your travels and tours experience to foster memorable experiences and environmental conservation simultaneously.
                   </p>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex items-center gap-3">
@@ -130,63 +128,75 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Values & Impact Section */}
+          {/* Our Services Section */}
           <div className="lg:col-span-5 space-y-8">
             {/* Core Values */}
             <div className="bg-green-50 rounded-2xl shadow-lg p-6 md:p-8">
               <div className="text-center mb-8">
                 <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
-                  Our Core Values
+                  Our Services
                 </h3>
                 <p className="text-gray-600">
-                  Driven by passion for sustainable travel
+                  Comprehensive eco-friendly travel solutions
                 </p>
               </div>
-              <div className="space-y-6">
-                {coreValues.map((value, index) => (
-                  <div
-                    key={index}
-                    className="bg-white/50 p-5 rounded-xl hover:shadow-md transition-all duration-300"
-                  >
-                    <div className="flex items-start gap-4 mb-3">
-                      <value.icon
-                        className="text-green-500 shrink-0"
-                        size={24}
-                      />
-                      <div>
-                        <h4 className="text-lg font-semibold text-gray-800 mb-2">
-                          {value.title}
-                        </h4>
-                        <p className="text-gray-600 text-sm leading-relaxed">
-                          {value.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              <div className="space-y-4">
+                <div className="bg-white/50 p-4 rounded-xl">
+                  <ul className="list-disc ml-5 text-gray-700">
+                    <li>Wildlife Safaris</li>
+                    <li>Adventure Tours</li>
+                    <li>Cultural Experiences</li>
+                    <li>Event and Conference Management</li>
+                    <li>Flight Bookings and Travel Planning</li>
+                  </ul>
+                </div>
               </div>
             </div>
 
-            {/* Impact Metrics */}
+            {/* Environmental Impact */}
             <div className="bg-green-50 rounded-2xl shadow-lg p-6 md:p-8">
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center">
-                Our Impact
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
+                Environmental Impact
               </h3>
-              <div className="grid grid-cols-2 gap-8">
-                <div className="text-center">
-                  <p className="text-gray-600 mb-2">Local Partners</p>
-                  <h4 className="text-3xl md:text-4xl font-bold text-green-600">
-                    10
-                  </h4>
-                </div>
-                <div className="text-center">
-                  <p className="text-gray-600 mb-2">Eco-Destinations</p>
-                  <h4 className="text-3xl md:text-4xl font-bold text-green-600">
-                    12
-                  </h4>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                Climate change poses a significant threat to Kenya&apos;s tourism industry. Through our eco-friendly approach, we&apos;re committed to supporting Africa&apos;s transition to a green economy while preserving the natural beauty that makes our destinations unique.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Core Values Section */}
+        <div className="mb-16">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+              Our Core Values
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Dedicated to sustainable tourism and environmental conservation
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            {coreValues.map((value, index) => (
+              <div
+                key={index}
+                className="bg-green-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <div className="flex items-start gap-4">
+                  <value.icon
+                    className="text-green-500 shrink-0"
+                    size={24}
+                  />
+                  <div>
+                    <h4 className="text-xl font-semibold text-gray-800 mb-2">
+                      {value.title}
+                    </h4>
+                    <p className="text-gray-600 leading-relaxed">
+                      {value.description}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
 
