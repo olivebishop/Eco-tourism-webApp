@@ -38,7 +38,7 @@ async function fetchPackages() {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://www.forestlinetours.co.ke'
+  const baseUrl = 'https://www.forestlinetours.com'
 
   // Fetch dynamic data
   const [blogs, packages] = await Promise.all([

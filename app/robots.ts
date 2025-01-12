@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const domain = 'https://www.forestlinetours.co.ke'
+  const domain = 'https://www.forestlinetours.com'
 
   return {
     rules: [
