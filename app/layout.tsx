@@ -26,7 +26,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.forestlinetours.co.ke"),
+  metadataBase: new URL("https://www.forestlinetours.com"),
   title: {
     default: 'Forestline Tours',
     template: "%s | Forestline Tours",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     site: '@forestlinetours', // Your Twitter handle
     creator: '@forestlinetours', // Your Twitter handle
     images: {
-      url: 'https://www.forestlinetours.co.ke/opengraph-image',
+      url: 'https://www.forestlinetours.com/opengraph-image',
       alt: 'Forestline Tours',
     },
     
@@ -58,12 +58,12 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://www.forestlinetours.co.ke',
+    url: 'https://www.forestlinetours.com',
     siteName: 'Forestline Tours',
     title: 'Forestline Tours',
     description: 'Tour agency that connects tourist with magical destinations',
     images: [{
-      url: 'https://www.forestlinetours.co.ke/opengraph-image',
+      url: 'https://www.forestlinetours.com/opengraph-image',
       width: 1200,
       height: 630,
       alt: 'Forestline Tours',
@@ -87,7 +87,7 @@ export default function RootLayout({
               "@context" : "https://schema.org",
               "@type" : "WebSite",
               "name" : "Forestline Tours",
-              "url" : "https://www.forestlinetours.co.ke"
+              "url" : "https://www.forestlinetours.com"
             }`}
         </Script>
         </head>
@@ -106,4 +106,3 @@ export default function RootLayout({
 
 
 
-{/* <Script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="f69895d8-3ecd-40e1-820b-c2bddf530d37" data-blockingmode="auto" type="text/javascript"></Script> */}
