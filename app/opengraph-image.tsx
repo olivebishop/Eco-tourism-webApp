@@ -82,7 +82,7 @@ export default async function Image() {
                 color: '#666',
               }}
             >
-              www.forestlinetours.co.ke
+              www.forestlinetours.com
             </span>
           </div>
         </div>

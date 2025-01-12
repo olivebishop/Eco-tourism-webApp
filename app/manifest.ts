@@ -2,9 +2,9 @@ import { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
     return {
-        name: 'Eco Tours: Sustainable Adventures',
+        name: 'Forestline Tours and Travel : Sustainable Adventures',
         short_name: 'Eco Tours',
-        description: 'Experience sustainable and eco-friendly tours and safaris with Eco Tours. Discover wildlife, explore natural landscapes, and contribute to conservation efforts. Book your green adventure today!',
+        description: 'Experience sustainable and eco-friendly tours and safaris with Forestline Tours. Discover wildlife, explore natural landscapes, and contribute to conservation efforts. Book your green adventure today!',
         start_url: '/',
         display: 'standalone',
         background_color: '#F0FFF4',
